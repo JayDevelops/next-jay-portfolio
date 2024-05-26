@@ -1,9 +1,9 @@
-import Image from "next/image";
+import {HeadingOne} from "@/components/ui/Typography/Headers";
 
 export default function Home() {
   return (
       <div>
-        Hello World
+          <HeadingOne>Home Page</HeadingOne>
       </div>
   )
 }
