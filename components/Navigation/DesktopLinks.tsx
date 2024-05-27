@@ -20,8 +20,8 @@ export function DesktopLinks() {
                     <Link href={item.path} legacyBehavior passHref>
                         <NavigationMenuLink
                             className={cn({
-                                    'text-primary/80': item.path === currentPath,
-                                    'text-secondary-foreground ': item.path !== currentPath,
+                                    'text-secondary-foreground': item.path === currentPath,
+                                    'text-muted-foreground': item.path !== currentPath,
                                     'transition-colors': true,
                                 },
                                 navigationMenuTriggerStyle()
