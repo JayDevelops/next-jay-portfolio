@@ -4,6 +4,7 @@ import "./globals.css";
 import React from "react";
 import {ThemeProvider} from "@/components/theme-provider";
 import Navigation from "@/components/Navigation/Navigation";
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -73,6 +74,7 @@ export default function RootLayout({
             <main className="flex-1 min-h-screen flex-col items-center justify-between m-4">
               {children}
             </main>
+            <Toaster />
           </div>
           {/*Add SpeedInsights and Analytics before deployment BELOW*/}
         </ThemeProvider>
