@@ -11,6 +11,6 @@ export const formSchema = z.object({
         message: "Subject line is required, at least 2 characters long."
     }),
     message: z.string().min(2, {
-        message: ""
+        message: "Message must be minimum 2 characters long."
     })
 })
