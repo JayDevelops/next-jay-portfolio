@@ -1,0 +1,26 @@
+[
+  {
+    "content": "## A Beginning!\n\nThis is my first post!\n- List 1\n- List 2\n- List 4",
+    "title": "Hello World!",
+    "summary": "This is my first post",
+    "_meta": {
+      "filePath": "hello-world.md",
+      "fileName": "hello-world.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "hello-world"
+    }
+  },
+  {
+    "content": "## Sample Title!\n\nThis is my second post!\n- List 9\n- List 8\n- List 2",
+    "title": "Sample Blog",
+    "summary": "Sample of the post here",
+    "_meta": {
+      "filePath": "sample.md",
+      "fileName": "sample.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "sample"
+    }
+  }
+]
