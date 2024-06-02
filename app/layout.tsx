@@ -61,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-pt-16 overflow-auto overscroll-none">
       <body className={inter.className} suppressHydrationWarning>
         <ThemeProvider
             attribute="class"
@@ -69,9 +69,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
         >
-          <div className="relative flex min-h-screen flex-col bg-background">
+          <div className="flex min-h-screen flex-col bg-background">
             <Navigation />
-            <main className="flex-1 min-h-screen flex-col items-center justify-between m-4">
+            <main className="flex-1 min-h-screen flex-col items-center justify-between my-4 px-12 md:px-24 lg:px-32">
               {children}
             </main>
             <Toaster />
