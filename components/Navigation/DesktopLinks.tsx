@@ -3,7 +3,6 @@ import {
     NavigationMenu,
     NavigationMenuItem,
     NavigationMenuLink,
-    navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
 import {menuLinks} from "@/components/Navigation/MenuLinks";
 import Link from "next/link";
@@ -14,7 +13,7 @@ export function DesktopLinks() {
     const currentPath = usePathname()
 
     return (
-        <NavigationMenu className="ml-3 flex items-center gap-2 text-sm lg:gap-4 list-none">
+        <NavigationMenu className="ml-9 flex items-center gap-2 text-sm lg:gap-4 list-none space-x-6">
             {menuLinks.map((item, index) => (
                 <NavigationMenuItem key={`menu-link-${index}`} className="text-secondary-foreground">
                     <Link href={item.path} legacyBehavior passHref>
@@ -23,8 +22,7 @@ export function DesktopLinks() {
                                     'text-secondary-foreground': item.path === currentPath,
                                     'text-muted-foreground': item.path !== currentPath,
                                     'transition-colors': true,
-                                },
-                                navigationMenuTriggerStyle()
+                                }
                             )}
                         >
                             {item.title}
