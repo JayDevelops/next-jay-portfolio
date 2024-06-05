@@ -13,7 +13,7 @@ export default function Post({ params }: { params: { slug: string } }) {
     }
 
     return (
-        <div className="container mx-auto grid grid-cols-1 gap-8 py-12 md:grid-cols-2">
+        <div className="container mx-auto grid grid-cols-1 gap-8 py-6 md:grid-cols-2">
             <MainBlogContent post={post} />
         </div>
     )
