@@ -1,15 +1,11 @@
-import {Post} from "content-collections";
 import Link from "next/link";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Text} from "@/components/ui/Typography/Text";
 import {CalendarDaysIcon} from "lucide-react";
 import {cn} from "@/lib/utils";
+import {PostProps} from "@/lib/postProps";
 
-type PostCardProps = {
-    post: Post
-}
-
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post }: PostProps) {
     const postRoute: string = `/blog/${post._meta.path}`
 
     return (
