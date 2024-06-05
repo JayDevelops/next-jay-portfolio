@@ -3,6 +3,7 @@ import {PostProps} from "@/lib/postProps"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import Markdown from "react-markdown";
 import {cn} from "@/lib/utils";
+import {Card} from "@/components/ui/card";
 
 export default function MainBlogContent({ post }: PostProps) {
     return (
@@ -18,7 +19,7 @@ export default function MainBlogContent({ post }: PostProps) {
             </div>
 
             <div className="space-y-6">
-                <p className="text-sm md:text-base text-primary-foreground/70">Summary: {' '}{post.summary}</p>
+                <p className="text-sm md:text-base text-secondary-foreground/70">Summary: {' '}{post.summary}</p>
                 <Markdown>{post.content}</Markdown>
             </div>
         </article>
@@ -27,16 +28,14 @@ export default function MainBlogContent({ post }: PostProps) {
 
 export function AuthorSection({ date }: {date: string}) {
     return (
-        <div className="flex items-center space-x-4">
+        <Card className="flex items-center space-x-4 p-4">
             <div className="flex items-center space-x-2">
                 <Avatar>
                     <AvatarFallback>JP</AvatarFallback>
                 </Avatar>
-
                 <span className="text-sm font-medium" itemProp="name">Jesus Perez</span>
             </div>
-
             <span className="text-sm text-secondary-foreground/70">{date}</span>
-        </div>
+        </Card>
     )
 }
