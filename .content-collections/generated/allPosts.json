@@ -3,6 +3,12 @@
     "content": "## A Beginning!\n\nThis is my first post!\n- List 1\n- List 2\n- List 4",
     "title": "Hello World!",
     "summary": "This is my first post",
+    "date": "2011-01-02",
+    "tags": [
+      "react",
+      "next.js",
+      "javascript"
+    ],
     "_meta": {
       "filePath": "hello-world.md",
       "fileName": "hello-world.md",
@@ -15,6 +21,11 @@
     "content": "## Sample Title!\n\nThis is my second post!\n- List 9\n- List 8\n- List 2",
     "title": "Sample Blog",
     "summary": "Sample of the post here",
+    "date": "2020-01-24",
+    "tags": [
+      "python",
+      "opensource"
+    ],
     "_meta": {
       "filePath": "sample.md",
       "fileName": "sample.md",

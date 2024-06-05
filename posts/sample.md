@@ -1,6 +1,10 @@
 ---
 title: "Sample Blog"
 summary: "Sample of the post here"
+date: "2020-01-24"
+tags:
+  - python
+  - opensource
 ---
 ## Sample Title!
 

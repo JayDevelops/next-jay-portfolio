@@ -1,6 +1,11 @@
 ---
 title: "Hello World!"
 summary: "This is my first post"
+date: "2011-01-02"
+tags: 
+  - react
+  - next.js
+  - javascript
 ---
 ## A Beginning!
 
