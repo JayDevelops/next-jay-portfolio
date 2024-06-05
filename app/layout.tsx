@@ -61,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-pt-16 overflow-auto overscroll-none">
+    <html lang="en" className="scroll-pt-16 overscroll-none">
       <body className={inter.className} suppressHydrationWarning>
         <ThemeProvider
             attribute="class"
