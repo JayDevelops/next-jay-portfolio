@@ -28,7 +28,7 @@ export default function MainBlogContent({ post }: PostProps) {
 
 export function AuthorSection({ date }: {date: string}) {
     return (
-        <Card className="flex items-center space-x-4 p-4">
+        <Card className="flex items-center space-x-4 p-4 border-primary/70">
             <div className="flex items-center space-x-2">
                 <Avatar>
                     <AvatarFallback>JP</AvatarFallback>
