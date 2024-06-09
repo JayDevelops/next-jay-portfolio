@@ -9,11 +9,11 @@ export default function PostCard({ post }: PostProps) {
     const postRoute: string = `/blog/${post._meta.path}`
 
     return (
-        <Link href={postRoute} className="transition-transform duration-300 ease-in-out hover:scale-[1.02]">
+        <Link href={postRoute} className="group transition-transform duration-300 ease-in-out hover:scale-[1.02]">
             <article className="p-4">
-                <Card className="shadow-secondary hover:shadow-lg hover:shadow-primary py-2 hover:border-primary">
+                <Card className="shadow-secondary group-hover:shadow-md group-hover:shadow-primary py-2 hover:border-primary">
                     <CardHeader>
-                        <CardTitle>
+                        <CardTitle className="group-hover:text-primary group/link">
                             {post.title}
                         </CardTitle>
                     </CardHeader>
