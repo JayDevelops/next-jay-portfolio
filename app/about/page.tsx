@@ -1,7 +1,4 @@
 import { Metadata } from "next"
-import Link from "next/link"
-import {Button} from "@/components/ui/button"
-import {DownloadIcon} from "@radix-ui/react-icons"
 import {AboutMeHeader} from "@/app/about/AboutMeHeader"
 
 export const metadata: Metadata = {
@@ -18,14 +15,5 @@ export default function AboutPage() {
 }
 
 
-export function DownloadResumeButton() {
-    return (
-        <Button asChild variant="outline">
-            <Link href="/static/Jesus_Perez_SoftwareEngineer2024.pdf" target="_blank">
-                Download Resume&nbsp;<DownloadIcon />
-            </Link>
-        </Button>
-    )
-}
 
 export const dynamic = 'force-static'

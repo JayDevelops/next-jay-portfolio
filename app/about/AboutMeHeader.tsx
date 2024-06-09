@@ -1,5 +1,6 @@
 import Link from "next/link";
-import {DownloadResumeButton} from "@/app/about/page";
+import {Button} from "@/components/ui/button";
+import {DownloadIcon} from "@radix-ui/react-icons";
 
 export function AboutMeHeader() {
     return (
@@ -31,5 +32,15 @@ export function AboutMeHeader() {
             </p>
             <DownloadResumeButton />
         </article>
+    )
+}
+
+export function DownloadResumeButton() {
+    return (
+        <Button asChild variant="outline">
+            <Link href="/static/Jesus_Perez_SoftwareEngineer2024.pdf" target="_blank">
+                Download Resume&nbsp;<DownloadIcon />
+            </Link>
+        </Button>
     )
 }
