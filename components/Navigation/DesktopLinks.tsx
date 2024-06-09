@@ -15,13 +15,13 @@ export function DesktopLinks() {
     return (
         <NavigationMenu className="ml-9 flex items-center gap-2 text-sm lg:gap-4 list-none space-x-6">
             {menuLinks.map((item, index) => (
-                <NavigationMenuItem key={`menu-link-${index}`} className="text-secondary-foreground">
+                <NavigationMenuItem key={`menu-link-${index}`} className="text-secondary-foreground hover:text-secondary-foreground">
                     <Link href={item.path} legacyBehavior passHref>
                         <NavigationMenuLink
                             className={cn({
                                     'text-secondary-foreground': item.path === currentPath,
                                     'text-muted-foreground': item.path !== currentPath,
-                                    'transition-colors': true,
+                                    'hover:text-secondary-foreground transition-colors text-sm': true,
                                 }
                             )}
                         >
