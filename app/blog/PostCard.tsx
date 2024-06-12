@@ -4,6 +4,7 @@ import {Text} from "@/components/ui/Typography/Text";
 import {CalendarDaysIcon} from "lucide-react";
 import {cn} from "@/lib/utils";
 import {PostProps} from "@/lib/postProps";
+import {Badge} from "@/components/ui/badge";
 
 export default function PostCard({ post }: PostProps) {
     const postRoute: string = `/blog/${post._meta.path}`
@@ -33,15 +34,16 @@ export default function PostCard({ post }: PostProps) {
 export function PostTags({ tags, className}: {tags: string[], className?: string}) {
     return (
         <div className={cn(
-            "flex flex-row gap-3.5 mt-2 mr-1.5", className
+            "relative flex flex-row space-x-2", className
         )}>
             {tags.map((tag: string, index: number) => (
-                <span
+                <Badge
                     key={`tag-${index}`}
-                    className="rounded-lg bg-primary/10 text-xs font-medium leading-4 text-primary py-2 px-4"
+                    className="rounded-lg"
+                    variant="tag"
                 >
                     {tag}
-                </span>
+                </Badge>
             ))}
         </div>
     )
