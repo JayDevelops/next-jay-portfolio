@@ -16,33 +16,22 @@ export function AboutMeHeader() {
                 <Text className="py-1">
                     My parents come from Michoacan, Mexico (not Michigan) came to Southern California in the
                     1990&apos;s, where I currently reside in Montebello, California. I bring extensive expertise in
-                    crafting
-                    dynamic web applications
-                    using cutting-edge technologies such as Next.js, ReactJS, PHP, ASP.NET, Wordpress and various more
-                    in my
-                    four plus years of being a
-                    FullStack Developer.
+                    crafting dynamic web applications using cutting-edge technologies such as Next.js,
+                    ReactJS, PHP, ASP.NET, Wordpress and various more in my four plus years of being a FullStack Developer.
                 </Text>
 
                 <Text className="py-1">
                     Back in my high school days I was enrolled in a&nbsp;<Link href="https://www.mhscats.com/">creative
                     arts pathway program</Link> dedicated to animation and graphic design, from there I fell in love
-                    with
-                    design where I wanted to create web design. My animation teacher set me aside showing
+                    with design where I wanted to create web design. My animation teacher set me aside showing
                     me his personal portfolio with some fancy jQuery animations.
                 </Text>
 
                 <Text className="py-1">
                     Peaking my curiosity into JavaScript land where I wrote my first line of JavaScript code, fast
-                    forward
-                    to today
-                    and the long and continuing path of pursuing my Bachelors in Computer Science and various roles to
-                    being
-                    a FullStack
-                    Developer widens,&nbsp;<Link href="/contact">contact me</Link> to bring me aboard to assist the
-                    shipping
-                    of your next
-                    product.
+                    forward to today and the long and continuing path of pursuing my Bachelors in Computer Science and various roles to being
+                    a FullStack Developer widens,&nbsp;<Link href="/contact">contact me</Link> to bring me aboard to
+                    assist the shipping of your next product.
                 </Text>
                 <DownloadResumeButton/>
 
