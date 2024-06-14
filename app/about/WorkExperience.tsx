@@ -1,5 +1,5 @@
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {HeadingTwo} from "@/components/ui/Typography/Headers";
+import {HeadingFive, HeadingFour, HeadingThree, HeadingTwo} from "@/components/ui/Typography/Headers";
 import {Text} from "@/components/ui/Typography/Text";
 
 export function WorkExperience() {
@@ -27,13 +27,19 @@ export function WorkExperience() {
 
 export function ExperienceCard({experience}: { experience: Experience }) {
     return (
-        <article className="py-4">
+        <article className="py-4 group relative">
             <Card
-                className="shadow-secondary group-hover:shadow-md group-hover:shadow-primary py-2 hover:border-primary">
+                className="shadow-secondary group-hover:shadow-md group-hover:shadow-secondary py-2 hover:border-primary"
+            >
                 <CardHeader>
-                    <CardTitle className="group-hover:text-primary group/link">
-                        {experience.company}
-                    </CardTitle>
+                    <div>
+                        <HeadingThree className="group-hover:text-primary group/link">
+                            {experience.company}
+                        </HeadingThree>
+                        <HeadingFive color="muted-foreground">
+                            {experience.role}, {experience.date}
+                        </HeadingFive>
+                    </div>
                 </CardHeader>
                 <CardContent>
                     <ul className="list-disc space-y-2 mx-4">

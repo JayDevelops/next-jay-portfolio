@@ -82,3 +82,16 @@ export function HeadingFour({ children, color = "secondary-foreground", classNam
     )
 }
 
+
+export function HeadingFive({ children, color = "secondary-foreground", className = "" }: HeadingVariantProps) {
+    // If the passed children react node is falsy (empty), then return nothing
+    if (!children) return null;
+
+    const colorClassValue = colorClass[color]
+
+    return (
+        <h4 className={`scroll-m-20 text-base font-semibold tracking-tight ${colorClassValue} ${className}`}>
+            {children}
+        </h4>
+    )
+}
