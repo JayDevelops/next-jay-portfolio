@@ -2,9 +2,8 @@ import Link from "next/link";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Text} from "@/components/ui/Typography/Text";
 import {CalendarDaysIcon} from "lucide-react";
-import {cn} from "@/lib/utils";
 import {PostProps} from "@/lib/postProps";
-import {Badge} from "@/components/ui/badge";
+import {PostTags} from "@/components/PostTags";
 
 export default function PostCard({ post }: PostProps) {
     const postRoute: string = `/blog/${post._meta.path}`
@@ -28,23 +27,5 @@ export default function PostCard({ post }: PostProps) {
                 </Card>
             </article>
         </Link>
-    )
-}
-
-export function PostTags({ tags, className}: {tags: string[], className?: string}) {
-    return (
-        <div className={cn(
-            "relative flex flex-row space-x-2", className
-        )}>
-            {tags.map((tag: string, index: number) => (
-                <Badge
-                    key={`tag-${index}`}
-                    className="rounded-lg"
-                    variant="tag"
-                >
-                    {tag}
-                </Badge>
-            ))}
-        </div>
     )
 }
