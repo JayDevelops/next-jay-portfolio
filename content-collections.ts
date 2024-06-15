@@ -22,8 +22,8 @@ const projects = defineCollection({
         imageUrl: z.string(),
         date: z.string(),
         tags: z.array(z.string().min(1).max(20)),
-        liveButton: z.string(),
-        projectRepo: z.string()
+        liveButton: z.string().optional(),
+        projectRepo: z.string().optional(),
     })
 })
 
