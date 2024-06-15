@@ -4,8 +4,14 @@
 * Read more about the project and how to get started below.
 * https://www.content-collections.dev/docs
 * */
-import {Post} from "content-collections";
 
-export type PostProps = {
+import {Post} from "content-collections";
+import {Project} from "content-collections";
+
+export type ContentProps = {
     post: Post
+}
+
+export type ProjectProps = {
+    project: Project,
 }
