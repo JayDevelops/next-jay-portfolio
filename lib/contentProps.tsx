@@ -8,7 +8,7 @@
 import {Post} from "content-collections";
 import {Project} from "content-collections";
 
-export type ContentProps = {
+export type PostProps = {
     post: Post
 }
 

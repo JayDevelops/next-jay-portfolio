@@ -1,7 +1,7 @@
 import {allPosts} from "content-collections";
 import BlogArticleNotFound from "@/app/blog/[slug]/not-found";
 import MainBlogContent from "@/app/blog/[slug]/MainBlogContent";
-import {ContentProps} from "@/lib/contentProps";
+import {PostProps} from "@/lib/contentProps";
 
 export default function Post({ params }: { params: { slug: string } }) {
     //  Grab the requested slug and find that post in our post-collection
@@ -20,7 +20,7 @@ export default function Post({ params }: { params: { slug: string } }) {
     )
 }
 
-export function generateHeadings({post}: ContentProps) {
+export function generateHeadings({post}: PostProps) {
     return (
         <div>
             {post.content}

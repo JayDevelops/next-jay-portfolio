@@ -1,11 +1,11 @@
 import {HeadingOne} from "@/components/ui/Typography/Headers"
-import {ContentProps} from "@/lib/contentProps"
+import {PostProps} from "@/lib/contentProps"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import Markdown from "react-markdown";
 import {cn} from "@/lib/utils";
 import {Card} from "@/components/ui/card";
 
-export default function MainBlogContent({ post }: ContentProps) {
+export default function MainBlogContent({ post }: PostProps) {
     return (
         <article className={cn(
             "prose lg:prose-xl dark:prose-invert"
