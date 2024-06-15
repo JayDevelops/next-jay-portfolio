@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
     return (
-        <div className="mx-auto flex h-full min-h-screen max-w-4xl flex-col gap-5 p-5 sm:p-10">
+        <div className="px-8">
             <AboutMeHeader/>
-            <hr className="my-3 border-primary/30 dark:border-primary/30"/>
+            <hr className="my-6 border-primary/30 dark:border-primary/30"/>
             <WorkExperience/>
         </div>
     )

@@ -71,7 +71,7 @@ export default function RootLayout({
         >
           <div className="flex min-h-screen flex-col bg-background">
             <Navigation />
-            <main className="flex-1 min-h-screen flex-col items-center justify-between my-4 px-12 md:px-24 lg:px-32">
+            <main className="mx-auto flex h-full min-h-screen max-w-6xl p-5">
               {children}
             </main>
             <Toaster />

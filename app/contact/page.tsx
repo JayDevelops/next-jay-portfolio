@@ -4,7 +4,7 @@ import Earth from "@/components/Models/Earth/Earth";
 
 export default function Contact() {
     return (
-        <div className="mx-auto flex h-full min-h-screen max-w-6xl flex-col gap-5 p-5 sm:p-10">
+        <div>
             <HeadingOne>Contact Page</HeadingOne>
 
             <div className="grid md:grid-cols-2 space-x-4">
