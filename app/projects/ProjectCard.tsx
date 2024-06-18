@@ -20,7 +20,7 @@ export default function ProjectCard({project}: ProjectProps) {
                     <CalendarDaysIcon className="w-4 h-4"/>{project.date}
                 </CardFooter>
                 <div className="pb-4 px-4">
-                    <PostTags tags={project.tags} className="pb-4 mx-4"/>
+                    <PostTags tags={project.tags}/>
                 </div>
             </Card>
         </article>
