@@ -1,6 +1,8 @@
 import {HeadingOne} from "@/components/ui/Typography/Headers";
 import {Text} from "@/components/ui/Typography/Text";
 import Link from "next/link";
+import ProjectCard from "@/app/projects/ProjectCard";
+import {allProjects, Project} from "content-collections";
 
 export default function ProjectsPage() {
     return (
@@ -15,6 +17,12 @@ export default function ProjectsPage() {
                 functional web solutions. Check out some featured projects below, and{' '}
                 <Link href="/contact" className="underline text-primary hover:outline-primary">contact me</Link> for your next project.
             </Text>
+
+            <div className="grid md:grid-cols-3">
+                {allProjects.map((project: Project, index: number) => (
+                    <ProjectCard key={`project-${index}`} project={project} />
+                ))}
+            </div>
         </div>
     )
 }

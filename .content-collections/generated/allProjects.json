@@ -1,1 +1,25 @@
-[]
+[
+  {
+    "content": "## Issue Tracker",
+    "title": "Issue Tracker",
+    "summary": "Effortlessly manage and monitor project issues with the Issue Tracker Dashboard. Gain insights into open, in-progress, and closed issues, ensuring seamless collaboration within an in-house organization. Implemented my own API with Prisma and SQL Integration, used Next.js and deployed to Vercel with PlanetScale for DataBase.",
+    "imageUrl": "/projectImages/issueTrackerThumbnail",
+    "date": "2024-06-12",
+    "tags": [
+      "typescript",
+      "next.js",
+      "reactjs",
+      "shadcn",
+      "tailwindcss",
+      "prisma",
+      "sql"
+    ],
+    "_meta": {
+      "filePath": "issue-tracker.md",
+      "fileName": "issue-tracker.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "issue-tracker"
+    }
+  }
+]

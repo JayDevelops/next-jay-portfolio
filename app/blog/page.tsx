@@ -18,7 +18,7 @@ export default function Blog() {
                 <HeroSection mainTitle="Welcome to my Blog!" startSubtitle="I write about" subTitles={subTitles}/>
             </div>
 
-            <div className="grid md:grid-cols-3">
+            <div className="my-4 grid md:grid-cols-3">
                 {allPosts.map((post: Post, index: number) => (
                     <PostCard key={index} post={post} />
                 ))}
