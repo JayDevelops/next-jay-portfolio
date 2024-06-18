@@ -10,7 +10,7 @@ export default function ProjectsPage() {
             <HeadingOne color="primary" className="text-left">
                 FullStack Projects
             </HeadingOne>
-            <Text>
+            <Text className="my-2">
                 I bring extensive expertise in crafting dynamic web applications using cutting-edge technologies such as Next.js, ReactJS, PHP, and WordPress.
                 My proficiency extends to working with advanced tools and databases, including Prisma, React Query, MySQL, and MongoDB.
                 My primary focus is on utilizing Next.js in conjunction with ReactJS to develop aesthetically pleasing and highly
@@ -18,7 +18,7 @@ export default function ProjectsPage() {
                 <Link href="/contact" className="underline text-primary hover:outline-primary">contact me</Link> for your next project.
             </Text>
 
-            <div className="grid md:grid-cols-3">
+            <div className="py-6 grid md:grid-cols-3">
                 {allProjects.map((project: Project, index: number) => (
                     <ProjectCard key={`project-${index}`} project={project} />
                 ))}
