@@ -13,7 +13,9 @@ export default function Contact() {
                     Open to <span className="text-primary">Build and Ship</span>
                 </HeadingOne>
                 <HeadingThree>
-                    Have an exciting project/product you need help with? Fill out the contact form below or message through others platforms below!
+                    Have an <span className="text-primary">exciting</span> project/product you need help with?
+                    <br />
+                    Fill out the contact form or reach out to me through the platforms below!
                 </HeadingThree>
 
                 <SocialLinks />

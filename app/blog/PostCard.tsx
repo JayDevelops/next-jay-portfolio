@@ -23,7 +23,9 @@ export default function PostCard({ post }: PostProps) {
                     <CardFooter className="flex items-center gap-2">
                         <CalendarDaysIcon className="w-4 h-4"/>{post.date}
                     </CardFooter>
-                    <PostTags tags={post.tags} className="pb-4 mx-4"/>
+                    <div className="px-4 pb-2">
+                        <PostTags tags={post.tags} />
+                    </div>
                 </Card>
             </article>
         </Link>
