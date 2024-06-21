@@ -1,7 +1,3 @@
-import React, {ForwardRefExoticComponent, RefAttributes} from "react";
-import {InstagramLogoIcon} from "@radix-ui/react-icons";
-import {IconProps} from "@radix-ui/react-icons/dist/types";
-
 interface MenuLink {
     title: string,
     path: string,
