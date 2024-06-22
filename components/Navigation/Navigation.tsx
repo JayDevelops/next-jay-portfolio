@@ -44,9 +44,5 @@ export default function Navigation() {
                 <MobileNavigation closeMenu={() => setIsMobile(false)} isMobile={isMobile}/>
             )}
         </header>
-)
-}
-
-export function RightButtonToggles() {
-
+    )
 }

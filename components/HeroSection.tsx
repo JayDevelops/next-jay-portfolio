@@ -64,7 +64,7 @@ export default function HeroSection(
     )
 
     return (
-        <Card className="relative justify-center w-full max-w-screen-lg">
+        <Card className="relative justify-center w-full max-w-screen-lg  backdrop-blur-sm backdrop-brightness-50 bg-gradient-to-r shadow-lg shadow-secondary py-8">
             {/* CARD HEADER HAS INITIAL TITLE ANIMATION, WILL STOP ANIMATION ONLY ONCE */}
             <CardHeader className="mt-4">
                 <CardContent className="flex flex-col items-center justify-center">
