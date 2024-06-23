@@ -1,7 +1,6 @@
-import {HeadingFour, HeadingTwo} from "@/components/ui/Typography/Headers";
+import {HeadingTwo} from "@/components/ui/Typography/Headers";
 import {Text} from "@/components/ui/Typography/Text";
-import {Skill} from "@/app/about/skills";
-import {skills} from "@/app/about/skills";
+import SkillGrid from "@/app/about/SkillGrid";
 
 export default function SkillsSection() {
     return (
@@ -22,29 +21,7 @@ export default function SkillsSection() {
                     </Text>
                 </div>
             </article>
-
-            <div className="grid my-8 gap-4 grid-cols-2 md:grid-cols-3">
-                {skills.map((skill: Skill, index: number) => (
-                    <SkillCard key={index} skill={skill}/>
-                ))}
-            </div>
+            <SkillGrid />
         </section>
-    )
-}
-
-export function SkillCard({skill}: {skill: Skill}) {
-    return (
-        <div
-            title={skill.title}
-            className="flex items-center justify-center sm:justify-start gap-4 relative rounded-lg bg-secondary p-4 duration-300 ease-in-out hover:scale-[1.02]"
-        >
-            <div className="relative">
-                {skill.icon}
-            </div>
-
-            <HeadingFour className="text-secondary-foreground">
-                {skill.title}
-            </HeadingFour>
-        </div>
     )
 }

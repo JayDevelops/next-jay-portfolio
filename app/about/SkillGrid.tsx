@@ -1,3 +1,4 @@
+"use client"
 import {
     SiAdobexd,
     SiBlender,
@@ -12,20 +13,59 @@ import {
 import {FaDocker, FaMicrosoft, FaNodeJs, FaSwift} from "react-icons/fa";
 import {RiJavascriptFill} from "react-icons/ri";
 import {DiMysql} from "react-icons/di";
+import SkillCard from "@/app/about/SkillCard";
+import {useState} from "react";
+import {cn} from "@/lib/utils";
+import {Button} from "@/components/ui/button";
 
-type SkillCategory = "web" | "design" | "mobile" | "cloud" | "backend";
-
-interface Skill {
+type SkillCategory = "all" | "web" | "design" | "mobile" | "cloud" | "backend";
+export interface Skill {
     title: string,
     icon: JSX.Element,
     category: SkillCategory
+}
+
+export default function SkillGrid() {
+    //  tracks the selected category, initially set to see "all"
+    const [selectedCategory, setSelectedCategory] = useState<SkillCategory>("all")
+
+    //  updates the filtered skill array based on the user selected category
+    const filteredSkills: Skill[] = selectedCategory === "all" ? skills : skills.filter(skill => skill.category === selectedCategory)
+
+    //  maps through the categories to render in buttons and sets the selectedCategory
+    const categories: SkillCategory[] = ["all", "web", "backend", "mobile", "cloud"]
+
+    return (
+        <div className="section-grid md:mt-6">
+            <div className="grid grid-cols-5 md:gap-8 container invisible md:visible">
+                {categories.map((category: SkillCategory, index: number) => (
+                    <Button
+                        key={index}
+                        variant={`${selectedCategory === category ? 'default' : 'outline'}`}
+                        className={cn(
+                            "hover:bg-primary hover:text-primary-foreground hover:scale-[1.06] transition-all ease-in duration-100"
+                        )}
+                        onClick={() => setSelectedCategory(category)}
+                    >
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </Button>
+                ))}
+            </div>
+
+            <div className="grid my-2 md:my-8 gap-4 grid-cols-2 md:grid-cols-3">
+                {filteredSkills.map((skill: Skill, index: number) => (
+                    <SkillCard key={index} skill={skill}/>
+                ))}
+            </div>
+        </div>
+    )
 }
 
 const skills: Skill[] = [
     {
         title: "Next.js",
         category: "web",
-        icon: <SiNextdotjs className="h-8 w-8" />,
+        icon: <SiNextdotjs className="h-8 w-8"/>,
     },
     {
         title: "React.js",
@@ -98,5 +138,3 @@ const skills: Skill[] = [
         icon: <SiBlender className="h-8 w-8" />
     }
 ]
-export {skills};
-export type { Skill, SkillCategory};
