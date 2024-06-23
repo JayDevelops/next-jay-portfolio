@@ -6,7 +6,7 @@ export function WorkExperience() {
     return (
         <section className="work-experience-section my-2">
             <article>
-                <HeadingTwo>
+                <HeadingTwo color="primary">
                     Experience
                 </HeadingTwo>
                 <Text>
