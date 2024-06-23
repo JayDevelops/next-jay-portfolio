@@ -1,5 +1,5 @@
 import {Skill} from "@/app/about/SkillGrid";
-import {HeadingFour} from "@/components/ui/Typography/Headers";
+import {HeadingThree} from "@/components/ui/Typography/Headers";
 
 export default function SkillCard({skill}: {skill: Skill}) {
     return (
@@ -11,9 +11,9 @@ export default function SkillCard({skill}: {skill: Skill}) {
                 {skill.icon}
             </div>
 
-            <HeadingFour className="text-secondary-foreground">
+            <HeadingThree className="text-secondary-foreground">
                 {skill.title}
-            </HeadingFour>
+            </HeadingThree>
         </div>
     )
 }
