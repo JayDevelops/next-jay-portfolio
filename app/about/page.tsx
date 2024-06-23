@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import {AboutMeHeader} from "@/app/about/AboutMeHeader"
 import {WorkExperience} from "@/app/about/WorkExperience";
+import SkillsSection from "@/app/about/SkillsSection";
 
 export const metadata: Metadata = {
     title: "Work",
@@ -13,6 +14,8 @@ export default function AboutPage() {
             <AboutMeHeader/>
             <hr className="my-6 border-primary/30 dark:border-primary/30"/>
             <WorkExperience/>
+            <hr className="my-6 border-primary/30 dark:border-primary/30"/>
+            <SkillsSection />
         </div>
     )
 }
