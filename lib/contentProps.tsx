@@ -9,7 +9,7 @@ import {Post} from "content-collections";
 import {Project} from "content-collections";
 
 export type PostProps = {
-    post: Post
+    post: Post | null,
 }
 
 export type ProjectProps = {

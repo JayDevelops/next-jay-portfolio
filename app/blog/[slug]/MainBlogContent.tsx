@@ -1,10 +1,13 @@
 import {HeadingOne} from "@/components/ui/Typography/Headers"
-import {PostProps} from "@/lib/contentProps"
+import { Post } from "content-collections";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import Markdown from "react-markdown";
+import Markdown from "@/components/Markdown";
 import {cn} from "@/lib/utils";
 import {Card} from "@/components/ui/card";
 
+type PostProps = {
+    post: Post
+}
 export default function MainBlogContent({ post }: PostProps) {
     return (
         <article className={cn(
@@ -20,7 +23,7 @@ export default function MainBlogContent({ post }: PostProps) {
 
             <div className="space-y-6">
                 <p className="text-sm md:text-base text-secondary-foreground/70">Summary: {' '}{post.summary}</p>
-                <Markdown>{post.content}</Markdown>
+                <Markdown code={post.content.mdx} />
             </div>
         </article>
     )

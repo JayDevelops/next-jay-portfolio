@@ -4,7 +4,8 @@ import "./globals.css";
 import React from "react";
 import {ThemeProvider} from "@/components/theme-provider";
 import Navigation from "@/components/Navigation/Navigation";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
+import "@code-hike/mdx/dist/index.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
