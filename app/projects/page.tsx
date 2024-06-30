@@ -6,7 +6,7 @@ import {allProjects, Project} from "content-collections";
 
 export default function ProjectsPage() {
     return (
-        <div className="space-y-2 px-2">
+        <div className="space-y-2 mx-6 md:m-0">
             <HeadingOne color="primary" className="text-left">
                 FullStack Projects
             </HeadingOne>
