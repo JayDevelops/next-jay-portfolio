@@ -17,10 +17,10 @@ export default function MainBlogContent({ post }: PostProps) {
 
             <div>
                 <div className="my-2 flex justify-between text-xs text-muted-foreground">
-                    <Text>place holder</Text>
+                    <Text>{post.readingTime}</Text>
                     <DateTime value={post.date} title="Posted at"/>
                 </div>
-                <Text className="text-xs md:text-base text-secondary-foreground/70">Summary: {' '}{post.summary}</Text>
+                <Text className="text-xs md:text-base text-secondary-foreground/70">TLDR: {' '}{post.summary}</Text>
             </div>
 
             <Markdown code={post.content.mdx}/>

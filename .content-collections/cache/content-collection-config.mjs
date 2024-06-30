@@ -5,6 +5,11 @@ import { compileMDX } from "@content-collections/mdx";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import path from "node:path";
+import readingTime from "reading-time";
+function calculateReadingTime(content) {
+  const contentWithoutImages = content.replace(/<svg+.+?(?=<\/svg>)<\/svg>/gs, "");
+  return readingTime(contentWithoutImages).text;
+}
 var posts = defineCollection({
   name: "posts",
   directory: "/posts",
@@ -38,6 +43,7 @@ var posts = defineCollection({
         mdx,
         raw: post.content
       },
+      readingTime: calculateReadingTime(post.content),
       url: `/posts/${post._meta.path}`
     };
   }

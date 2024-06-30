@@ -19,6 +19,7 @@
       "extension": "mdx",
       "path": "hello-world"
     },
+    "readingTime": "2 min read",
     "url": "/posts/hello-world"
   },
   {
@@ -40,6 +41,7 @@
       "extension": "mdx",
       "path": "sample"
     },
+    "readingTime": "1 min read",
     "url": "/posts/sample"
   }
 ]
