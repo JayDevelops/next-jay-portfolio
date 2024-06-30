@@ -7,8 +7,8 @@ import {InstagramLogoIcon} from "@radix-ui/react-icons";
 
 export default function Contact() {
     return (
-        <div>
-            <div className="my-4 space-y-4">
+        <div className="mx-8">
+            <div className="space-y-4">
                 <HeadingOne>
                     Open to <span className="text-primary">Build and Ship</span>
                 </HeadingOne>
