@@ -38,7 +38,7 @@ export function MobileNavigation({ closeMenu, isMobile }: MobileNavigationProps)
                         >
                             <div className="flex flex-col gap-8 items-center justify-center h-full ">
                                 {menuLinks.map((link, index) => (
-                                    <Link href={link.path} key={index}>
+                                    <Link href={link.path} key={index} onClick={closeMenu}>
                                         <motion.span
                                             className="text-white font-light text-2xl cursor-pointer"
                                             variants={linkItemVariants}
