@@ -6,6 +6,7 @@ import {ThemeProvider} from "@/components/theme-provider";
 import Navigation from "@/components/Navigation/Navigation";
 import { Toaster } from "@/components/ui/toaster";
 import "@code-hike/mdx/dist/index.css";
+import {cn} from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -63,7 +64,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-pt-16 overscroll-none">
-      <body className={inter.className} suppressHydrationWarning>
+      <body className={cn(
+          "antialiased max-w-6xl mb-40 flex flex-col md:flex-row md:mt-2 lg:mx-auto",
+          inter.className
+      )} suppressHydrationWarning>
         <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -72,7 +76,7 @@ export default function RootLayout({
         >
           <div className="flex min-h-screen flex-col bg-background">
             <Navigation />
-            <main className="mx-auto flex h-full min-h-screen max-w-6xl p-5">
+            <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
               {children}
             </main>
             <Toaster />
