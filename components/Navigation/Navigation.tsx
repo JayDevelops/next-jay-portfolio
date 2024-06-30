@@ -35,7 +35,7 @@ export default function Navigation() {
                                 className="menu-toggle text-white cursor-pointer"
                                 aria-label="Toggle to open and close menu"
                         >
-                            <Hamburger toggled={isMobile} toggle={setIsMobile} label="menu-toggle" duration={0.4}/>
+                            <Hamburger toggled={isMobile} toggle={setIsMobile} label="menu-toggle" duration={0.4} color="hsl(var(--secondary-foreground))"/>
                         </button>
                     </div>
                 </div>

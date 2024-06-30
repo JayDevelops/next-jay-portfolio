@@ -13,8 +13,8 @@ const subTitles: string[] = [
 
 export default function Blog() {
     return (
-        <div className="container-lg space-y-3 md:mx-6">
-            <div className="flex justify-center">
+        <div className="container space-y-3">
+            <div className="flex justify-center mx-2 ">
                 <HeroSection mainTitle="Welcome to my Blog!" startSubtitle="I write about" subTitles={subTitles}/>
             </div>
 
