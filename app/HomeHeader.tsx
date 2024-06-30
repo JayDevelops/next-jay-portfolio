@@ -6,7 +6,7 @@ import {BackpackIcon, EnvelopeOpenIcon} from "@radix-ui/react-icons";
 
 export default function HomeHeader() {
     return (
-        <div className="-mt-56 md:m-0">
+        <div className="-mt-36 md:m-0">
             <HeadingOne className="text-left" color="primary">Jesus Perez</HeadingOne>
             <HeadingTwo className="text-xl">FullStack Developer</HeadingTwo>
 
