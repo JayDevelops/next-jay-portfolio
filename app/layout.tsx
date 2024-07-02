@@ -63,9 +63,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="overflow-auto scroll-smooth">
+    <html lang="en" className="scroll-smooth">
       <body className={cn(
-          "antialiased max-w-6xl mb-40 flex flex-col md:flex-row md:mt-2 lg:mx-auto min-h-screen",
+          " flex flex-col md:flex-row md:mt-2 lg:mx-auto min-h-screen",
           inter.className
       )} suppressHydrationWarning>
         <ThemeProvider
@@ -74,7 +74,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
         >
-          <div className="flex flex-col bg-background">
+          <div className="flex flex-col bg-background max-w-6xl mx-auto">
             <Navigation />
             <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
               {children}

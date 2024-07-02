@@ -5,6 +5,7 @@ import {DesktopLinks} from "@/components/Navigation/DesktopLinks";
 import {useState} from "react";
 import {MobileNavigation} from "@/components/Navigation/MobileNavigation";
 import { Twirl as Hamburger } from 'hamburger-react'
+import SearchModal from "@/components/SearchModal";
 
 export default function Navigation() {
     const [isMobile, setIsMobile] = useState<boolean>(false)
@@ -25,7 +26,9 @@ export default function Navigation() {
 
                 {/* Right Side of the Navigation Menu */}
                 <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-                    <div className="w-full flex-1 md:w-auto md:flex-none"/>
+                    <div className="w-full flex-1 md:w-auto md:flex-none">
+                        <SearchModal/>
+                    </div>
 
                     <ModeToggle/>
 
@@ -35,7 +38,8 @@ export default function Navigation() {
                                 className="menu-toggle text-white cursor-pointer"
                                 aria-label="Toggle to open and close menu"
                         >
-                            <Hamburger toggled={isMobile} toggle={setIsMobile} label="menu-toggle" duration={0.4} color="hsl(var(--secondary-foreground))"/>
+                            <Hamburger toggled={isMobile} toggle={setIsMobile} label="menu-toggle" duration={0.4}
+                                       color="hsl(var(--secondary-foreground))"/>
                         </button>
                     </div>
                 </div>
