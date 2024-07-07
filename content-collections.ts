@@ -44,7 +44,7 @@ const posts = defineCollection({
                 raw: post.content,
             },
             readingTime: calculateReadingTime(post.content),
-            url: `/posts/${post._meta.path}`,
+            url: `/blog/${post._meta.path}`,
         }
     },
 });
