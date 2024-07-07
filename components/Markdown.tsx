@@ -1,8 +1,8 @@
 "use client"
 
-import {MDXContent} from "@content-collections/mdx/react";
-import {Hash} from "lucide-react";
-import {ReactNode} from "react";
+import { MDXContent } from "@content-collections/mdx/react";
+import { Hash } from "lucide-react";
+import { ReactNode } from "react";
 import ContentSection from "./ContentSection";
 
 type MarkdownProps = {

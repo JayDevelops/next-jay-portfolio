@@ -5,26 +5,30 @@ import {CalendarDaysIcon} from "lucide-react";
 import {PostProps} from "@/lib/contentProps";
 import {PostTags} from "@/components/PostTags";
 
+
+
 export default function PostCard({ post }: PostProps) {
-    const postRoute: string = `/blog/${post._meta.path}`
+    if (!post) {
+        return null
+    }
 
     return (
-        <Link href={postRoute} className="group relative transition-transform duration-300 ease-in-out hover:scale-[1.02]">
+        <Link href={post!.url} className="group relative transition-transform duration-300 ease-in-out hover:scale-[1.02]">
             <article className="p-4">
                 <Card className="shadow-secondary group-hover:shadow-md group-hover:shadow-primary py-2 hover:border-primary">
                     <CardHeader>
                         <CardTitle className="group-hover:text-primary group/link">
-                            {post.title}
+                            {post!.title}
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <Text variant="small">{post.summary}</Text>
+                        <Text variant="small">{post!.summary}</Text>
                     </CardContent>
                     <CardFooter className="flex items-center gap-2">
-                        <CalendarDaysIcon className="w-4 h-4"/>{post.date}
+                        <CalendarDaysIcon className="w-4 h-4"/>{post!.date}
                     </CardFooter>
                     <div className="px-4 pb-2">
-                        <PostTags tags={post.tags} />
+                        <PostTags tags={post!.tags} />
                     </div>
                 </Card>
             </article>

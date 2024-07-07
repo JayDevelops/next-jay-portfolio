@@ -1,7 +1,6 @@
 import {allPosts} from "content-collections";
-import BlogArticleNotFound from "@/app/blog/[slug]/not-found";
 import MainBlogContent from "@/app/blog/[slug]/MainBlogContent";
-import "@code-hike/mdx/dist/index.css";
+import {notFound} from "next/navigation";
 
 type PostProps = {
     params: {
@@ -9,17 +8,17 @@ type PostProps = {
     }
 }
 
-export default function Post({ params }: { params: { slug: string } }) {
-    const post = allPosts.find((post) => post._meta.path === params.slug)
+export default function BlogPage({ params }: PostProps) {
+    const post = allPosts.find((p) => p._meta.path === params.slug);
 
-    if (!post) {
-        return <BlogArticleNotFound />
+    if (post) {
+        return notFound()
     }
 
     return (
-        <div className="px-8">
-            <MainBlogContent post={post}/>
-        </div>
+        <>
+            <MainBlogContent post={post!} />
+        </>
     )
 }
 
@@ -27,14 +26,14 @@ export default function Post({ params }: { params: { slug: string } }) {
 export async function generateStaticParams() {
     return allPosts.map((post) => ({
         slug: post._meta.path
-    }));
+    }))
 }
 
-export function generateMetadata({ params }: PostProps) {
-    const post = allPosts.find((p) => p._meta.path === params.slug);
+export const generateMetadata = ({ params }: PostProps) => {
+    const post = allPosts.find((p) => p._meta.path === params.slug)
 
     if (!post) {
-        return
+        return null
     }
 
     return {

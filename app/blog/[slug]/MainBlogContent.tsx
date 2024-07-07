@@ -1,18 +1,21 @@
-import {HeadingOne} from "@/components/ui/Typography/Headers"
-import {Text} from "@/components/ui/Typography/Text"
+import { HeadingOne } from "@/components/ui/Typography/Headers"
+import { Text } from "@/components/ui/Typography/Text"
 import { Post } from "content-collections";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import Markdown from "@/components/Markdown";
-import {cn} from "@/lib/utils";
-import {Card} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import DateTime from "@/components/DateTime";
 
 type PostProps = {
     post: Post
 }
 export default function MainBlogContent({ post }: PostProps) {
+    if (!post) {
+        return null
+    }
+
     return (
-        <>
+        <div>
             <HeadingOne>{post.title}</HeadingOne>
 
             <div>
@@ -24,11 +27,11 @@ export default function MainBlogContent({ post }: PostProps) {
             </div>
 
             <Markdown code={post.content.mdx}/>
-        </>
+        </div>
     )
 }
 
-export function AuthorSection({date}: { date: string }) {
+function AuthorSection({date}: { date: string }) {
     return (
         <Card className="flex items-center space-x-4 p-4 border-primary/70">
             <div className="flex items-center space-x-2">

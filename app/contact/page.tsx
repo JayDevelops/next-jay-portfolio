@@ -29,7 +29,7 @@ export default function Contact() {
     )
 }
 
-export function SocialLinks() {
+function SocialLinks() {
     return (
         <div className="flex justify-center gap-4 p-4 md:mx-64 bg-secondary/20 rounded-full shadow-lg shadow-secondary backdrop-blur-lg bg-opacity-50">
             <Link
