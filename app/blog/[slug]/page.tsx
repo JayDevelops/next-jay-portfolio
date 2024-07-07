@@ -11,7 +11,7 @@ type PostProps = {
 export default function BlogPage({ params }: PostProps) {
     const post = allPosts.find((p) => p._meta.path === params.slug);
 
-    if (post) {
+    if (!post) {
         return notFound()
     }
 
