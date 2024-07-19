@@ -1,8 +1,7 @@
 import {HeadingOne} from "@/components/ui/Typography/Headers";
 import {Text} from "@/components/ui/Typography/Text";
 import Link from "next/link";
-import ProjectCard from "@/app/projects/ProjectCard";
-import {allProjects, Project} from "content-collections";
+// import ProjectCard from "@/app/projects/ProjectCard";
 
 export default function ProjectsPage() {
     return (
@@ -18,11 +17,11 @@ export default function ProjectsPage() {
                 <Link href="/contact" className="underline text-primary hover:outline-primary">contact me</Link> for your next project.
             </Text>
 
-            <div className="py-6 grid md:grid-cols-3">
-                {allProjects.map((project: Project, index: number) => (
-                    <ProjectCard key={`project-${index}`} project={project} />
-                ))}
-            </div>
+            {/*<div className="py-6 grid md:grid-cols-3">*/}
+            {/*    {allProjects.map((project: Project, index: number) => (*/}
+            {/*        <ProjectCard key={`project-${index}`} project={project} />*/}
+            {/*    ))}*/}
+            {/*</div>*/}
         </div>
     )
 }
