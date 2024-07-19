@@ -45,7 +45,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
 // Inspired by leerob.io
 interface CodeProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     [key: string]: any;
 }
 
