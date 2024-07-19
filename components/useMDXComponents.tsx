@@ -39,7 +39,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         Button: ({ ...props }) => (
             <Button {...props} />
         ),
-        code: Code,
+        code: (props) => <Code {...props} />,
     };
 }
 
