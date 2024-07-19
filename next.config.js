@@ -1,6 +1,6 @@
-const { withContentCollections } = require("@content-collections/next");
-
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+    // your next.js config
+};
 
-module.exports = withContentCollections(nextConfig);
+module.exports = nextConfig;

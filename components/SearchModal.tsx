@@ -8,10 +8,9 @@ import {
     CommandList,
     CommandSeparator,
 } from "@/components/ui/command";
-import {File, NewspaperIcon} from "lucide-react";
+import {File} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { allPosts } from "content-collections";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { menuLinks } from "@/components/Navigation/MenuLinks";
@@ -67,22 +66,22 @@ export default function SearchModal() {
                 />
                 <CommandList>
                     <CommandEmpty>No results found.</CommandEmpty>
-                    <CommandGroup heading="Blog Posts">
-                        {allPosts.filter(post => `${post.url}` !== pathName).map((post) => (
-                            <CommandItem
-                                asChild
-                                key={post.url}
-                                value={post.title}
-                                onSelect={() => handleSelect(`${post.url}`)}
-                                className="hover:cursor-pointer"
-                            >
-                                <Link href={`${post.url}`}>
-                                    <NewspaperIcon className="mr-2 h-4 w-4" />
-                                    {post.title}
-                                </Link>
-                            </CommandItem>
-                        ))}
-                    </CommandGroup>
+                    {/*<CommandGroup heading="Blog Posts">*/}
+                    {/*    {allPosts.filter(post => `${post.url}` !== pathName).map((post) => (*/}
+                    {/*        <CommandItem*/}
+                    {/*            asChild*/}
+                    {/*            key={post.url}*/}
+                    {/*            value={post.title}*/}
+                    {/*            onSelect={() => handleSelect(`${post.url}`)}*/}
+                    {/*            className="hover:cursor-pointer"*/}
+                    {/*        >*/}
+                    {/*            <Link href={`${post.url}`}>*/}
+                    {/*                <NewspaperIcon className="mr-2 h-4 w-4" />*/}
+                    {/*                {post.title}*/}
+                    {/*            </Link>*/}
+                    {/*        </CommandItem>*/}
+                    {/*    ))}*/}
+                    {/*</CommandGroup>*/}
                     <CommandSeparator />
                     <CommandGroup heading="Main Pages">
                             {menuLinks.filter((link) => link.path !== pathName).map((link) => (
