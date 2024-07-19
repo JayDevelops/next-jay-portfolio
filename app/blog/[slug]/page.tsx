@@ -81,7 +81,7 @@ export const generateStaticParams = async () => {
     }));
 };
 
-export async function getBlogPostFilePaths() {
+async function getBlogPostFilePaths() {
     const dirFiles = fs.readdirSync(path.join(process.cwd(), postsSource));
 
     //  Only include files with the mdx extension
