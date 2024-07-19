@@ -44,10 +44,16 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 }
 
 // Inspired by leerob.io
-function Code({ children, ...props }) {
-    let codeHTML = highlight(children);
-    return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
+interface CodeProps {
+    children: React.ReactNode;
+    [key: string]: any;
 }
+
+const Code: React.FC<CodeProps> = ({ children, ...props }) => {
+    const codeString = React.Children.toArray(children).join("").toString();
+    const codeHTML = highlight(codeString);
+    return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
+};
 
 //  Inspired by leerob.io blog refresh where he slugged headings with the link attached
 const Heading = ({ level, children, ...props }: { level: number } & React.HTMLAttributes<HTMLHeadingElement>) => {
