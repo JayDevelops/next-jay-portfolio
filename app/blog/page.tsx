@@ -4,7 +4,7 @@ import {BlogPost} from "@/utils/blogMdxUtils";
 
 
 export default async function Blog() {
-    let allBlogs: BlogPost[] = await getAllBlogPosts<BlogPost>();
+    let allBlogs: BlogPost[] = await getAllBlogPosts();
 
     if (!allBlogs) {
         return (
