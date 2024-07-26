@@ -1,10 +1,21 @@
-import fs from 'node:fs';
+import fs, {promises as fsPromises} from 'node:fs';
 import path from 'node:path';
-import { compileMDX } from 'next-mdx-remote/rsc';
-import { MDXComponents } from "@/components/MDXComponents";
+import {compileMDX} from 'next-mdx-remote/rsc';
+import {MDXComponents} from "@/components/MDXComponents";
+import {JSXElementConstructor, ReactElement} from "react";
+export interface BlogPost {
+    metadata: {
+        date: string;
+        description: string;
+        index: number;
+        title: string;
+        content: ReactElement<any, string | JSXElementConstructor<any>>;
+    };
+    slug: string;
+    content: ReactElement<any, string | JSXElementConstructor<any>>;
+}
 
 const postsSource = "/posts";
-
 /**
  * Get the paths of all blog posts in the "posts" directory
  */
@@ -39,4 +50,25 @@ export async function getMDXContentAndFrontMatter(source: Buffer) {
     const index = frontmatter.index as number;
 
     return { title, description, date, index, content };
+}
+
+/**
+ * Get an array of all blog posts with content and metadata
+ */
+export async function getAllBlogPosts(): Promise<BlogPost[] | any[]> {
+    const postPaths = await getBlogPostFilePaths();
+
+    const blogPostsPromises = postPaths.map(async (postPath) => {
+        const filePath = path.join(process.cwd(), postsSource, postPath);
+        const source = await fsPromises.readFile(filePath);
+        const postContentAndMetadata = await getMDXContentAndFrontMatter(source);
+
+        return {
+            slug: postPath.replace(/\.mdx?$/, ""),
+            metadata: postContentAndMetadata,
+            content: postContentAndMetadata.content,
+        };
+    });
+
+    return await Promise.all(blogPostsPromises).catch(() => []);
 }
