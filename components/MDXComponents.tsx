@@ -6,7 +6,7 @@ import type { MDXComponents } from "mdx/types";
 import {Button} from "@/components/ui/button";
 import { highlight } from 'sugar-high';
 
-export function useMDXComponents(components: MDXComponents): MDXComponents {
+export function MDXComponents(components: MDXComponents): MDXComponents {
     return {
         h1: ({ ...props }) => (
             <Heading level={1} {...props} />

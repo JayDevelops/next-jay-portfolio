@@ -1,12 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
+import { getBlogPostFilePaths, getMDXContentAndFrontMatter } from "@/utils/blogMdxUtils";
 import { notFound } from "next/navigation";
-import { useMDXComponents } from "@/components/useMDXComponents";
-import { compileMDX } from "next-mdx-remote/rsc";
 import RenderMDXContent from "@/app/blog/[slug]/RenderMDXContent";
 import {extractHeadings} from "@/utils/mdxUtils";
 import TableOfContents from "@/app/blog/[slug]/TableOfContents";
-// import { extractHeadings } from "@/utils/mdxUtils"
 
 //  postSource is our parent folder where all our .mdx content is living in
 const postsSource = "/posts";
@@ -18,6 +16,7 @@ type BlogPagePostProps = {
 };
 
 export default async function BlogPagePost({ params }: BlogPagePostProps) {
+    //  get the source if it exists, otherwise throw a notfound error
     let source;
     try {
         source = fs.readFileSync(
@@ -29,29 +28,18 @@ export default async function BlogPagePost({ params }: BlogPagePostProps) {
         notFound();
     }
 
-    //  Parse the components local to our this page, otherwise won't render the components
-    const components = useMDXComponents({});
-
-    //  Grab the content and front matter, passing components to render appropriately on the page
-    const { content, frontmatter } = await compileMDX({
-        source,
-        options: {
-            mdxOptions: {
-                rehypePlugins: [],
-            },
-            parseFrontmatter: true,
-        },
-        components: components,
-    });
+    //  get our attributes from our helper blogMdxUtils utils function
+    const {
+        title,
+        description,
+        date,
+        index,
+        content
+    } = await getMDXContentAndFrontMatter(source);
 
     //  Get the headings from our mdx content to pass to our TableOfContents component
     const getHeadings = await extractHeadings(source.toString())
 
-    //  Parse the front matter from our mdx files to their appropriate types
-    const title = frontmatter.title as string;
-    const description = frontmatter.description as string;
-    const date = frontmatter.date as string;
-    const index = frontmatter.index as number;
 
     return (
         <div className="flex w-full flex-col">
@@ -80,12 +68,5 @@ export const generateStaticParams = async () => {
         slug: path.replace(/.mdx?$/, ""),
     }));
 };
-
-async function getBlogPostFilePaths() {
-    const dirFiles = fs.readdirSync(path.join(process.cwd(), postsSource));
-
-    //  Only include files with the mdx extension
-    return dirFiles.filter((filepath) => /.mdx?$/.test(filepath));
-}
 
 export const dynamic = "force-static";
