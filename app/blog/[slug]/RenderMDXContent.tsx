@@ -13,15 +13,15 @@ type RenderMDXContentProps = {
 
 export default function RenderMDXContent({ title, description, date, index, content } : RenderMDXContentProps)  {
     return (
-        <div className="mx-8 md:mx-auto">
-            <div className="space-y-4">
+        <div className="px-4 md:px-auto">
+            <div className="space-y-4 mb-4 md:mb-8">
                 <p className="leading-7 [&:not(:first-child)]:mt-6 text-muted-foreground text-sm">
                     {new Date(date).toDateString()}
                 </p>
-                <h1 className="scroll-m-20 text-xl font-extrabold tracking-tight lg:text-5xl">
+                <h1 className="scroll-m-20 text-2xl md:text-xl font-extrabold tracking-tight lg:text-5xl">
                     {title}
                 </h1>
-                <p className="leading-7 [&:not(:first-child)]:mt-6 text-muted-foreground text-base">
+                <p className="leading-7 [&:not(:first-child)]:mt-6 text-muted-foreground text-sm md:text-base">
                     TLDR:{' '}{description}
                 </p>
             </div>
