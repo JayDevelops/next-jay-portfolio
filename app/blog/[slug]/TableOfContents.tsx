@@ -42,6 +42,28 @@ export default function TableOfContents({ headings }: {headings: Heading[]}) {
         }
     }, [headings, handleObserver]);
 
+    //  custom scroll to the target link with some offset from our sticky navigation bar
+    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, slug: string) => {
+        e.preventDefault()
+
+        const element = document.getElementById(slug);
+
+        if (element) {
+            const yOffset = -80;
+            //  get the y viewport y-axis to scroll to that section
+            const y =
+                element.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) + yOffset;
+
+            window.scrollTo({
+                top: y,
+                behavior: "smooth",
+            });
+
+            // Update active ID
+            setActiveId(slug);
+        }
+    }
+
     if(!headings) {
         return (
             <p>
@@ -56,6 +78,7 @@ export default function TableOfContents({ headings }: {headings: Heading[]}) {
                 <li key={`${heading.depth}-${heading.slug}`}>
                     <Link
                         href={`#${heading.slug}`}
+                        onClick={(e) => handleLinkClick(e, heading.slug)}
                         className={heading.slug === activeId ? "text-primary" : "text-secondary-foreground/70"}
                     >
                         {heading.text}
