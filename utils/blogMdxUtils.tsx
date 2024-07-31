@@ -5,14 +5,15 @@ import {MDXComponents} from "@/components/MDXComponents";
 import {JSXElementConstructor, ReactElement} from "react";
 export interface BlogPost {
     metadata: {
-        date: string;
-        description: string;
-        index: number;
-        title: string;
-        content: ReactElement<any, string | JSXElementConstructor<any>>;
+        date: string,
+        description: string,
+        index: number,
+        title: string,
+        tags: string[],
+        content: ReactElement<any, string | JSXElementConstructor<any>>,
     };
-    slug: string;
-    content: ReactElement<any, string | JSXElementConstructor<any>>;
+    slug: string,
+    content: ReactElement<any, string | JSXElementConstructor<any>>,
 }
 
 const postsSource = "/posts";
@@ -48,8 +49,9 @@ export async function getMDXContentAndFrontMatter(source: Buffer) {
     const description = frontmatter.description as string;
     const date = frontmatter.date as string;
     const index = frontmatter.index as number;
+    const tags = frontmatter.tags as string[];
 
-    return { title, description, date, index, content };
+    return { title, description, date, index, tags, content };
 }
 
 /**
@@ -67,6 +69,10 @@ export async function getAllBlogPosts(): Promise<BlogPost[] | any[]> {
             slug: postPath.replace(/\.mdx?$/, ""),
             metadata: postContentAndMetadata,
             content: postContentAndMetadata.content,
+            title: postContentAndMetadata.title,
+            date: postContentAndMetadata.date,
+            description: postContentAndMetadata.description,
+            tags: postContentAndMetadata.tags,
         };
     });
 
