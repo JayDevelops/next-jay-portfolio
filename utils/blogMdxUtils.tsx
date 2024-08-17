@@ -3,7 +3,7 @@ import path from 'node:path';
 import {compileMDX} from 'next-mdx-remote/rsc';
 import {MDXComponents} from "@/components/MDXComponents";
 import {JSXElementConstructor, ReactElement} from "react";
-export interface BlogPost {
+export interface Post {
     metadata: {
         date: string,
         description: string,
@@ -12,7 +12,7 @@ export interface BlogPost {
         tags: string[],
         content: ReactElement<any, string | JSXElementConstructor<any>>,
     };
-    slug: string,
+    slug?: string,
     content: ReactElement<any, string | JSXElementConstructor<any>>,
 }
 
@@ -20,8 +20,8 @@ const postsSource = "/posts";
 /**
  * Get the paths of all blog posts in the "posts" directory
  */
-export async function getBlogPostFilePaths() {
-    const dirFiles = fs.readdirSync(path.join(process.cwd(), postsSource));
+export async function getPostFilePaths(contentSource: string) {
+    const dirFiles = fs.readdirSync(path.join(process.cwd(), contentSource));
 
     //  Only include files with the mdx extension
     return dirFiles.filter((filepath) => /.mdx?$/.test(filepath));
@@ -57,8 +57,8 @@ export async function getMDXContentAndFrontMatter(source: Buffer) {
 /**
  * Get an array of all blog posts with content and metadata
  */
-export async function getAllBlogPosts(): Promise<BlogPost[] | any[]> {
-    const postPaths = await getBlogPostFilePaths();
+export async function getAllContent(contentSource: string): Promise<Post[] | any[]> {
+    const postPaths = await getPostFilePaths(contentSource);
 
     const blogPostsPromises = postPaths.map(async (postPath) => {
         const filePath = path.join(process.cwd(), postsSource, postPath);

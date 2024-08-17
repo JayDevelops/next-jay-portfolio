@@ -4,10 +4,15 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Text } from "@/components/ui/Typography/Text";
 import { CalendarDaysIcon } from "lucide-react";
 import { PostTags } from "@/components/PostTags";
-import { BlogPost } from "@/utils/blogMdxUtils";
+import { Post } from "@/utils/blogMdxUtils";
 import { motion } from "framer-motion";
 
-export default function PostCard({sortedBlogs} : {sortedBlogs: BlogPost[]}) {
+interface ContentCardProps {
+    contentItems: Post[];
+    slugUrlPrefix?: string;  // Optional URL prefix for the slug
+}
+
+export default function ContentCard({ contentItems, slugUrlPrefix = "" }: ContentCardProps) {
     return (
         <motion.div
             className="grid grid-cols-3"
@@ -24,8 +29,12 @@ export default function PostCard({sortedBlogs} : {sortedBlogs: BlogPost[]}) {
                 y: -5
             }}
         >
-            {sortedBlogs.map((post: BlogPost) => (
-                <Link key={post.slug} href={`/blog/${post.slug}`} className="group relative transition-transform duration-300 ease-in-out hover:scale-[1.02]">
+            {contentItems.map((post: Post) => (
+                <Link
+                    key={post.slug}
+                    href={`${slugUrlPrefix}/${post.slug}`}
+                    className="group relative transition-transform duration-300 ease-in-out hover:scale-[1.02]"
+                >
                     <article className="p-4">
                         <Card className="shadow-secondary group-hover:shadow-md group-hover:shadow-primary py-2 hover:border-primary border-opacity-30">
                             <CardHeader>

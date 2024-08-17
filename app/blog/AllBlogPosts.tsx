@@ -1,12 +1,12 @@
 "use client"
 import ToggleListCardViewButtons from "@/app/blog/ToggleListCardViewButtons";
-import {BlogPost} from "@/utils/blogMdxUtils";
+import { Post } from "@/utils/blogMdxUtils";
 import Link from "next/link";
 import {useState} from "react";
-import PostCard from "@/app/blog/PostCard";
+import ContentCard from "@/components/ContentCard";
 import {AnimatePresence, motion} from "framer-motion";
 
-export default function AllBlogPosts({sortedBlogs} : {sortedBlogs: BlogPost[]}) {
+export default function AllBlogPosts({sortedBlogs} : {sortedBlogs: Post[]}) {
     //  by default, we will be showing the list view, otherwise we will show the card view
     const [toggleCard, setToggleCard] = useState<boolean>(false)
 
@@ -22,7 +22,7 @@ export default function AllBlogPosts({sortedBlogs} : {sortedBlogs: BlogPost[]}) 
             </div>
             <AnimatePresence>
                 {toggleCard ? (
-                    <PostCard sortedBlogs={sortedBlogs} />
+                    <ContentCard contentItems={sortedBlogs} slugUrlPrefix={"/blog"}/>
                 ): (
                     <ListView sortedBlogs={sortedBlogs} />
                 )}
@@ -30,7 +30,7 @@ export default function AllBlogPosts({sortedBlogs} : {sortedBlogs: BlogPost[]}) 
         </section>
     );
 }
-export function ListView({sortedBlogs} : {sortedBlogs: BlogPost[]}) {
+export function ListView({sortedBlogs} : {sortedBlogs: Post[]}) {
     return (
         <motion.div
             initial={{

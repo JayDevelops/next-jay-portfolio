@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { getBlogPostFilePaths, getMDXContentAndFrontMatter } from "@/utils/blogMdxUtils";
+import { getPostFilePaths, getMDXContentAndFrontMatter } from "@/utils/blogMdxUtils";
 import { notFound } from "next/navigation";
 import RenderMDXContent from "@/app/blog/[slug]/RenderMDXContent";
 import {extractHeadings} from "@/utils/mdxUtils";
@@ -62,7 +62,7 @@ export default async function BlogPagePost({ params }: BlogPagePostProps) {
 
 // generateStaticParams will build each blog slug route as a static page on build time, rather than on run time
 export const generateStaticParams = async () => {
-    const blogPostFilePaths = await getBlogPostFilePaths();
+    const blogPostFilePaths = await getPostFilePaths("/posts");
 
     return blogPostFilePaths.map((path) => ({
         slug: path.replace(/.mdx?$/, ""),
