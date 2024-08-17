@@ -1,10 +1,10 @@
 "use client"
 import Link from "next/link";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Text} from "@/components/ui/Typography/Text";
-import {CalendarDaysIcon} from "lucide-react";
-import {PostTags} from "@/components/PostTags";
-import {BlogPost} from "@/utils/blogMdxUtils";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Text } from "@/components/ui/Typography/Text";
+import { CalendarDaysIcon } from "lucide-react";
+import { PostTags } from "@/components/PostTags";
+import { BlogPost } from "@/utils/blogMdxUtils";
 import { motion } from "framer-motion";
 
 export default function PostCard({sortedBlogs} : {sortedBlogs: BlogPost[]}) {
@@ -30,17 +30,17 @@ export default function PostCard({sortedBlogs} : {sortedBlogs: BlogPost[]}) {
                         <Card className="shadow-secondary group-hover:shadow-md group-hover:shadow-primary py-2 hover:border-primary border-opacity-30">
                             <CardHeader>
                                 <CardTitle className="group-hover:text-primary group/link">
-                                    {post.title}
+                                    {post.metadata.title}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <Text variant="small">{post.description}</Text>
+                                <Text variant="small">{post.metadata.description}</Text>
                             </CardContent>
                             <CardFooter className="flex items-center gap-2 text-muted-foreground font-light text-xs">
-                                <CalendarDaysIcon className="w-4 h-4"/>{' '}{post.date}
+                                <CalendarDaysIcon className="w-4 h-4"/>{' '}{post.metadata.date}
                             </CardFooter>
                             <div className="px-4 pb-2">
-                                <PostTags tags={post.tags} />
+                                <PostTags tags={post.metadata.tags} />
                             </div>
                         </Card>
                     </article>
