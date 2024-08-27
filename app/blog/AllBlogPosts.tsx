@@ -1,10 +1,10 @@
 "use client"
 import ToggleListCardViewButtons from "@/app/blog/ToggleListCardViewButtons";
-import { Post } from "@/utils/blogMdxUtils";
+import { Post } from "@/utils/renderMdxUtils";
 import Link from "next/link";
 import {useState} from "react";
 import ContentCard from "@/components/ContentCard";
-import {AnimatePresence, motion} from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function AllBlogPosts({sortedBlogs} : {sortedBlogs: Post[]}) {
     //  by default, we will be showing the list view, otherwise we will show the card view
@@ -22,8 +22,13 @@ export default function AllBlogPosts({sortedBlogs} : {sortedBlogs: Post[]}) {
             </div>
             <AnimatePresence>
                 {toggleCard ? (
-                    <ContentCard contentItems={sortedBlogs} slugUrlPrefix={"/blog"}/>
-                ): (
+                    <ContentCard
+                        className="grid grid-cols-3"
+                        contentItems={sortedBlogs}
+                        slugUrlPrefix={"/blog"}
+                        cardType="blog"
+                    />
+                ) : (
                     <ListView sortedBlogs={sortedBlogs} />
                 )}
             </AnimatePresence>

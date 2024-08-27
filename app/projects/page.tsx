@@ -1,11 +1,12 @@
 import {HeadingOne} from "@/components/ui/Typography/Headers";
 import {Text} from "@/components/ui/Typography/Text";
 import Link from "next/link";
-// import ProjectCard from "@/app/projects/ProjectCard";
+import AllProjectPosts from "@/app/projects/AllProjectPosts";
 
 export default function ProjectsPage() {
+
     return (
-        <div className="space-y-2 mx-6">
+        <div className="container min-w-4 mt-3">
             <HeadingOne color="primary" className="text-left">
                 FullStack Projects
             </HeadingOne>
@@ -17,11 +18,7 @@ export default function ProjectsPage() {
                 <Link href="/contact" className="underline text-primary hover:outline-primary">contact me</Link> for your next project.
             </Text>
 
-            {/*<div className="py-6 grid md:grid-cols-3">*/}
-            {/*    {allProjects.map((project: Project, index: number) => (*/}
-            {/*        <ProjectCard key={`project-${index}`} project={project} />*/}
-            {/*    ))}*/}
-            {/*</div>*/}
+            <AllProjectPosts />
         </div>
     )
 }

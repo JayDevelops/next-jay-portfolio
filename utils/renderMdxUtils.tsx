@@ -10,21 +10,25 @@ export interface Post {
         index: number,
         title: string,
         tags: string[],
+        githubLink?: string | undefined,
+        liveLink?: string | undefined,
         content: ReactElement<any, string | JSXElementConstructor<any>>,
     };
     slug?: string,
     content: ReactElement<any, string | JSXElementConstructor<any>>,
 }
 
-const postsSource = "/posts";
 /**
  * Get the paths of all blog posts in the "posts" directory
  */
 export async function getPostFilePaths(contentSource: string) {
-    const dirFiles = fs.readdirSync(path.join(process.cwd(), contentSource));
-
-    //  Only include files with the mdx extension
-    return dirFiles.filter((filepath) => /.mdx?$/.test(filepath));
+    try {
+        const dirFiles = fs.readdirSync(path.join(process.cwd(), contentSource));
+        return dirFiles.filter((filepath) => /.mdx?$/.test(filepath));
+    } catch (error) {
+        console.error(`Error reading directory ${contentSource}:`, error);
+        return [];
+    }
 }
 
 /**
@@ -45,13 +49,18 @@ export async function getMDXContentAndFrontMatter(source: Buffer) {
         components: components,
     });
 
+    //  Default metadata on all mdx files
     const title = frontmatter.title as string;
     const description = frontmatter.description as string;
     const date = frontmatter.date as string;
     const index = frontmatter.index as number;
     const tags = frontmatter.tags as string[];
 
-    return { title, description, date, index, tags, content };
+    //  Optional metadata below, found on mdx project content
+    const githubLink = frontmatter as string | undefined;
+    const liveLink = frontmatter as string | undefined;
+
+    return { title, description, date, index, tags, content, githubLink, liveLink };
 }
 
 /**
@@ -60,8 +69,8 @@ export async function getMDXContentAndFrontMatter(source: Buffer) {
 export async function getAllContent(contentSource: string): Promise<Post[] | any[]> {
     const postPaths = await getPostFilePaths(contentSource);
 
-    const blogPostsPromises = postPaths.map(async (postPath) => {
-        const filePath = path.join(process.cwd(), postsSource, postPath);
+    const contentPostPromises = postPaths.map(async (postPath) => {
+        const filePath = path.join(process.cwd(), contentSource, postPath);
         const source = await fsPromises.readFile(filePath);
         const postContentAndMetadata = await getMDXContentAndFrontMatter(source);
 
@@ -73,8 +82,10 @@ export async function getAllContent(contentSource: string): Promise<Post[] | any
             date: postContentAndMetadata.date,
             description: postContentAndMetadata.description,
             tags: postContentAndMetadata.tags,
+            githubLink: postContentAndMetadata.githubLink,
+            liveLink: postContentAndMetadata.liveLink,
         };
     });
 
-    return await Promise.all(blogPostsPromises).catch(() => []);
+    return await Promise.all(contentPostPromises).catch(() => []);
 }

@@ -1,5 +1,5 @@
-import { getAllContent } from "@/utils/blogMdxUtils";
-import { Post } from "@/utils/blogMdxUtils";
+import { getAllContent } from "@/utils/renderMdxUtils";
+import { Post } from "@/utils/renderMdxUtils";
 import AllBlogPosts from "@/app/blog/AllBlogPosts";
 
 

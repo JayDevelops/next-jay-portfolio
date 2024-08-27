@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { getPostFilePaths, getMDXContentAndFrontMatter } from "@/utils/blogMdxUtils";
+import { getPostFilePaths, getMDXContentAndFrontMatter } from "@/utils/renderMdxUtils";
 import { notFound } from "next/navigation";
 import RenderMDXContent from "@/app/blog/[slug]/RenderMDXContent";
 import {extractHeadings} from "@/utils/mdxUtils";
