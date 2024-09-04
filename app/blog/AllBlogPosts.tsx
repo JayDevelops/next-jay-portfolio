@@ -25,7 +25,6 @@ export default function AllBlogPosts({sortedBlogs} : {sortedBlogs: Post[]}) {
                     <ContentCard
                         className="grid grid-cols-3"
                         contentItems={sortedBlogs}
-                        slugUrlPrefix={"/blog"}
                         cardType="blog"
                     />
                 ) : (
