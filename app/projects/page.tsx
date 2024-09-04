@@ -22,3 +22,4 @@ export default function ProjectsPage() {
         </div>
     )
 }
+export const dynamic = 'force-static'

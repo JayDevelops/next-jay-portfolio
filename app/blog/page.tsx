@@ -22,3 +22,4 @@ export default async function Blog() {
         <AllBlogPosts sortedBlogs={sortedBlogs} />
     )
 }
+export const dynamic = 'force-static'
