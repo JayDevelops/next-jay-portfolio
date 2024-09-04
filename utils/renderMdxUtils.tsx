@@ -10,8 +10,6 @@ export interface Post {
         index: number,
         title: string,
         tags: string[],
-        githubLink?: string | undefined,
-        liveLink?: string | undefined,
         content: ReactElement<any, string | JSXElementConstructor<any>>,
     };
     slug?: string,
@@ -56,11 +54,7 @@ export async function getMDXContentAndFrontMatter(source: Buffer) {
     const index = frontmatter.index as number;
     const tags = frontmatter.tags as string[];
 
-    //  Optional metadata below, found on mdx project content
-    const githubLink = frontmatter as string | undefined;
-    const liveLink = frontmatter as string | undefined;
-
-    return { title, description, date, index, tags, content, githubLink, liveLink };
+    return { title, description, date, index, tags, content };
 }
 
 /**
@@ -82,8 +76,6 @@ export async function getAllContent(contentSource: string): Promise<Post[] | any
             date: postContentAndMetadata.date,
             description: postContentAndMetadata.description,
             tags: postContentAndMetadata.tags,
-            githubLink: postContentAndMetadata.githubLink,
-            liveLink: postContentAndMetadata.liveLink,
         };
     });
 
