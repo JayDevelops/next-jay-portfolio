@@ -1,15 +1,19 @@
 import HomeHeader from "@/app/HomeHeader";
-import Computer from "@/components/Models/Computer/Computer";
+import dynamic from "next/dynamic";
 
 export default function Home() {
-  return (
-      <>
+    const DynamicComputer = dynamic(() => import("@/components/Models/Computer/Computer"), {
+        loading: () => <p>Loading</p>
+    })
+    
+    return (
+        <div>
           <section id="header" className="grid md:grid-cols-2 md:gap-4 mx-4 md:m-auto">
               <div className="h-[400px] md:w-full mx-auto">
-                  <Computer />
+                <DynamicComputer />
               </div>
               <HomeHeader />
           </section>
-      </>
+      </div>
   )
 }

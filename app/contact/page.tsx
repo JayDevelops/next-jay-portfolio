@@ -1,11 +1,15 @@
 import {HeadingOne, HeadingThree} from "@/components/ui/Typography/Headers";
 import {ContactForm} from "@/app/contact/ContactForm";
-import Earth from "@/components/Models/Earth/Earth";
 import Link from "next/link";
 import {LinkedinIcon, XIcon} from "lucide-react";
 import {InstagramLogoIcon} from "@radix-ui/react-icons";
+import dynamic from "next/dynamic";
 
 export default function Contact() {
+    const DynamicEarth = dynamic(() => import("@/components/Models/Earth/Earth"), {
+        loading: () => <p>Loading...</p>
+    })
+
     return (
         <div className="mx-8">
             <div className="space-y-4">
@@ -23,7 +27,7 @@ export default function Contact() {
 
             <div className="grid md:grid-cols-2 space-x-4">
                 <ContactForm />
-                <Earth />
+                <DynamicEarth />
             </div>
         </div>
     )
