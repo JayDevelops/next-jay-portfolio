@@ -11,7 +11,7 @@ export default function AllBlogPosts({sortedBlogs} : {sortedBlogs: Post[]}) {
     const [toggleCard, setToggleCard] = useState<boolean>(false)
 
     return (
-        <section className="w-[450px] lg:w-[1100px] px-8">
+        <section className="w-[450px] lg:w-[1200px] px-8">
             <div className="justify-between flex">
                 <h1 className="font-medium text-2xl mb-8 tracking-tighter">
                     My Thoughts

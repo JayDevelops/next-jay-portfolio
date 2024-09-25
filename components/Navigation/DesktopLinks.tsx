@@ -16,7 +16,7 @@ export function DesktopLinks() {
         <NavigationMenu className="ml-9 flex items-center gap-2 text-sm lg:gap-4 list-none space-x-6">
             <NavigationMenuList className="space-x-10">
                 {menuLinks.map((item, index) => (
-                    <NavigationMenuItem key={`menu-link-${index}`} className="text-secondary-foreground hover:text-secondary-foreground">
+                    <NavigationMenuItem key={`menu-link-${index}`} className="text-secondary-foreground hover:text-secondary-foreground cursor-pointer">
                         <Link href={item.path} legacyBehavior passHref>
                             <NavigationMenuLink
                                 className={cn({

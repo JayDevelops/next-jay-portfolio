@@ -7,7 +7,7 @@ export default function Home() {
     })
     
     return (
-        <div>
+        <div className="md:mt-28">
           <section id="header" className="grid md:grid-cols-2 md:gap-4 mx-4 md:m-auto">
               <div className="h-[400px] md:w-full mx-auto">
                 <DynamicComputer />
