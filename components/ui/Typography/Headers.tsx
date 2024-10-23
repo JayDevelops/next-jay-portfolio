@@ -34,7 +34,7 @@ export function HeadingOne({ children, color = "secondary-foreground", className
 
     return (
         <h1
-            className={`scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl ${colorClassValue} ${className}`}
+            className={`scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-4xl ${colorClassValue} ${className}`}
         >
             {children}
         </h1>
@@ -49,7 +49,7 @@ export function HeadingTwo({ children, color = "secondary-foreground", className
 
     return (
         <h2
-            className={`scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 ${colorClassValue} ${className}`}
+            className={`scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0 ${colorClassValue} ${className}`}
         >
             {children}
         </h2>

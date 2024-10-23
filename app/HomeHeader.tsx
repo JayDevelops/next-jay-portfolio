@@ -8,7 +8,7 @@ export default function HomeHeader() {
     return (
         <div className="-mt-36 md:m-0 px-12 text-muted-foreground">
             <HeadingOne className="text-left" color="primary">Jesus Perez</HeadingOne>
-            <HeadingTwo className="text-xl">FullStack Developer</HeadingTwo>
+            <HeadingTwo className="font-normal">FullStack Developer</HeadingTwo>
 
             <div className="text-container space-y-4">
                 <Text>
