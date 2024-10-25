@@ -1,23 +1,23 @@
-import fs, {promises as fsPromises} from 'node:fs';
+import fs, { promises as fsPromises } from 'node:fs';
 import path from 'node:path';
-import {compileMDX} from 'next-mdx-remote/rsc';
-import {MDXComponents} from "@/components/MDXComponents";
-import {JSXElementConstructor, ReactElement} from "react";
+import { compileMDX } from 'next-mdx-remote/rsc';
+import { MDXComponents } from "@/components/MDXComponents";
+import { JSXElementConstructor, ReactElement } from "react";
+
 export interface Post {
     metadata: {
-        date: string,
-        description: string,
-        index: number,
-        title: string,
-        tags: string[],
-        content: ReactElement<any, string | JSXElementConstructor<any>>,
+        date: string;
+        description: string;
+        index: number;
+        title: string;
+        tags: string[];
     };
-    slug?: string,
-    content: ReactElement<any, string | JSXElementConstructor<any>>,
+    slug: string;
+    content: ReactElement<any, string | JSXElementConstructor<any>>;
 }
 
 /**
- * Get the paths of all blog posts in the "posts" directory
+ * Get the paths of all blog posts in the specified directory
  */
 export async function getPostFilePaths(contentSource: string) {
     try {
@@ -30,12 +30,12 @@ export async function getPostFilePaths(contentSource: string) {
 }
 
 /**
- * Parse the front matter and the content from a given .mdx file
+ * Parse the front matter and content from an .mdx file
  */
 export async function getMDXContentAndFrontMatter(source: Buffer) {
     const components = MDXComponents({});
 
-    //  Grab the content and front matter, passing components to render appropriately on the page
+    // Parse content and frontmatter, with components for custom rendering
     const { content, frontmatter } = await compileMDX({
         source,
         options: {
@@ -47,37 +47,45 @@ export async function getMDXContentAndFrontMatter(source: Buffer) {
         components: components,
     });
 
-    //  Default metadata on all mdx files
-    const title = frontmatter.title as string;
-    const description = frontmatter.description as string;
-    const date = frontmatter.date as string;
-    const index = frontmatter.index as number;
-    const tags = frontmatter.tags as string[];
-
-    return { title, description, date, index, tags, content };
+    return {
+        title: frontmatter.title as string,
+        description: frontmatter.description as string,
+        date: frontmatter.date as string,
+        index: frontmatter.index as number,
+        tags: frontmatter.tags as string[],
+        content,
+    };
 }
 
 /**
- * Get an array of all blog posts with content and metadata
+ * Retrieve all content with metadata from a directory of MDX files
  */
-export async function getAllContent(contentSource: string): Promise<Post[] | any[]> {
+export async function getAllContent(contentSource: string): Promise<Post[]> {
     const postPaths = await getPostFilePaths(contentSource);
 
     const contentPostPromises = postPaths.map(async (postPath) => {
-        const filePath = path.join(process.cwd(), contentSource, postPath);
-        const source = await fsPromises.readFile(filePath);
-        const postContentAndMetadata = await getMDXContentAndFrontMatter(source);
+        try {
+            const filePath = path.join(process.cwd(), contentSource, postPath);
+            const source = await fsPromises.readFile(filePath);
+            const postContentAndMetadata = await getMDXContentAndFrontMatter(source);
 
-        return {
-            slug: postPath.replace(/\.mdx?$/, ""),
-            metadata: postContentAndMetadata,
-            content: postContentAndMetadata.content,
-            title: postContentAndMetadata.title,
-            date: postContentAndMetadata.date,
-            description: postContentAndMetadata.description,
-            tags: postContentAndMetadata.tags,
-        };
+            return {
+                slug: postPath.replace(/\.mdx?$/, ""),
+                metadata: {
+                    title: postContentAndMetadata.title,
+                    description: postContentAndMetadata.description,
+                    date: postContentAndMetadata.date,
+                    index: postContentAndMetadata.index,
+                    tags: postContentAndMetadata.tags,
+                },
+                content: postContentAndMetadata.content,
+            };
+        } catch (error) {
+            console.error(`Error processing file ${postPath}:`, error);
+            return null;
+        }
     });
 
-    return await Promise.all(contentPostPromises).catch(() => []);
+    const resolvedPosts = await Promise.all(contentPostPromises);
+    return resolvedPosts.filter((post): post is Post => post !== null); // Filter out any failed posts
 }

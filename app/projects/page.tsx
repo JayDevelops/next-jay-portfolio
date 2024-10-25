@@ -17,7 +17,6 @@ export default function ProjectsPage() {
                 functional web solutions. Check out some featured projects below, and{' '}
                 <Link href="/contact" className="underline text-primary hover:outline-primary">contact me</Link> for your next project.
             </Text>
-
             <AllProjectPosts />
         </div>
     )

@@ -3,11 +3,11 @@ import ContentCard from "@/components/ContentCard";
 
 export default async function AllProjectPosts() {
     const projectsDirectory = "/projects";
-    let allProjects: Post[] = await getAllContent(projectsDirectory);
+    const allProjects: Post[] = await getAllContent(projectsDirectory);
 
     return (
-        <div className="grid md:grid-cols-3  md:-mx-3">
-            <ContentCard contentItems={allProjects} cardType="projects" />
+        <div className="md:-mx-3">
+            <ContentCard contentItems={allProjects} cardType="projects" className="grid grid-cols-3"/>
         </div>
     )
 }
