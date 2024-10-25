@@ -11,7 +11,7 @@ export interface Post {
         index: number;
         title: string;
         tags: string[];
-        thumbnail?: string; // Marking as optional
+        thumbnail: string | undefined;
     };
     slug: string;
     content: ReactElement<any, string | JSXElementConstructor<any>>;
