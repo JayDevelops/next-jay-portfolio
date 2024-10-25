@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { ProjectLinks } from "@/app/projects/ProjectLinks";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 
 interface ContentCardProps {
     contentItems: Post[];
@@ -27,6 +28,16 @@ export default function ContentCard({ contentItems, cardType, className}: Conten
                 <article className="p-4" key={post.slug}>
                     <Card className="shadow-secondary group-hover:shadow-md group-hover:shadow-primary py-2 border-opacity-30">
                         <CardHeader>
+                            {post.metadata.thumbnail && (
+                                <Image
+                                    src={post.metadata.thumbnail}
+                                    alt={`${post.metadata.title} thumbnail`}
+                                    width={300}
+                                    height={300}
+                                    className="w-full h-auto rounded"
+                                    priority={true} // Optional: consider using priority for critical images
+                                />
+                            )}
                             <CardTitle className="group-hover:text-primary group/link">
                                 {post.metadata.title}
                             </CardTitle>

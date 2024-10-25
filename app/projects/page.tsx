@@ -6,11 +6,11 @@ import AllProjectPosts from "@/app/projects/AllProjectPosts";
 export default function ProjectsPage() {
 
     return (
-        <div className="container min-w-4 mt-3">
+        <div className="container min-w-4 mt-2">
             <HeadingOne color="primary" className="text-left">
                 FullStack Projects
             </HeadingOne>
-            <Text className="my-2">
+            <Text className="my-2 mb-8">
                 I bring extensive expertise in crafting dynamic web applications using cutting-edge technologies such as Next.js, ReactJS, PHP, and WordPress.
                 My proficiency extends to working with advanced tools and databases, including Prisma, React Query, MySQL, and MongoDB.
                 My primary focus is on utilizing Next.js in conjunction with ReactJS to develop aesthetically pleasing and highly

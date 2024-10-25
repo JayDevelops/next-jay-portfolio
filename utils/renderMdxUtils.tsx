@@ -11,6 +11,7 @@ export interface Post {
         index: number;
         title: string;
         tags: string[];
+        thumbnail?: string; // Marking as optional
     };
     slug: string;
     content: ReactElement<any, string | JSXElementConstructor<any>>;
@@ -53,6 +54,7 @@ export async function getMDXContentAndFrontMatter(source: Buffer) {
         date: frontmatter.date as string,
         index: frontmatter.index as number,
         tags: frontmatter.tags as string[],
+        thumbnail: frontmatter.thumbnail as string | undefined, // Ensuring it can be undefined
         content,
     };
 }
@@ -77,6 +79,7 @@ export async function getAllContent(contentSource: string): Promise<Post[]> {
                     date: postContentAndMetadata.date,
                     index: postContentAndMetadata.index,
                     tags: postContentAndMetadata.tags,
+                    thumbnail: postContentAndMetadata.thumbnail, // Will be undefined if not provided
                 },
                 content: postContentAndMetadata.content,
             };

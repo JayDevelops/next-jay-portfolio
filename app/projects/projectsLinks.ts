@@ -11,7 +11,7 @@ export const projectLinks: ProjectLink[] = [
         liveLink: "https://issuetracker.jesusperez.dev/",
     },
     {
-        title: "Sound Pillars Model",
+        title: "Sound Pillars",
         githubLink: "https://github.com/JayDevelops/sound-pillars",
         liveLink: "https://soundpillars.jesusperez.dev/",
     },
@@ -21,10 +21,6 @@ export const projectLinks: ProjectLink[] = [
     },
     {
         title: "Swift Pong Game",
-        githubLink: "https://simongame.jesusperez.dev/",
+        githubLink: "https://github.com/JayDevelops/pongGame-master",
     },
-    {
-        title: "Swift Pong Game",
-        liveLink: "https://github.com/JayDevelops/pongGame-master"
-    }
 ]
