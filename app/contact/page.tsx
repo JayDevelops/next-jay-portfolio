@@ -39,6 +39,7 @@ function SocialLinks() {
             <Link
                 className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary"
                 href="https://www.linkedin.com/in/jesusperezarias"
+                target="_blank"
             >
                 <LinkedinIcon className="h-5 w-5" />
                 <span className="text-sm font-medium">LinkedIn</span>
@@ -47,6 +48,7 @@ function SocialLinks() {
             <Link
                 className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary"
                 href="https://twitter.com/jay_develops"
+                target="_blank"
             >
                 <XIcon className="h-5 w-5" />
                 <span className="text-sm font-medium">Twitter/X</span>
@@ -55,6 +57,7 @@ function SocialLinks() {
             <Link
                 className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary"
                 href="https://www.instagram.com/jay.develops"
+                target="_blank"
             >
                 <InstagramLogoIcon className="h-5 w-5" />
                 <span className="text-sm font-medium">Instagram</span>
