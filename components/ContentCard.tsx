@@ -54,7 +54,7 @@ export default function ContentCard({ contentItems, cardType, className}: Conten
                         <div className="pb-4 px-4">
                             <PostTags tags={post.metadata.tags} className="pl-2 space-x-2"/>
 
-                            {cardType === "projects" && <ProjectLinks post={post} className="flex justify-between mt-4" />}
+                            {cardType === "projects" && <ProjectLinks post={post} />}
                             {cardType === "blog" && (
                                 <Button variant="outline" className="mt-6" asChild>
                                    <Link href={`/blog/${post.slug}`}>
