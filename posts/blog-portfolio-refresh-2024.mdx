@@ -1,0 +1,161 @@
+---
+title: "Portfolio/Blog Refresh"
+description: "Updating my portfolio using Next.js 14, Static Site Generation (SSG), extended markdown (MDX) content, to optimize and increase performance on my portfolio as well as moving to self-hosting."
+date: "2024-07-12"
+tags:
+  - react.js
+  - next.js
+  - mdx
+---
+
+## Overview
+
+From my current new employment as a fullstack developer,
+through life getting hit hard on myself, furthering my education in graduate school,
+countless hours of research, failed libraries that did not fit my needs
+and many various things that occur to all of us this redesign/overhaul of
+my portfolio and new blog has finally been released.
+
+First off I wanted to breathe a new life to my old portfolio that I will update
+here and most likely archive to link here so I can always keep improving my current site
+as I always find myself working on this mostly during my free time.
+Moving away from Sanity CMS and some database needs was a huge need I wanted from my new revised version
+of this site, so updating content was a bit of a big pain-point for me.
+
+The flexibility to add custom react components right within my blog entries and custom code snippets
+were something I wanted.
+Therefore, a lot of my research ended up to ContentLayer,
+but sadly, the project <Link href="https://github.com/contentlayerdev/contentlayer/issues/651#issuecomment-2030335434" external>seems to be out of commission for the time being.</Link>
+
+<Link href="https://www.content-collections.dev/" external> Content Collections{" "}</Link>
+seems like the best alternative but did not fit my needs as of something I wanted,
+but I highly recommend it if you do not want to take the "mdx remote" approach. However,
+given the bit of stubbornness I tend to lean into, I decided to use plain old MDXRemote
+which fit very well with what I wanted to write out these blogs and keep them updated
+for the long road ahead. A lot of this inspiration came from the now <Link href="https://archive.leerob.io/blog/2023#content-management" external> archived blog from Lee Robinson </Link>
+, so big kudos to his approach of content management and incorporating static site
+generation from Next.js.
+
+
+## Seamless Blog Routing From MDX
+Choosing MDX was ideal for me as I wanted to be able to pass in any JSX component within my content and be able to render it within my blog content,
+this way I can display code snippets and show what the code is doing (if I do not get lazy hehe :p). 
+
+All the fun for the blog generation happens in the `/blog/[slug]/page.tsx` where Next.js <Link href="https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes" external>handles creating dynamic routes</Link>
+from the passed in params. On this path, it will look up the slug file path within my the content folder named "/posts"
+and pass in the required blog pieces such as title, content, etc.
+```javascript
+  //  get blog attributes from our helper blogMdxUtils utils function within [slug]/page.tsx
+  const { title, description, date, index, content } =
+    await getMDXContentAndFrontMatter(source);
+```
+
+You can take a closer look at the above method call <Link href="https://github.com/JayDevelops/next-jay-portfolio" external>the open source code</Link>,
+but what it is doing it is using `compileMDX` call from `MDXRemote` to grab the content and front matter of each .mdx file then I pass them into a layout 
+and their respective components. 
+
+To ensure fast loading times for each blog article, `generateStaticParams` method to build out each blog slug route as a static page which is ran on build time.
+It allows the content to be grabbed from the server already as html to acomplish great SEO, performance, etc.
+
+
+```javascript
+// generateStaticParams will build each blog slug route as a static page on build time
+export const generateStaticParams = async () => {
+  const blogPostFilePaths = await getPostFilePaths("/posts");
+
+  return blogPostFilePaths.map((path) => ({
+    slug: path.replace(/.mdx?$/, ""),
+  }));
+};
+```
+
+## Passing in Components to MDX Articles
+To note, MDX does not know what components are until you explicitly tell them what they are since it does not have access to it so it will not render JSX.
+In the `/components/MDXComponents` folder, I have created a `MDXComponents.tsx` file where I explicitly pass in the JSX components I plan to use within my MDX articles
+allowing the MDX to render the JSX components correctly.
+
+A great example is rendering out a button that says <Button>I am a Button</Button>, which is a button that does not do anything.
+By default the button will not render unless it is passed and explicltiy specified, therefore I pass the Button from my UI components folder
+and return the button with the same props as the parent component to then render the `<Button>` component.
+```JSX
+  import { Button } from "@/components/ui/button";
+  /* rest of code*/
+  Button: ({ ...props }) => (
+    <Button {...props} />
+  ),
+  /* rest of code*/
+```
+
+This goes onto my next point, where I took high note from Lee Robinson so huge credits to him, is I wanted a table of contents for each blog article. A lot of
+plugins did exist for this such as <Link href="https://github.com/rehypejs/rehype-autolink-headings">rehype-autolink-headings</Link> but is no fun because this appears
+at the top of your content and has some drawbacks. I decided to take Lee Robinson's approach where he creates react components to autolink h1 through h6 headings 
+and place them within the slugified id which is exactly what I needed.
+```JSX
+const Heading = ({
+  level,
+  children,
+  ...props
+}: { level: number }) => {
+  /* grab the children inside the markdown html file 
+  /* to slugify that text such as `## Section One ` turns to section-two */
+  const slug = slugify(children?.toString() ?? "");
+
+  return React.createElement(
+    `h${level}`,
+    { id: slug, ...props },
+    React.createElement(
+      "a",
+      {
+        href: `#${slug}`,
+        className: "no-underline hover:underline",
+      },
+      children
+    )
+  );
+};
+```
+```tsx
+export function MDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    h1: ({ ...props }) => <Heading level={1} {...props} />,
+    h2: ({ ...props }) => <Heading level={2} {...props} />,
+    h3: ({ ...props }) => <Heading level={3} {...props} />,
+    h4: ({ ...props }) => <Heading level={4} {...props} />,
+    h5: ({ ...props }) => <Heading level={5} {...props} />,
+    h6: ({ ...props }) => <Heading level={6} {...props} />,
+  /* rest of components being passed */
+```
+For each h1 to h6 heading, we are adding a link anchor tag with headings of the MDX file then plopping it into the heading id and the internal anchor tag for each page.
+An example in markdown is we can have a heading of "## I am a heading" where it will create an h2 tag with the slugified id and interal link,
+the markdown will turn into the following html.
+```html
+ <h2 id="i-am-a-heading">
+  <a href="#i-am-a-heading">I am a heading</a>
+ </h2>
+```
+
+Now it is as simple as extracting the headings from the each MDX file, finding the id and following similar logic to slugifiying each heading to an ID and into a list item
+for my table of components therefore it will live as it's own React Component to freely place it anywhere onto my page! (The table of contents is on the left) :)
+
+## Comments Section
+On each comment section, I am using Giscus which relies on GitHub to link up announcements channel and be able to comment from your own GitHub account. It was fairly simple to implement
+as <Link href="https://giscus.app/" external>you can create your configuration</Link> then place it right within each rendered blog article from the provided slugified path name.
+
+
+## Self Hosting Deployment
+Yes, I did leave Vercel for hosting my personal portfolio and it was a decision between to choose my content to live somewhere else such as a CDN or look into self hosting options such as coolify.
+Spoiler warning, I did not go with a CDN or a content management system. I do not plan to never use Vercel again but other side projects I have in mind just seem to be better routed to 
+a self hosted option, therefore I switched to coolify and forked up some monthly money for these reasons.
+1. Better cost savings for me
+2. Hopefully shelling out money makes me build "cooler" side projects
+3. I can say "I self host btw"
+
+
+
+## Closing Statements
+I still want to be able to add more onto my portfolio and blog such as implementing a view counter when a user reads one of my blogs.
+I have also left out a lot of the inner workings on my blog/portfolio website itself so if you like for me 
+to post an in more depth article, then feel free to comment but as always 
+you can take <Link href="https://github.com/JayDevelops/next-jay-portfolio" external>a look at this blog's source code.</Link>
+
+Until next time! :)
