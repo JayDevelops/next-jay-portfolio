@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     default: "Jesus Perez Developer Portfolio",
     template: `%s | Jesus Perez Developer Portfolio`,
   },
+  icons: {
+    icon: "/images/favicon.ico",
+  },
   description: descriptionText,
   category: "technology",
   keywords: [
@@ -54,7 +57,7 @@ export const metadata: Metadata = {
     title: "Jesus Perez Developer Portfolio",
     description: descriptionText,
     creator: "@jay_develops_",
-    images: ["https://jesusperez.dev/og.png"], // Must be an absolute URL
+    images: ["https://jesusperez.dev/og.png"],
   },
 };
 
