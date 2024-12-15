@@ -58,47 +58,41 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+eexport default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <head>
-        <PlausibleProvider domain="jesusperez.dev" />
-        <script
-          defer
-          data-domain="jesusperez.dev"
-          src="https://plausible.jesusperez.dev/js/script.file-downloads.hash.outbound-links.tagged-events.js"
-        ></script>
-        <script>
-          window.plausible = window.plausible || function(){" "}
-          {(window.plausible.q = window.plausible.q || []).push(arguments)}
-        </script>
-      </head>
+      <head />
       <body
         className={cn(
-          " flex flex-col md:flex-row md:mt-2 lg:mx-auto min-h-screen",
+          "flex flex-col md:flex-row md:mt-2 lg:mx-auto min-h-screen",
           inter.className
         )}
         suppressHydrationWarning
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+        <PlausibleProvider
+          domain="jesusperez.dev"
+          trackOutboundLinks
+          trackFileDownloads
         >
-          <div className="flex flex-col bg-background max-w-6xl mx-auto">
-            <Navigation />
-            <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
-              {children}
-            </main>
-            <Toaster />
-          </div>
-          {/*Add SpeedInsights and Analytics before deployment BELOW*/}
-        </ThemeProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="flex flex-col bg-background max-w-6xl mx-auto">
+              <Navigation />
+              <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+                {children}
+              </main>
+              <Toaster />
+            </div>
+          </ThemeProvider>
+        </PlausibleProvider>
       </body>
     </html>
   );
