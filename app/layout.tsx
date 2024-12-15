@@ -65,7 +65,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head />
+      <head>
+        <PlausibleProvider
+          domain="jesusperez.dev"
+          trackOutboundLinks
+          trackFileDownloads
+          selfHosted
+        />
+      </head>
       <body
         className={cn(
           "flex flex-col md:flex-row md:mt-2 lg:mx-auto min-h-screen",
@@ -73,26 +80,20 @@ export default function RootLayout({
         )}
         suppressHydrationWarning
       >
-        <PlausibleProvider
-          domain="jesusperez.dev"
-          trackOutboundLinks
-          trackFileDownloads
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <div className="flex flex-col bg-background max-w-6xl mx-auto">
-              <Navigation />
-              <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
-                {children}
-              </main>
-              <Toaster />
-            </div>
-          </ThemeProvider>
-        </PlausibleProvider>
+          <div className="flex flex-col bg-background max-w-6xl mx-auto">
+            <Navigation />
+            <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+              {children}
+            </main>
+            <Toaster />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
