@@ -67,6 +67,15 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <PlausibleProvider domain="jesusperez.dev" />
+        <script
+          defer
+          data-domain="jesusperez.dev"
+          src="https://plausible.jesusperez.dev/js/script.file-downloads.hash.outbound-links.tagged-events.js"
+        ></script>
+        <script>
+          window.plausible = window.plausible || function(){" "}
+          {(window.plausible.q = window.plausible.q || []).push(arguments)}
+        </script>
       </head>
       <body
         className={cn(
