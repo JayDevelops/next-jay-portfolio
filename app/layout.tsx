@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   },
 };
 
-eexport default function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
