@@ -1,6 +1,8 @@
+import { withPlausibleProxy } from "next-plausible";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // your next.js config
+  // your Next.js configuration options here
 };
 
-module.exports = nextConfig;
+module.exports = withPlausibleProxy()(nextConfig);

@@ -71,6 +71,7 @@ export default function RootLayout({
           trackOutboundLinks
           trackFileDownloads
           selfHosted
+          trackLocalhost
         />
       </head>
       <body
