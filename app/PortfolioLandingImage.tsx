@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Text } from "@/components/ui/Typography/Text";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface PortfolioLandingImageProps {
   src: string;
@@ -46,12 +47,14 @@ export default function PortfolioLandingImage({
       animate={isHovered ? "hover" : "initial"}
       transition={{ duration: 0.3 }}
     >
-      <Image
-        src={src || "/placeholder.svg"}
-        alt={alt}
-        fill
-        className="rounded-lg object-cover"
-      />
+      <Suspense fallback={<Skeleton className="w-full h-[400px] rounded-xl" />}>
+        <Image
+          src={src || "/placeholder.svg"}
+          alt={alt}
+          fill
+          className="rounded-lg object-cover"
+        />
+      </Suspense>
       <motion.div
         variants={overlayVariants}
         initial="initial"
