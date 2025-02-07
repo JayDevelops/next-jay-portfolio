@@ -11,7 +11,8 @@ interface BinaryParticle {
   delay: number;
   size: "sm" | "md" | "lg";
   speed: "slow" | "medium" | "fast";
-  value: "0" | "1";
+  // Rename `value` to `initialValue` for clarity:
+  initialValue: "0" | "1";
 }
 
 const SIZES = {
@@ -26,6 +27,66 @@ const SPEEDS = {
   fast: 3,
 };
 
+// --- Particle Component ---
+function Particle({
+  particle,
+  isDesktop,
+  flipDelay = 500, // flip after 500ms (adjust as desired)
+}: {
+  particle: BinaryParticle;
+  isDesktop: boolean;
+  flipDelay?: number;
+}) {
+  const [value, setValue] = useState(particle.initialValue);
+  const redParticleColor: string = "text-primary dark:text-primary/90";
+  const blueParticleColor: string = "text-blue-500 dark:text-blue-600";
+
+  useEffect(() => {
+    // Schedule the flip:
+    const timer = setTimeout(() => {
+      setValue((prev) => (prev === "0" ? "1" : "0"));
+    }, flipDelay);
+    return () => clearTimeout(timer);
+  }, [flipDelay]);
+
+  return (
+    <motion.div
+      key={particle.id}
+      initial={{
+        opacity: 0,
+        y: -20,
+        x: `${particle.x}vw`,
+      }}
+      animate={{
+        opacity: [0, 1, 1, 0],
+        y: ["0vh", "100vh"],
+        // Animate x position only on desktop:
+        x: isDesktop
+          ? particle.direction === "left"
+            ? [`${particle.x}vw`, `${particle.x - 15}vw`]
+            : [`${particle.x}vw`, `${particle.x + 15}vw`]
+          : `${particle.x}vw`,
+      }}
+      exit={{ opacity: 0 }}
+      transition={{
+        duration: SPEEDS[particle.speed],
+        delay: particle.delay,
+        ease: "linear",
+      }}
+      className={`
+        absolute font-mono
+        ${SIZES[particle.size]}
+        ${value === "0" ? blueParticleColor : redParticleColor}
+        opacity-80
+        drop-shadow-[0_0_3px_rgba(34,211,238,0.5)]
+      `}
+    >
+      {value}
+    </motion.div>
+  );
+}
+
+// --- Main BinaryWaterfall Component ---
 export default function BinaryWaterfall() {
   const [particles, setParticles] = useState<BinaryParticle[]>([]);
   const [count, setCount] = useState(0);
@@ -40,7 +101,7 @@ export default function BinaryWaterfall() {
         "fast",
       ];
 
-      // Create new particle
+      // Create a new particle:
       const newParticle: BinaryParticle = {
         id: count,
         x: isDesktop ? Math.random() * 40 : Math.random() * 100,
@@ -48,13 +109,14 @@ export default function BinaryWaterfall() {
         delay: Math.random() * 0.3,
         size: sizes[Math.floor(Math.random() * sizes.length)],
         speed: speeds[Math.floor(Math.random() * speeds.length)],
-        value: Math.random() > 0.5 ? "0" : "1",
+        initialValue: Math.random() > 0.5 ? "0" : "1",
       };
 
+      // Append the new particle:
       setParticles((prev) => [...prev, newParticle]);
       setCount((prev) => prev + 1);
 
-      // Keep more particles active at once
+      // Optionally, keep only the last 35 particles:
       setParticles((prev) => prev.filter((p) => p.id > count - 35));
     }, 200);
 
@@ -66,38 +128,12 @@ export default function BinaryWaterfall() {
       <div className="absolute inset-0" />
       <AnimatePresence>
         {particles.map((particle) => (
-          <motion.div
+          <Particle
             key={particle.id}
-            initial={{
-              opacity: 0,
-              y: -20,
-              x: `${particle.x}vw`,
-            }}
-            animate={{
-              opacity: [0, 1, 1, 0],
-              y: ["0vh", "100vh"],
-              x: isDesktop
-                ? particle.direction === "left"
-                  ? [`${particle.x}vw`, `${particle.x - 15}vw`]
-                  : [`${particle.x}vw`, `${particle.x + 15}vw`]
-                : `${particle.x}vw`,
-            }}
-            exit={{ opacity: 0 }}
-            transition={{
-              duration: SPEEDS[particle.speed],
-              delay: particle.delay,
-              ease: "linear",
-            }}
-            className={`
-              absolute font-mono
-              ${SIZES[particle.size]}
-              ${particle.value === "0" ? "text-blue-500" : "text-red-500"}
-              opacity-80
-              drop-shadow-[0_0_3px_rgba(34,211,238,0.5)]
-            `}
-          >
-            {particle.value}
-          </motion.div>
+            particle={particle}
+            isDesktop={isDesktop}
+            flipDelay={900} // adjust this value to control when the flip happens
+          />
         ))}
       </AnimatePresence>
     </div>
