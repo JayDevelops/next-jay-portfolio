@@ -11,6 +11,7 @@ interface BinaryParticle {
   delay: number;
   size: "sm" | "md" | "lg";
   speed: "slow" | "medium" | "fast";
+  value: "0" | "1";
 }
 
 const SIZES = {
@@ -29,7 +30,6 @@ export default function BinaryWaterfall() {
   const [particles, setParticles] = useState<BinaryParticle[]>([]);
   const [count, setCount] = useState(0);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const binaryBitColor: string = "text-primary/80";
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,12 +43,12 @@ export default function BinaryWaterfall() {
       // Create new particle
       const newParticle: BinaryParticle = {
         id: count,
-        // On desktop, constrain to left 40% of screen
         x: isDesktop ? Math.random() * 40 : Math.random() * 100,
         direction: Math.random() > 0.5 ? "left" : "right",
         delay: Math.random() * 0.3,
         size: sizes[Math.floor(Math.random() * sizes.length)],
         speed: speeds[Math.floor(Math.random() * speeds.length)],
+        value: Math.random() > 0.5 ? "0" : "1",
       };
 
       setParticles((prev) => [...prev, newParticle]);
@@ -56,7 +56,7 @@ export default function BinaryWaterfall() {
 
       // Keep more particles active at once
       setParticles((prev) => prev.filter((p) => p.id > count - 35));
-    }, 200); // Create particles more frequently
+    }, 200);
 
     return () => clearInterval(interval);
   }, [count, isDesktop]);
@@ -80,7 +80,7 @@ export default function BinaryWaterfall() {
                 ? particle.direction === "left"
                   ? [`${particle.x}vw`, `${particle.x - 15}vw`]
                   : [`${particle.x}vw`, `${particle.x + 15}vw`]
-                : `${particle.x}vw`, // No horizontal movement on mobile
+                : `${particle.x}vw`,
             }}
             exit={{ opacity: 0 }}
             transition={{
@@ -91,11 +91,12 @@ export default function BinaryWaterfall() {
             className={`
               absolute font-mono
               ${SIZES[particle.size]}
-              ${binaryBitColor}
+              ${particle.value === "0" ? "text-blue-500" : "text-red-500"}
+              opacity-80
               drop-shadow-[0_0_3px_rgba(34,211,238,0.5)]
             `}
           >
-            {Math.random() > 0.5 ? "0" : "1"}
+            {particle.value}
           </motion.div>
         ))}
       </AnimatePresence>
