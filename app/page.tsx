@@ -1,6 +1,5 @@
 import HomeHeader from "@/app/HomeHeader";
-import dynamic from "next/dynamic";
-import HoverImage from "./PortfolioLandingImage";
+import HoverImage from "@/app/PortfolioLandingImage";
 
 export default function Home() {
   const mainPortfolioImageSource: string =
@@ -10,12 +9,12 @@ export default function Home() {
   const authorLink: string = "https://x.com/ChaosODed";
 
   return (
-    <div className="flex items-center justify-center md:h-screen">
+    <div className="flex items-center justify-center min-h-screen pt-2 pb-8 px-12 md:pt-0 md:pb-0 md:px-8">
       <section
         id="header"
-        className="grid md:grid-cols-2 md:gap-4 mx-4 md:m-auto"
+        className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16"
       >
-        <div className="h-[400px] md:w-full mx-auto">
+        <div className="order-1 md:order-none">
           <HoverImage
             src={mainPortfolioImageSource}
             alt={imageAlt}
@@ -23,7 +22,9 @@ export default function Home() {
             authorLink={authorLink}
           />
         </div>
-        <HomeHeader />
+        <div className="order-2 md:order-none">
+          <HomeHeader />
+        </div>
       </section>
     </div>
   );

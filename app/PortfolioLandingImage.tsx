@@ -6,19 +6,19 @@ import { motion } from "framer-motion";
 import { Text } from "@/components/ui/Typography/Text";
 import Link from "next/link";
 
-interface HoverImageProps {
+interface PortfolioLandingImageProps {
   src: string;
   alt: string;
   author: string;
   authorLink: string;
 }
 
-export default function HoverImage({
+export default function PortfolioLandingImage({
   src,
   alt,
   author,
   authorLink,
-}: HoverImageProps) {
+}: PortfolioLandingImageProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (

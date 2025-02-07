@@ -41,7 +41,7 @@ export default async function BlogPagePost({ params }: BlogPagePostProps) {
   const getHeadings = await extractHeadings(source.toString());
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col pt-4">
       <div className="relative mx-auto flex w-full max-w-8xl flex-auto justify-center sm:px-4 lg:px-8 xl:px-12">
         <div className="min-w-0 max-w-4xl flex-auto pb-12 lg:max-w-none md:pr-6">
           <RenderMDXContent
