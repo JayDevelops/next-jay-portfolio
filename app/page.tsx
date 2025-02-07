@@ -1,5 +1,6 @@
 import HomeHeader from "@/app/HomeHeader";
 import HoverImage from "@/app/PortfolioLandingImage";
+import BinaryWaterfall from "./BinaryWaterfall";
 
 export default function Home() {
   const mainPortfolioImageSource: string =
@@ -10,6 +11,7 @@ export default function Home() {
 
   return (
     <div className="flex items-center justify-center min-h-screen pt-2 pb-8 px-12 md:pt-0 md:pb-0 md:px-8">
+      <BinaryWaterfall />
       <section
         id="header"
         className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16"
