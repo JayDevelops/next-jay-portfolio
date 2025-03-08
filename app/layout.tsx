@@ -76,11 +76,21 @@ export default function RootLayout({
           selfHosted
           trackLocalhost
         />
+
+        <script
+          defer
+          data-domain="jesusperez.dev"
+          src="https://plausible.jesusperez.dev/js/script.file-downloads.hash.outbound-links.js"
+        ></script>
+        <script>
+          window.plausible = window.plausible || function(){" "}
+          {(window.plausible.q = window.plausible.q || []).push(arguments)}
+        </script>
       </head>
       <body
         className={cn(
           "flex flex-col md:flex-row lg:mx-auto min-h-screen",
-          inter.className
+          inter.className,
         )}
         suppressHydrationWarning
       >
