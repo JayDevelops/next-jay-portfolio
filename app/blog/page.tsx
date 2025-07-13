@@ -1,16 +1,16 @@
 import { getAllContent } from "@/utils/renderMdxUtils";
-import { Post } from "@/utils/renderMdxUtils";
+import type { Post } from "@/utils/renderMdxUtils";
 import AllBlogPosts from "@/app/blog/AllBlogPosts";
 
 export default async function Blog() {
   const blogDirectory = "/posts";
-  let allBlogs: Post[] = await getAllContent(blogDirectory);
+  const allBlogs: Post[] = await getAllContent(blogDirectory);
 
   if (!allBlogs) {
-    return <p>no blog posts found</p>;
+    return <p>No blog posts found</p>;
   }
 
-  //  Pass our sorted blogs to render in our AllBlogPosts parent component
+  // Sort blogs by date (newest first)
   const sortedBlogs: Post[] = allBlogs.sort((a, b) => {
     return (
       new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime()
@@ -19,4 +19,5 @@ export default async function Blog() {
 
   return <AllBlogPosts sortedBlogs={sortedBlogs} />;
 }
+
 export const dynamic = "force-static";
