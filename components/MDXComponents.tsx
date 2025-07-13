@@ -23,7 +23,7 @@ export function MDXComponents(components: MDXComponents): MDXComponents {
     Link: ({ children, external, href }) => (
       <Link
         href={href}
-        className="text-primary hover:text-primary/90"
+        className="text-muted-foreground hover:text-primary/90 transition-colors"
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
       >
