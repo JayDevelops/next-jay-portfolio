@@ -71,16 +71,18 @@ export default function RootLayout({
       <head>
         <PlausibleProvider
           domain="jesusperez.dev"
-          trackOutboundLinks
-          trackFileDownloads
-          selfHosted
+          manualPageviews={true}
+          trackOutboundLinks={true}
+          trackFileDownloads={true}
+          revenue={true}
+          taggedEvents={true}
           trackLocalhost
         />
       </head>
       <body
         className={cn(
           "flex flex-col md:flex-row lg:mx-auto min-h-screen",
-          inter.className,
+          inter.className
         )}
         suppressHydrationWarning
       >
