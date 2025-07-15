@@ -71,11 +71,11 @@ export default function RootLayout({
       <head>
         <PlausibleProvider
           domain="jesusperez.dev"
+          customDomain="https://analytics.jesusperez.dev"
           trackOutboundLinks={true}
           trackFileDownloads={true}
           revenue={true}
           taggedEvents={true}
-          trackLocalhost
         />
       </head>
       <body
@@ -103,3 +103,4 @@ export default function RootLayout({
     </html>
   );
 }
+//http://plausible-m08cg0oo04sso0cc04w4kgs4.153.92.214.109.sslip.io
