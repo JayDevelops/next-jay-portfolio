@@ -71,7 +71,6 @@ export default function RootLayout({
       <head>
         <PlausibleProvider
           domain="jesusperez.dev"
-          manualPageviews={true}
           trackOutboundLinks={true}
           trackFileDownloads={true}
           revenue={true}
