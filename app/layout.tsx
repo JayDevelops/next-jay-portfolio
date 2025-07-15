@@ -7,7 +7,7 @@ import Navigation from "@/components/Navigation/Navigation";
 import { Toaster } from "@/components/ui/toaster";
 import "@code-hike/mdx/dist/index.css";
 import { cn } from "@/lib/utils";
-import PlausibleProvider from "next-plausible";
+import PlausibleWrapper from "@/components/PlausibleWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -68,16 +68,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <PlausibleProvider
-          domain="jesusperez.dev"
-          customDomain="https://analytics.jesusperez.dev"
-          trackOutboundLinks={true}
-          trackFileDownloads={true}
-          revenue={true}
-          taggedEvents={true}
-        />
-      </head>
+      <head></head>
       <body
         className={cn(
           "flex flex-col md:flex-row lg:mx-auto min-h-screen",
@@ -85,22 +76,23 @@ export default function RootLayout({
         )}
         suppressHydrationWarning
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="flex flex-col bg-background max-w-6xl mx-auto">
-            <Navigation />
-            <main className="flex-auto min-w-0 flex flex-col px-2 md:px-0">
-              {children}
-            </main>
-            <Toaster />
-          </div>
-        </ThemeProvider>
+        <PlausibleWrapper>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="flex flex-col bg-background max-w-6xl mx-auto">
+              <Navigation />
+              <main className="flex-auto min-w-0 flex flex-col px-2 md:px-0">
+                {children}
+              </main>
+              <Toaster />
+            </div>
+          </ThemeProvider>
+        </PlausibleWrapper>
       </body>
     </html>
   );
 }
-//http://plausible-m08cg0oo04sso0cc04w4kgs4.153.92.214.109.sslip.io
