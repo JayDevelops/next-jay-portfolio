@@ -2,19 +2,20 @@ name: Deploy to Coolify
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
     types: [closed]
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   deploy:
-    if: github.event.pull_request.merged == true || github.event_name == 'push'
     runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
 
     steps:
       - name: Trigger Coolify Deploy Webhook
         run: |
-          curl -X POST ${{ secrets.COOLIFY_DEPLOY_WEBHOOK }}
+          curl -X POST "https://coolify.jesusperez.dev/api/v1/deploy?uuid=hko0gs8wg808k44g8s00oc4o&force=false" \
+            -H "Authorization: ${{ secrets.COOLIFY_API_KEY }}"
