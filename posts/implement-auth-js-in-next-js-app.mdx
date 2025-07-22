@@ -1,0 +1,331 @@
+---
+title: "Implementing Auth.js in a Modern Next.js App"
+description: "Walking through how I implemented auth.js in a new side project I am working on with Next.js app router, TypeScript, and modern UI components."
+date: "2025-07-22"
+tags:
+  - authentication
+  - oauth
+  - typescript
+  - next.js
+  - auth.js
+---
+
+## Introduction
+<Link href="https://authjs.dev/" external>Auth.js</Link> is usually my go to when it comes to implementing authentication in majority of my Next.js applications, it is free and open source.
+They offer the various providers and many methods of signin for your application as well as guiding you through their extensive documenation.
+For this simple guide, I will be looking at how ot integrate some basic authentication through google oAuth provider and being able to use it within an application.
+
+## Setup: Installing ShadCn UI library
+In most of this project, I am using <Link href="https://ui.shadcn.com/" external>shadcn ui component library</Link> to be able to have components to use but able to extend on them as well,
+you are free to follow their installation to use as well in your project or go ahead and use your own UI components as well!
+
+## Setup: Installing Auth.js
+Assuming you already have an existing Next.js application environment all good to go, we can go ahead and add in the NPM package for Auth.js by running the following.
+```bash
+npm install next-auth
+```
+
+### Setup Environment Variables
+For this guide particularly we will the main `AUTH_SECRET` that Auth.js library needs in order to be able to encrypt tokens and email verification hashes.
+Thankfully they do have a built in CLI method to create the token alongside a .env.local file.
+
+```bash
+npx auth secret
+```
+
+Next we will head to the google cloud console to grab our google oAuth client ID and our secret key when you have created an app,
+fair warning that I will not include a guide on this here as this does constantly change and I constantly refer to 
+<Link href="https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid" external>this offocial guide by google</Link>
+where it constantly gets updated to ensure you can set this up properly!
+
+Now grabbing those two values, go ahead and insert them as shown below in your `.env.local` file by replacing the quotes with your proper values.
+```bash
+# .env.local
+AUTH_SECRET="REPLACE_AUTH_KEY_HERE"
+AUTH_GOOGLE_ID="REPLACE_AUTH_GOOGLE_ID_KEY_HERE"
+AUTH_GOOGLE_SECRET="REPLACE_AUTH_GOOGLE_SECRET_KEY_HERE"
+```
+
+In the root of your project, create an `auth.ts` file to be able to create the handler where we will pass in our configuration for our google oAuth.
+```typescript
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+  ],
+});
+```
+
+To wrap up the initial setup to have one provider work with the library, let us go 
+and create a new file `app/api/auth/[...nextauth]/route.ts` where we will call our providers.
+
+```typescript
+import { handlers } from "@/auth";
+export const { GET, POST } = handlers;
+export { auth as middleware } from "@/auth";
+```
+
+### Wrapping App with Session Context
+
+In order to know if a user is signed in or to get other forms of their session such as their passed in user email, image, etc we will need
+a session provider built in by Auth.js so go ahead and create a new file with the path of `/auth/AuthProvider.tsx`
+```typescript
+"use client";
+
+import React, { PropsWithChildren } from "react";
+import { SessionProvider } from "next-auth/react";
+
+const AuthProvider = ({ children }: PropsWithChildren) => {
+  return <SessionProvider>{children}</SessionProvider>;
+};
+
+export { AuthProvider };
+```
+
+Now we will need to wrap at our root `layout.tsx` of our application to be able to track our user session.
+```typescript
+/* layout.tsx (root layout) */
+import "./globals.css";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { AuthProvider } from "./(auth)/auth/Provider";
+
+/* ...other code ommited for simplicity... */
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" className="scroll-smooth">
+      <body className={inter.className}>
+        <AuthProvider>
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+        </AuthProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+### Adding Sign In and Sign Out Pages
+By default Auth.js provides sign in and sign out pages for you to point to your users to be able to sign in with the providers you have given,
+however I wanted to add a custom pages so let's do just that.
+
+To offer login to be able to add more providers in the future, I created a reusable list of providers in my components called `SignInProviders.tsx`:
+```typescript
+import { FcGoogle } from "react-icons/fc";
+import { IconType } from "react-icons";
+import { signIn } from "next-auth/react";
+
+export type SignInProvider = {
+  id: string;
+  name: string;
+  type: "oauth" | "email" | "credentials";
+  icon: IconType;
+  bgColor: string;
+  textColor: string;
+  borderColor: string;
+  awaitSignIn: (callbackUrl: string) => Promise<void>;
+};
+
+//  Define handler separately, use built in method of signin by Auth.js
+const handleGoogleSignIn = async (callbackUrl: string) => {
+  try {
+    await signIn("google", { callbackUrl });
+  } catch (err) {
+    console.error("Google sign-in failed", err);
+  }
+};
+
+const providers: SignInProvider[] = [
+  {
+    id: "google",
+    name: "Google",
+    type: "oauth",
+    icon: FcGoogle,
+    bgColor: "bg-white",
+    textColor: "text-gray-800",
+    borderColor: "border-gray-300",
+    awaitSignIn: handleGoogleSignIn,
+  },
+];
+```
+
+Next in however your sign in page is contstructed go ahead and iterate through the providers array. 
+For my sign in page I created a `signin/page.tsx` at the root of the app directory.
+```typescript
+/* signin/page.tsx */
+{providers.map((provider) => (
+  <Button
+    key={provider.id}
+    className={`w-full ${provider.bgColor} ${provider.textColor}`}
+    onClick={() => provider.awaitSignIn(callbackUrl)}
+  >
+    <provider.icon className="h-4 w-4 mr-2" /> Continue with {provider.name}
+  </Button>
+))}
+```
+Here is a quick screenshot of how my sign in page currently looks like and yes it needs some finalizing touches which I will get back to haha.
+
+<div className="text-center my-6">
+    <Image className="inline-block" src="/content/implement-auth-js-images/signInPage.png" alt="sign in page screenshot" width="400" height="400"/>
+</div>
+
+To sign out, I created a `signout/page.tsx` where I constructed my sign out page then to sign out the user it is fairly easy as so:
+
+```typescript
+import { signOut } from "next-auth/react";
+
+export default function SignOutPage() {
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+    await signOut({ callbackUrl: "/" });
+  };
+
+  return (
+    <div className="flex flex-col space-y-3">
+        <Button
+            onClick={handleSignOut}
+            disabled={isSigningOut}
+            className="w-full h-11 bg hover:bg-red-700"
+        >
+            {isSigningOut ? (
+                <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Signing out...
+                </>
+            ) : (
+                <>
+                <LogOut className="h-4 w-4 mr-2" />
+                Yes, sign me out
+                </>
+                )}
+        </Button>
+        
+        <Button
+            variant="outline"
+            className="w-full h-11 bg-transparent"
+            asChild
+            disabled={isSigningOut}
+        >
+            <Link href="/dashboard">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+                Cancel, take me back
+            </Link>
+            </Button>
+        </div>
+        )
+```
+
+### Creating a Reusable Auth Status Component
+Now we want a button in our navigation header to reflect a sign in button when the user is not signed in and if the user is signed in we want to display a nice dropdown menu with their avatar.
+I created a new component in my `components` directory titled `AuthStatus.tsx` and placed the following...
+
+```typescript
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useSession } from "next-auth/react";
+import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
+import { LogOut, User } from "lucide-react";
+import { Skeleton } from "./ui/skeleton";
+
+const AuthStatus = () => {
+  const { status, data: session } = useSession();
+
+  //  If the user is loading into the session, then return no component
+  if (status === "loading")
+    return <Skeleton className="h-12 w-18 rounded-b-lg" />;
+
+  //  If no user is logged in, return login component
+  if (status === "unauthenticated") {
+    return (
+      <Button
+        variant="outline"
+        className="border-primary-600 text-primary-600 hover:bg-primary-50 bg-transparent"
+        asChild
+      >
+        <Link href={"/signin"}>Sign In</Link>
+      </Button>
+    );
+  }
+
+  //  Default renders the user details and logout component
+  return (
+    <div className="flex items-center space-x-2">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Avatar className="cursor-pointer">
+            <AvatarImage
+              src={session?.user?.image ?? ""}
+              referrerPolicy="no-referrer"
+            />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-full">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem disabled>
+            <User className="mr-2 h-4 w-4" />
+            {session?.user?.email ?? ""}
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem asChild className="cursor-pointer">
+            <Link href="/signout">
+              <LogOut className="mr-2 h-4 w-4" />
+              Log Out
+              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+};
+
+export default AuthStatus;
+```
+Below is how our auth status looks like when the user is logged in and not logged in, feel free to add more things in this dropdown such as quick action menu items!
+<div className="text-center my-6">
+    <Image className="inline-block" src="/content/implement-auth-js-images/authStatusPageDropdown.png" alt="sign in page with dropdown" width="500" height="500" />
+</div>
+
+<div className="text-center my-6">
+    <Image className="inline-block" src="/content/implement-auth-js-images/authStatusSignInButton.png" alt="sign in page with sign in button" width="500" height="500" />
+</div>
+
+## Final Thoughts
+Implementing Auth.js in a Next.js App Router app and a clean design can feel intimidating, but breaking it down into pieces really helps:
+
+- Set up your provider
+- Wrap the app with SessionProvider
+- Create reusable components for sign-in status and forms
+- Style everything consistently with your design system
+
+Another key component that I have left out is how to integrate authentication with a User's object as found in many fullstack 
+web applications so comment down below if I have missed something or any thoughts regarding this blog or if you'd like a follow up tutorial 
+on that ingetration part as well! Until next time, Jay :).
+

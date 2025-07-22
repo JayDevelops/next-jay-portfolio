@@ -6,6 +6,7 @@ import type { MDXComponents } from "mdx/types";
 import { Button } from "@/components/ui/button";
 import { highlight } from "sugar-high";
 import Link from "next/link";
+import Image from "next/image";
 
 export function MDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -33,6 +34,7 @@ export function MDXComponents(components: MDXComponents): MDXComponents {
     div: ({ children, ...props }) => <div {...props}>{children}</div>,
     Button: ({ ...props }) => <Button {...props} />,
     code: (props) => <Code {...props} />,
+    Image: ({ alt, ...props }) => <Image alt={alt} {...props} />,
   };
 }
 
