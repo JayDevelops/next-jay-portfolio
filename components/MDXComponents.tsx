@@ -21,11 +21,11 @@ export function MDXComponents(components: MDXComponents): MDXComponents {
         {children}
       </a>
     ),
-    Link: ({ children, external, href }) => (
+    Link: ({ children, external, href, target }) => (
       <Link
         href={href}
         className="text-muted-foreground hover:text-primary/90 transition-colors"
-        target={external ? "_blank" : undefined}
+        target={external ? "_blank" : target}
         rel={external ? "noopener noreferrer" : undefined}
       >
         {children}

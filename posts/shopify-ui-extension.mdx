@@ -1,0 +1,198 @@
+---
+title: "Building a Shopify UI Extension"
+description: "How to build a Shopify UI Extension to save input fields to the shopify admin store with metafields."
+date: "2025-08-06"
+tags:
+  - react.js
+  - shopify
+---
+
+## Introduction
+Building custom functionality to capture additional fields not provided by Shopify can become a bit of a rabbit hole,
+well at least for me when I was building one, yet they are great for the following reasons.
+- Able to save data right within shopify by using <Link href="https://help.shopify.com/en/manual/custom-data/metafields" external>metafields</Link>
+- Able to view saved user inputs on Orders, Products, etc!
+- Able to grab these metafields through external API's hooked into your shopify store for later use!
+
+In this guide, I'll walk you through creating a UI extension that captures user input and saves it to your Shopify store's metadata.
+Again it is perfect for custom product configurations, special instructions, or any additional data you need to collect and store from the user.
+
+### Setup: Installing Shopify CLI
+First we need to have the Shopify CLI installed and ready to go. 
+If you don't have it yet, you can install it globally:
+
+```bash
+npm install -g @shopify/cli @shopify/theme
+```
+
+Next let's create a new Shopify app (if you don't already have one) and add our UI extension:
+
+```bash
+shopify app init my-metadata-extension
+cd my-metadata-extension
+```
+
+Next, we'll generate our UI extension:
+```bash
+shopify app generate extension --type=checkout_ui_extension
+```
+
+I'll be focusing on a simple checkout UI extension here, 
+but you can easily adapt this for admin extensions or other extension types as the core concepts remain the same.
+
+If you will like to read more in depth about shopify components or check out their own tutorials,
+then please head to <Link href="https://shopify.dev/docs" external>the official shopify documentation</Link>.
+
+The main file we'll be working with is Checkout.tsx inside the `extensions/checkout-ui/src/` directory.
+
+### Building the Input Component
+Let's start by creating our input field component. In your Checkout.tsx file, replace the existing content with the following.
+
+```tsx
+import {
+  reactExtension,
+  TextField,
+  Button,
+  BlockStack,
+  Text,
+  useApplyMetafieldsChange,
+  useMetafield,
+} from '@shopify/ui-extensions-react/checkout';
+
+export default reactExtension(
+  'purchase.checkout.block.render',
+  () => <MetaFieldInputExtension />
+);
+
+function MetaFieldInputExtension() {
+  const [inputValue, setInputValue] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+  
+  // Grab shopify's default apply metafield to apply changes
+  const applyMetafieldsChange = useApplyMetafieldsChange();
+  
+  // Get existing metafield value
+  // this will be setup on metafields
+  // for example you can setup a metafield onto Orders 
+  // by navigating to Settings > Custom data > Metafields
+  // then selecting "Orders"
+  const metafield = useMetafield({
+    namespace: 'custom',
+    key: 'user_input_data',
+  });
+
+  // Initialize input with existing metafield value, if there is one
+  React.useEffect(() => {
+    if (metafield?.value) {
+      setInputValue(metafield.value);
+    }
+  }, [metafield]);
+
+  const handleSave = async () => {
+    setIsLoading(true);
+    
+    try {
+      // Apply the metafield change
+      const result = await applyMetafieldsChange({
+        type: 'updateMetafield',
+        namespace: 'custom',
+        key: 'user_input_data',
+        valueType: 'single_line_text_field',
+        value: inputValue,
+      });
+
+      if (result.type === 'success') {
+        console.log('Metadata saved successfully!');
+      } else {
+        console.error('Failed to save metadata:', result.message);
+      }
+    } catch (error) {
+      console.error('Error saving metadata:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <BlockStack spacing="base">
+      <Text size="medium" emphasis="strong">
+        Custom Information
+      </Text>
+      
+      <TextField
+        label="Enter your special instructions"
+        value={inputValue}
+        onChange={setInputValue}
+        placeholder="Add any special notes or requirements..."
+        multiline={3}
+      />
+      
+      <Button
+        onPress={handleSave}
+        loading={isLoading}
+        disabled={!inputValue.trim() || isLoading}
+      >
+        {isLoading ? 'Saving...' : 'Save Information'}
+      </Button>
+    </BlockStack>
+  );
+}
+```
+
+### Metadata Structure
+The key part of our extension is how we're handling the metadata. Let me break this down:
+
+- Namespace: 'custom' - This groups our metadata logically
+- Key: 'user_input_data' - The specific identifier for our data
+- ValueType: 'single_line_text_field' - Defines the type of data we're storing
+
+Shopify's metafields are incredibly flexible and support various data types including:
+
+- single_line_text_field
+- multi_line_text_field
+- number_integer
+- number_decimal
+- date
+
+
+### Configuration
+We need to make sure our extension has the proper permissions to read and write metafields. 
+In your `shopify.ui.extension.toml` file, ensure you have:
+
+```toml
+name = "metadata-input-extension"
+type = "checkout_ui_extension"
+
+[capabilities]
+api_access = true
+block_progress = true
+```
+
+For the app to have access to metafields, you'll also need to configure your app's permissions 
+so navigate to your shopify.app.toml, make sure you have the following.
+
+```toml
+[access_scopes]
+scopes = "write_products,read_products,write_orders,read_orders"
+```
+
+### Testing the Extension
+Let's go ahead and test the extension by running the below in your terminal
+
+```bash
+shopify app dev
+```
+
+This will start your local development server and give you a preview URL where you can test your extension. You should see your custom input field appear in the checkout process.
+Here's what the flow looks like:
+
+Customer enters information in your custom field
+- They click "Save Information"
+- The data gets stored as a metafield on the order
+- You can access this data later through Shopify's Admin API or GraphQL
+
+### Final Thoughts
+I've left out some advanced topics like validation schemas and complex data structures, 
+if I have missed something or any thoughts regarding this blog or if you'd like a follow up tutorial on that ingetration part as well! 
+
+Until next time, Jay :).
