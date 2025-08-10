@@ -1,0 +1,148 @@
+---
+title: "Introduction to Socket Programming"
+description: "Talking about socket programming in C, Node.js, and Typescript for simple ping/pong message response."
+date: "2025-08-10"
+tags:
+  - socket-programming
+  - typescript
+  - node.js
+---
+
+## Introduction
+Recently I have started to look and do a bit more of <Link href="https://codecrafters.io/" external>code crafters</Link>, 
+particularly working on their redis challenge to build your own redis. Redis is used for caching website content and could be used as a database,
+frankly I cannot talk about Redis as I have not even used it in any project but I am willing to use it one day so if you want to read more about
+Redis then go to their official site: <Link href="https://redis.io/" external>Redis official site.</Link>
+
+However, the main reason why I am writing this blog is because the first challenge in "Building your own Redis" on Code Crafters
+is making a simple TCP connection then sending a message in the buffer to the open socket but to my surprise I was lost.
+See, I have taken a class in network programming which I am familiar a bit with socket programming mainly in C and I even had tried 
+to attempt to make a <Link href="https://github.com/lvargas0002/VPN-QUIC" external>VPN on top of the QUIC protocol</Link> 
+built in C with a lab partner but even with that we could have not built out a working solution, we did at least manage 
+to send some hard coded values through the open tunneling.
+
+Anyways I am getting too out of a tangent here, if you will like me to write about that project then please let me know in the comments!
+I will go about how the first challenge of writing that ping/pong message stumped me as I was looking for different solutions as to what I know
+with my experience in C socket programming.
+
+### Network Programming in C
+From my experience in socket programming in C, you will usually follow this step process to receive a message on the server.c.
+> note server.c mimics the server, we will ommit the client.c for this explanation for now
+
+1. Define packet size for your message length, port number, and IP address for the socket connection
+2. Define your packet structure of what the incoming packet will look like
+3. Defining the protocol or making your own for the socket 
+4. Validate your connection along the way then receive your packet
+
+IP addresses and port numbers are essential for directing network traffic to the correct destination, hence why socket programming looks the way it is so the traffic can go to the proper location within many applications.
+Think of it like a building's street address (IP address) and the individual apartment or office number within (port number)!
+
+Below this is how the steps in the network programming will look in C:
+
+```c
+// server.js
+
+#define MAX_PACKET_SIZE 1024
+#define PORT 8080
+
+struct Packet {
+  int sequence_number;
+  double time_stamp;
+};
+
+int main() {
+
+  int server_fd, new_socket;
+  struct sockaddr_in address, client_addr;
+
+  // stores the length of address structure
+  socklen_t addrlen = sizeof(client_addr);
+  struct Packet packet;
+
+  double total_owd = 0.0;
+  int packet_count = 0;
+
+  // udp socket
+  server_fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+  if (server_fd < 0) {
+    perror("Socket creation failed");
+    exit(EXIT_FAILURE);
+  }
+
+  address.sin_family = AF_INET; // IPv4 address family
+  address.sin_addr.s_addr =
+      INADDR_ANY;                 // Binds to all available network interfaces
+  address.sin_port = htons(PORT); // Convert port number to network byte order
+
+  if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
+    perror("Bind failed");
+    exit(EXIT_FAILURE);
+  }
+
+  printf("UDP Server listening on port %d\n", PORT);
+  printf("Press CTRL + C to exit server");
+  while (running) {
+    int received_bytes =
+        recvfrom(server_fd, &packet, sizeof(packet), MSG_DONTWAIT,
+                 (struct sockaddr *)&client_addr, &addrlen);
+    // rest of code
+  }
+  // rest of code below
+}
+```
+
+In the while loop, we are getting the bytes then receiving it then storing to `int received bytes` to store and doing something with it later.
+
+### Network Programming in Node.js
+However, after reading a lot of the <Link href="https://nodejs.org/api/net.html" external>`Net` documentation for node.js</Link> 
+to open up a socket I was a bit stumped as most of this is really abstracted away from us.
+
+Of course, I will have figured it out sooner if not for doing some more research, the c program interface
+is is what is going down under the hood at least from what it seems and someone may correct me in the comments 
+and I will update this blog entry!
+
+In node.js using the `Net` by creating the server, the same ip address and port number to hook into that connection
+
+```typescript
+import * as net from "net";
+
+// You can use print statements as follows for debugging, they'll be visible when running tests.
+console.log("Logs from your program will appear here!");
+
+const ipAddr: string = "127.0.0.1";
+const port: number = 6379;
+
+const server: net.Server = net.createServer((connection: net.Socket) => {
+  // Handle connection
+  console.log("Client connected");
+
+  connection.on("data", (data) => {
+    const message = data.toString();
+
+    if (message.includes("PING")) {
+      connection.write("+PONG\r\n");
+    }
+  });
+  connection.on("end", () => {
+    console.log("Client Disconnected");
+  });
+});
+
+server.listen(port, ipAddr, () => {
+  console.log(`Server listening on ${ipAddr}:${port}`);
+});
+```
+
+Yes it does look shorter but there is also a lot of abstraction because while reading the documentation 
+I was trying to make a socket but it seems the connection object taps into those methods mentioned.
+
+### Final Thoughts
+There is a lot more to socket programming and so much depth in networking, as I did think it was one of my most hardest classes 
+I have taken in both my undergrad and graduate academic life, but it has taught me many things such as:
+- How applications send traffic in the nework
+- Network systems
+- Socket programming
+- Much much much more that you can delve deeper into any time!
+
+Please let me know if you like this simple socket programming!
