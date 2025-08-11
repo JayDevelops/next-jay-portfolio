@@ -41,9 +41,9 @@ export default async function BlogPagePost({ params }: BlogPagePostProps) {
   const getHeadings = await extractHeadings(source.toString());
 
   return (
-    <div className="flex w-full flex-col pt-4">
-      <div className="relative mx-auto flex w-full max-w-8xl flex-auto justify-center sm:px-4 lg:px-8 xl:px-12">
-        <div className="min-w-0 max-w-4xl flex-auto pb-12 lg:max-w-none md:pr-6">
+    <div className="w-full min-w-0 flex flex-col pt-4">
+      <div className="w-full max-w-none lg:max-w-6xl mx-auto flex flex-col xl:flex-row xl:justify-center gap-8 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-none lg:max-w-4xl min-w-0 flex-1">
           <RenderMDXContent
             title={title}
             description={description}

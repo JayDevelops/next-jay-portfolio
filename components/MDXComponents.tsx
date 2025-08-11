@@ -34,11 +34,26 @@ export function MDXComponents(components: MDXComponents): MDXComponents {
     div: ({ children, ...props }) => <div {...props}>{children}</div>,
     Button: ({ ...props }) => <Button {...props} />,
     code: (props) => <Code {...props} />,
+    pre: ({ children, ...props }) => <Pre {...props}>{children}</Pre>,
     Image: ({ alt, ...props }) => <Image alt={alt} {...props} />,
+    ...components,
   };
 }
 
-// Inspired by leerob.io
+const Pre: React.FC<React.HTMLAttributes<HTMLPreElement>> = ({
+  children,
+  ...props
+}) => {
+  return (
+    <pre
+      className="overflow-x-auto max-w-full text-sm bg-muted p-4 rounded-md border whitespace-pre-wrap break-words sm:whitespace-pre"
+      {...props}
+    >
+      {children}
+    </pre>
+  );
+};
+
 interface CodeProps {
   children?: React.ReactNode;
   [key: string]: any;
@@ -47,7 +62,14 @@ interface CodeProps {
 const Code: React.FC<CodeProps> = ({ children, ...props }) => {
   const codeString = React.Children.toArray(children).join("").toString();
   const codeHTML = highlight(codeString);
-  return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
+
+  return (
+    <code
+      className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold max-w-full overflow-x-auto inline-block"
+      dangerouslySetInnerHTML={{ __html: codeHTML }}
+      {...props}
+    />
+  );
 };
 
 //  Inspired by leerob.io blog refresh where he slugged headings with the link attached
@@ -80,6 +102,6 @@ function slugify(str: React.ReactNode) {
     .trim()
     .replace(/\s+/g, "-")
     .replace(/&/g, "-and-")
-    .replace(/[^\w\-]+/g, "")
-    .replace(/\-\-+/g, "-");
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-");
 }
