@@ -68,12 +68,9 @@ export default function PortfolioLandingImage({
           animate={isHovered ? "hover" : "initial"}
           transition={{ duration: 0.3, delay: 0.17 }}
         >
-          <Text>
-            Drawing by{" "}
-            <Link href={authorLink} className="text-primary/90" target="_blank">
-              {author}
-            </Link>
-          </Text>
+          <Link href={authorLink} className="text-primary/90" target="_blank">
+            <Text>Drawing by {author}</Text>
+          </Link>
         </motion.div>
       </motion.div>
     </motion.div>

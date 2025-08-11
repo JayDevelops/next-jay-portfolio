@@ -49,7 +49,6 @@ function SocialLinks() {
         <LinkedinIcon className="h-5 w-5" />
         <span className="text-sm font-medium">LinkedIn</span>
       </Link>
-
       <Link
         className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary"
         href="https://twitter.com/jay_develops"
@@ -58,7 +57,6 @@ function SocialLinks() {
         <XIcon className="h-5 w-5" />
         <span className="text-sm font-medium">Twitter/X</span>
       </Link>
-
       <Link
         className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary"
         href="https://www.instagram.com/jay.develops"

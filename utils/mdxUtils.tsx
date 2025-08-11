@@ -54,5 +54,5 @@ function slugify(str: string) {
         .replace(/\s+/g, '-')
         .replace(/&/g, '-and-')
         .replace(/[^\w\-]+/g, '')
-        .replace(/\-\-+/g, '-')
+        .replace(/\-\-+/g, '-');
 }

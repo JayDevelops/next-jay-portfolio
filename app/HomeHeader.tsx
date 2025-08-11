@@ -13,7 +13,6 @@ export default function HomeHeader() {
       <HeadingTwo className="font-normal text-secondary-foreground/90">
         Full Stack Developer
       </HeadingTwo>
-
       <div className="text-container space-y-4 mt-4">
         <Text>
           Based in Los Angeles, CA, I&apos;m a graduate student and a full-time
@@ -34,22 +33,23 @@ export default function HomeHeader() {
           collaborate on any exciting projects.
         </Text>
       </div>
-
       <div className="mt-8 space-x-6">
-        <Link href="/contact">
-          <Button className="hover:scale-110 transition-all ease-in-out duration-200">
+        <Button
+          className="hover:scale-110 transition-all ease-in-out duration-200"
+          asChild
+        >
+          <Link href="/contact">
             <EnvelopeOpenIcon className="h-4 w-4" /> &nbsp; Contact Me
-          </Button>
-        </Link>
-
-        <Link href="/projects">
-          <Button
-            className="hover:scale-110 transition-all ease-in-out duration-200"
-            variant="secondary"
-          >
+          </Link>
+        </Button>
+        <Button
+          className="hover:scale-110 transition-all ease-in-out duration-200"
+          variant="secondary"
+        >
+          <Link href="/projects">
             <BackpackIcon className="h-4 w-4" /> &nbsp; My Works
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
     </div>
   );
