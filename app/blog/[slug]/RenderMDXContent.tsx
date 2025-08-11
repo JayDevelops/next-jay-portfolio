@@ -19,7 +19,7 @@ export default function RenderMDXContent({
   content,
 }: RenderMDXContentProps) {
   return (
-    <div className="px-4 md:px-auto">
+    <div className="w-full min-w-0">
       <div className="space-y-4 mb-4 md:mb-8">
         <p className="leading-7 [&:not(:first-child)]:mt-6 text-muted-foreground text-sm">
           {new Date(date).toLocaleDateString("en-US", {
