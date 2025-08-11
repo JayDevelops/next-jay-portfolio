@@ -10,6 +10,7 @@ import { extractHeadings } from "@/utils/mdxUtils";
 import TableOfContents from "@/app/blog/[slug]/TableOfContents";
 import GiscusComments from "./GiscusComments";
 import ShareButtons from "./ShareBlogPost";
+import KofiButton from "./KofiButton";
 
 //  postSource is our parent folder where all our .mdx content is living in
 const postsSource = "/posts";
@@ -52,6 +53,7 @@ export default async function BlogPagePost({ params }: BlogPagePostProps) {
             content={content}
           />
           <div>
+            <KofiButton />
             <ShareButtons
               className="pt-6 pb-8"
               url={`https://jesusperez.dev/blog/${params.slug}`}

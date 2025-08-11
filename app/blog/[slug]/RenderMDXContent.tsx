@@ -2,6 +2,7 @@
  * RenderMDXContent is responsible to display the middle MDX content section being rendered in blog/[slug]/page.tsx
  */
 import { JSXElementConstructor, ReactElement } from "react";
+import KofiButton from "./KofiButton";
 
 type RenderMDXContentProps = {
   title: string;
@@ -35,6 +36,7 @@ export default function RenderMDXContent({
         <p className="leading-7 [&:not(:first-child)]:mt-6 text-muted-foreground text-sm md:text-base">
           TLDR: {description}
         </p>
+        <KofiButton />
       </div>
 
       <article className="prose prose-sm md:prose-base dark:prose-invert min-w-full mt-4 mb-4">
