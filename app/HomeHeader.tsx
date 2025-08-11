@@ -45,6 +45,7 @@ export default function HomeHeader() {
         <Button
           className="hover:scale-110 transition-all ease-in-out duration-200"
           variant="secondary"
+          asChild
         >
           <Link href="/projects">
             <BackpackIcon className="h-4 w-4" /> &nbsp; My Works

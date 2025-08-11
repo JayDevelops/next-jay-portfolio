@@ -52,7 +52,7 @@ export default async function BlogPagePost({ params }: BlogPagePostProps) {
             index={index}
             content={content}
           />
-          <div>
+          <div className="mb-6">
             <KofiButton />
             <ShareButtons
               className="pt-6 pb-8"
