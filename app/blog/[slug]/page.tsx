@@ -35,7 +35,7 @@ export default async function BlogPagePost({ params }: BlogPagePostProps) {
   }
 
   //  get our attributes from our helper blogMdxUtils utils function
-  const { title, description, date, index, content } =
+  const { title, description, date, index, content, rawSource } =
     await getMDXContentAndFrontMatter(source);
 
   //  Get the headings from our mdx content to pass to our TableOfContents component
@@ -51,6 +51,7 @@ export default async function BlogPagePost({ params }: BlogPagePostProps) {
             date={date}
             index={index}
             content={content}
+            rawSource={rawSource}
           />
           <div className="mb-6">
             <KofiButton />

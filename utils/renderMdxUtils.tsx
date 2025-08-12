@@ -35,10 +35,11 @@ export async function getPostFilePaths(contentSource: string) {
  */
 export async function getMDXContentAndFrontMatter(source: Buffer) {
   const components = MDXComponents({});
+  const rawSource = source.toString("utf8");
 
   // Parse content and frontmatter, with components for custom rendering
   const { content, frontmatter } = await compileMDX({
-    source,
+    source: rawSource,
     options: {
       mdxOptions: {
         rehypePlugins: [],
@@ -56,6 +57,7 @@ export async function getMDXContentAndFrontMatter(source: Buffer) {
     tags: frontmatter.tags as string[],
     thumbnail: frontmatter.thumbnail as string | undefined,
     content,
+    rawSource,
   };
 }
 
