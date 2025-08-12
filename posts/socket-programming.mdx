@@ -40,7 +40,7 @@ Think of it like a building's street address (IP address) and the individual apa
 Below this is how the steps in the network programming will look in C:
 
 ```c
-// server.js
+// server.c
 
 #define MAX_PACKET_SIZE 1024
 #define PORT 8080
@@ -98,9 +98,9 @@ In the while loop, we are getting the bytes then receiving it then storing to `i
 However, after reading a lot of the <Link href="https://nodejs.org/api/net.html" external>`Net` documentation for node.js</Link> 
 to open up a socket I was a bit stumped as most of this is really abstracted away from us.
 
-Of course, I will have figured it out sooner if not for doing some more research, the c program interface
-is is what is going down under the hood at least from what it seems and someone may correct me in the comments 
-and I will update this blog entry!
+Of course, I will have figured it out sooner if I have done some more thorough research. 
+The c program we went first is what is going down under the hood, at least from what it seems, 
+someone may correct me in the comments and I will update this blog entry!
 
 In node.js using the `Net` by creating the server, the same ip address and port number to hook into that connection
 
