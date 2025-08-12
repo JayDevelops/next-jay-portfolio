@@ -1,0 +1,202 @@
+---
+title: "Adding a Copy Markdown Button in MDX Content"
+description: "Discussing how to add markdown copy buttons at the top of your content, suitable for markdown content platforms and discussing issues that may arise."
+date: "2025-08-11"
+tags:
+  - next.js
+  - react.js
+  - mdx
+---
+
+## Most Recent Problem
+Recently, there has been some projects where I have noticed there is a "Copy Markdown" at the very top of various pages
+and this is most notable thanks to <Link href="https://fumadocs.dev/" external>FumaDocs</Link> where I have
+used for documentation to be able to document projects.
+
+The built in "page actions" react component is great as it can copy the markdown of the page source and you 
+are able to pass in the URL to many AI platforms to discuss any follow up questions regarding the content
+or adding it to your knowledge base for said AI platform.
+
+
+```bash
+npx @fumadocs/cli add ai-page-actions
+```
+
+Then we can add into a Fumadocs project as so:
+```tsx
+// app/docs/[[...slug]]/page.tsx
+<div className="flex flex-row gap-2 items-center border-b pt-2 pb-6">
+  <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
+</div>
+```
+
+### Issues for FumaDocs Markdown Copy Button
+The latter component is great for most use cases but what if your server, consecutively your application, is closed off
+to the world by a pesky firewall due to some security reasons and is only able to be 
+accessed on the same network? As I realized, this built in react component is broken
+even to just copy the markdown of the page source as it cannot make the external API call.
+
+Hence, I was left with two hypothetical options.
+1. Lessen the firewall rules and/or allow this API call
+2. Built my own copy markdown page that will run on the client
+
+Therefore as any software developer, I went with the second and most stubborn option and I will also 
+like to add it to my own content as I have seen my blog is popping up on some AI search engines.
+Therefore let's make it simpler and just copy the markdown for y'all to use and ask follow up questions about!
+
+### Copy to Clipboard React Hook
+Using a react hook allows us to be able to use this functionality to other components and keep everything tidy if it does one thing,
+for example useState and useEffect are also react hooks, without writing entire class components! Read more about react hooks
+at this <Link href="https://daily.dev/blog/react-hooks-explained-simply" external>React Hooks Explained Simply article.</Link>
+
+We will go ahead and write a 'use-copy-to-clipboard.ts' react hook in order to be able 
+to copy within the client instead of server side through some clipboard API! 
+
+```ts 
+// hooks/useCopyToClipboard.ts
+"use client";
+
+import * as React from "react";
+
+interface CopyToClipBoardProps {
+  timeOut: number;
+  onCopy: () => void;
+}
+
+export function useCopyToClipboard({ timeOut, onCopy }: CopyToClipBoardProps) {
+  const [isCopied, setIsCopied] = React.useState<boolean>(false);
+
+  const copyToClipboard = (value: string) => {
+    if (typeof window === "undefined" || !navigator.clipboard.writeText) {
+      return;
+    }
+
+    if (!value) {
+      return;
+    }
+
+    navigator.clipboard.writeText(value).then(() => {
+      setIsCopied(true);
+
+      if (onCopy) {
+        onCopy();
+      }
+
+      if (timeOut !== 0) {
+        setTimeout(() => {
+          setIsCopied(false);
+        }, timeOut);
+      }
+    }, console.error);
+  };
+  return { isCopied, copyToClipboard };
+}
+```
+
+### Creating the Copy Button Component
+Next we create the copy button component, feel free to extend this functionality by adding a loading state
+or styling it any way you like! 
+
+```tsx
+"use client";
+
+import { useCopyToClipboard } from "@/hooks/use-copy-toclipboard";
+import { Button } from "./ui/button";
+import { Check, Copy } from "lucide-react";
+
+export function CopyPageSource({
+  rawSource,
+  className,
+}: {
+  rawSource: string;
+  className?: string;
+}) {
+  // Initialize a timeout and console log for debugging, otherwise leave blank
+  const { copyToClipboard, isCopied } = useCopyToClipboard({
+    timeOut: 2000,
+    onCopy: () => console.log("Copied!"),
+  });
+
+  return (
+    <Button
+      className={className}
+      variant="secondary"
+      onClick={() => copyToClipboard(rawSource)}
+    >
+      {isCopied ? <Check /> : <Copy />} Copy Page
+    </Button>
+  );
+}
+```
+
+### Grabbing Raw Source from MDX
+For my portfolio project specifically, this will have to be grabbed through the buffer source then 
+casting it as a string with utf8 character encoding. However this will vary case by case, for example with Fumadocs
+we simply just pass the page.data.content! For my button component specifically it is awaiting a type of string.
+
+```typescript
+export async function getMDXContentAndFrontMatter(source: Buffer) {
+  const components = MDXComponents({});
+  const rawSource = source.toString("utf8");
+
+  // Parse content and frontmatter, with components for custom rendering
+  const { content, frontmatter } = await compileMDX({
+    source: rawSource,
+    options: {
+      mdxOptions: {
+        rehypePlugins: [],
+      },
+      parseFrontmatter: true,
+    },
+    components: components,
+  });
+
+  return {
+    title: frontmatter.title as string,
+    description: frontmatter.description as string,
+    date: frontmatter.date as string,
+    index: frontmatter.index as number,
+    tags: frontmatter.tags as string[],
+    thumbnail: frontmatter.thumbnail as string | undefined,
+    content,
+    rawSource,
+  };
+}
+```
+
+### Passing MDX to Copy Component
+Depending where you are passing your mdx content to, go ahead and now just destructure the rawSource you are returning
+from your helper method or heck if you are calling it within the same function component! Just make sure to grab that 
+raw source to pass to the Copy Page Source component.
+
+Below is an example of how it will look like in a blog page.tsx where you are grabbing it from a slugified route in next.js!
+
+```tsx
+import { CopyPageSource } from "@/components/CopyPageSource";
+import KofiButton from "@/component/KofiButton";
+
+export default async function BlogPagePost({ params }: BlogPagePostProps) {
+  const { title, description, date, index, content, rawSource } = await getMDXContentAndFrontMatter(source);
+  return (
+    <div>
+    {/* other code */}
+      <div className="flex flex-row items-center space-x-4">
+          <KofiButton />
+          <CopyPageSource rawSource={rawSource} />
+      </div>
+    {/* other code */}
+    </div>
+  )
+}
+```
+### Final Thoughts
+Sometimes we are limited as to how our applications are deployed/hosted so we have to do some additional research in order 
+to come around with a workaround and this simple yet drastic way to think about it has helped me understand 
+differences in client vs server side code in Next.js.
+
+With this copy markdown component you have the following benefits...
+- Direct, offline-friendly copy-to-clipboard functionality 
+- Runs on the client side, perfect for private firewalled applications
+- Easily extendable to refactor for other MDX frameworks!
+
+Until next time, Jay :)

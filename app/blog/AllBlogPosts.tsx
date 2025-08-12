@@ -5,6 +5,7 @@ import type { Post } from "@/utils/renderMdxUtils";
 import TagFilter from "@/components/TagFilter";
 import { extractAllTags, filterPostsByTags } from "@/utils/tagUtils";
 import Link from "next/link";
+import { convertDateToString } from "@/lib/date";
 
 interface AllBlogPostsProps {
   sortedBlogs: Post[];
@@ -104,6 +105,7 @@ interface BlogPostItemProps {
 
 function BlogPostItem({ post, viewMode }: BlogPostItemProps) {
   const isCard = viewMode === "card";
+  const displayDate = convertDateToString(post.metadata.date);
 
   return (
     <article
@@ -116,14 +118,7 @@ function BlogPostItem({ post, viewMode }: BlogPostItemProps) {
           <Link href={`/blog/${post.slug}`}>{post.metadata.title}</Link>
         </h2>
 
-        <p className="text-sm text-muted-foreground">
-          {new Date(post.metadata.date).toLocaleDateString("en-US", {
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}
-        </p>
+        <p className="text-sm text-muted-foreground">{displayDate}</p>
 
         {post.metadata.description && (
           <p className="text-muted-foreground">{post.metadata.description}</p>
