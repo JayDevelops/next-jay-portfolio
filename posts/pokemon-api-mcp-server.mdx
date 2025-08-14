@@ -1,0 +1,231 @@
+---
+title: "Building a Pokemon API MCP Server"
+description: "Exploring how to connect an API endpoint to a Model Context Protocol server to be able to use in Claude Desktop."
+date: "2025-08-14"
+tags:
+  - ai
+  - llm
+  - typescript
+  - node.js
+---
+
+## Overview 
+
+Recently I have been trying to find solutions to be able to connect an API resource then have that parsed JSON
+to be queried into some type of LLM/chatbot to be able to get my questions answered, this is useful for the following use cases:
+- Querying content from a blog, documentation site, etc then chatbot will answer the output response
+- Querying the current weather then chatbot will answer the response in plain english
+- Querying the current price of a stock share then the bot will reply
+
+After diving deep into the MCP documentation and experimenting with various implementations, 
+I decided to build something fun yet practical to showcase how you can plug in an API endpoint,
+transform that GET response into some plain english where an LLM can take over to respond to you in seconds.
+
+I went ahead and built a simple PokeAPI MCP server to demonstrate the core concepts of MCP but 
+also showcases how to integrate external APIs into Claude's ecosystem.
+
+The flexibility to have Claude directly query Pokemon data, analyze stats, 
+and explore evolution chains without any manual API calls was something I wanted to explore. 
+Plus, who doesn't love Pokemon data?
+
+### What is the Model Context Protocol?
+Before diving into the implementation, it's worth understanding that MCP is an open standard that enables AI assistants 
+like Claude to securely connect to external data sources and tools. 
+
+Think of it as a bridge between Claude and any external system you want to integrate with and having the LLM 
+be the middleman in your search of answers. The protocol defines a standardized way for:
+
+- **Tools:** Functions that Claude can call to perform actions
+- **Resources:** Data sources that Claude can read from
+- **Prompts:** Reusable prompt templates
+
+For this project, I focused primarily on tools, creating three main functions that Claude can use to fetch Pokemon data.
+
+> Read more about MCP <Link href="https://modelcontextprotocol.io/docs/getting-started/intro" external>by reading their documenation</Link>
+
+### Project Architecture
+The Pokemon MCP server is built using TypeScript and leverages the official MCP SDK. Here's the project structure looks like:
+
+```typescript
+// Core server setup using MCP SDK
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+```
+
+The server exposes three main tools:
+
+- **get_pokemon_overviews:** Fetches comprehensive data for multiple Pokemon
+- **get_move_detail:** Retrieves detailed information about specific moves
+- **get_evolution_chain**: Gets complete evolution chains
+
+Each tool is implemented with proper Zod schema validation to ensure type safety and clear parameter definitions.
+
+### Integrating with PokeAPI
+Instead of trying to reinvent the wheel by passing in headers to writing each API endpoint URL by scratch,
+I stumbled upon <Link href="https://github.com/PokeAPI/pokedex-promise-v2" external>pokedex-promise-v2</Link>
+which is a promised node.js wrapper for the <Link href="https://pokeapi.co/" external>PokeAPI</Link> while 
+still maintaining robust error handling.
+
+```typescript
+// Example of fetching Pokemon data in pokemonHelper.ts
+export async function getPokemonOverview(
+  name: string
+): Promise<PokemonOverview | null> {
+  try {
+    const data = await P.getPokemonByName(name);
+    const species = await P.getPokemonSpeciesByName(name);
+    
+    return {
+      properties: {
+        name: data.name,
+        types: data.types.map((t) => t.type.name),
+        stats: data.stats.map((s) => ({
+          stat: s.stat.name,
+          value: s.base_stat,
+        })),
+        description: species.flavor_text_entries?.find(
+          (f) => f.language.name === "en"
+        )?.flavor_text,
+      },
+    };
+  } catch (error) {
+    console.error("Error making pokemon overview request:", error);
+    return null;
+  }
+```
+
+
+### Building Server Tool to Execute Pokemon Overview
+To get the pokemon overview, we will initialize the MCP server and attaching a tool called `get_pokemon_overviews`
+which allows Claude to detect what specific function to run when writing a query within the client.
+
+For example if we query within claude `What is the pokemon overview for 'Bulbausar'`, 
+cluade will use the tool to run the attached asynchronous function.
+
+```typescript
+import {
+  formatPokemonOverview,
+  getPokemonOverview,
+} from "./pokemonHelper.js";
+
+// Create server instance
+const server = new McpServer({
+  name: "pokemon",
+  version: "1.0.0",
+  capabilities: {
+    resources: {},
+    tools: {},
+  },
+});
+
+// getting overviews for multiple pokemon
+server.tool(
+  "get_pokemon_overviews",
+  "Get pokemon overview for multiple pokemons.",
+  {
+    pokemonNames: z
+      .array(z.string().min(2))
+      .describe("Array of Pokémon names, e.g. ['ditto', 'pikachu']"),
+  },
+  async ({ pokemonNames }) => {
+    const overviews = await Promise.all(
+      pokemonNames.map(async (name) => {
+        const overview = await getPokemonOverview(name);
+        if (!overview) return `${name}: Failed to retrieve`;
+        return formatPokemonOverview(overview);
+      })
+    );
+
+    if (overviews.length < 0) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Failed to retrieve pokemon overview for all pokemons.",
+          },
+        ],
+      };
+    }
+
+    return {
+      content: [
+        {
+          type: "text",
+          text: overviews.join("\n\n"),
+        },
+      ],
+    };
+  }
+);
+```
+
+Notice in the async function to `get_pokemon_overviews` we are calling out helper function, exported out of `pokemonHelper.js` file,
+to run that specific API endpoint then we format the response in a converted string as shown below:
+
+```typescript
+//  Helper to format pokemon overview for claude response, returns a formatted string
+export function formatPokemonOverview(
+  pokemonOverview: PokemonOverview
+): string {
+  const props = pokemonOverview.properties;
+
+  const nameLine = `Name: ${props.name || "Unknown"}`;
+  const typesLine = `Types: ${props.types?.join(", ") || "Unknown"}`;
+  const statsLine = `Stats: ${
+    props.stats
+      ?.map((s) => `${s.stat || "Unknown"}: ${s.value ?? "Unknown"}`)
+      .join(", ") || "Unknown"
+  }`;
+  const descriptionLine = `Description: ${props.description || "Unknown"}`;
+
+  return [nameLine, typesLine, statsLine, descriptionLine].join("\n");
+}
+```
+
+### Setup Claude Desktop Integration
+The real magic happens when you connect your MCP server to Claude Desktop. This requires configuring the `claude_desktop_config.json` file
+
+```json
+// Change absolute path to your absolute path but 
+// keep 'build/index.js' as this is the compiled js file
+// change folder structure dependent on your OS
+{
+  "mcpServers": {
+    "pokemon": {
+      "command": "node",
+      "args": ["/absolute/path/to/pokemon-mcp/build/index.js"],
+      "env": {}
+    }
+  }
+}
+```
+
+After restarting Claude Desktop, you'll see the 🔌 icon indicating that MCP servers are connected. 
+From there, you can ask Claude natural language questions like:
+
+"Can you compare the base stats of Charizard and Blastoise?"
+"What's the evolution chain for Eevee?"
+"Tell me about the move Thunderbolt"
+
+Claude seamlessly calls the appropriate tools and presents the data in a conversational format.
+
+
+### Conclusion
+Go ahead and play around by cloning the repo yourself over on 
+<Link href="https://github.com/JayDevelops/poke-mcp" external>https://github.com/JayDevelops/poke-mcp</Link>
+where you can make the enhancements I wanted to add such as:
+
+- Adding MCP resources for browing pokemon data
+- Implement damage calculation by implementing custom logic and/or type effectiveness tools
+- Add a persistent caching system to reduce API calls and improve response times for duplicated requests
+
+Either case, building this MCP server taught me a lot as it was a great starting place to explore the MCP ecosystem 
+and I hope this can easily translate to other similar tools out there. The most exciting use case for this 
+is to be able to query custom/private content not trained by most LLM's or fastly rapid changing data due to LLM's
+not being trained every day on new information.
+
+Whether you're connecting to databases, API's, or custom logic for any needs such as business or personal then definetely
+check out MCP and leave a comment on what you plan to build out with it!
+
+Until next time, Jay :)
+
