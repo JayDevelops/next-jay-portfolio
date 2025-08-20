@@ -1,14 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
-import type { BlogPost } from "@/lib/strapiQueries";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, User } from "lucide-react";
+import {
+  Key,
+  ReactElement,
+  JSXElementConstructor,
+  ReactNode,
+  ReactPortal,
+  AwaitedReactNode,
+} from "react";
+import { SimplifiedBlogPost } from "@/lib/strapiTypes";
 
-interface BlogCardProps {
-  post: BlogPost;
-}
-
-export function BlogCard({ post }: BlogCardProps) {
+export function BlogCard({ post }: { post: SimplifiedBlogPost }) {
   const publishedDate = new Date(post.date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -61,9 +65,9 @@ export function BlogCard({ post }: BlogCardProps) {
 
         {post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            {post.tags.map((tag) => (
-              <Badge key={tag.id} variant="secondary" className="text-xs">
-                {tag.name}
+            {post.tags.map((tag: string) => (
+              <Badge key={`tag-${tag}`} variant="secondary" className="text-xs">
+                {tag}
               </Badge>
             ))}
           </div>
