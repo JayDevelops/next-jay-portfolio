@@ -1,23 +1,45 @@
 import { slugify } from "./slugify";
 import { strapiClient } from "./strapiClient";
-import { SimplifiedBlogPost, StrapiBlogPost } from "./strapiTypes";
+import {
+  BlogCategory,
+  SimplifiedBlogPost,
+  StrapiBlogPost,
+} from "./strapiTypes";
 
 // getBlogCollection returns blog collection
 export async function getBlogCollection() {
   return await strapiClient.collection("blogs");
 }
 
+//  Function to return categories collection
+export async function getAllCategories(): Promise<BlogCategory[] | undefined> {
+  const categories = strapiClient.collection("categories");
+
+  const allCategories = await categories.find();
+
+  return allCategories.data as BlogCategory[];
+}
+
 /*
  * Helper functions to get certain articles or other types from strapi cms via strapiClient.
  */
-export async function getAllBlogPosts(): Promise<
-  SimplifiedBlogPost[] | undefined
-> {
+export async function getAllBlogPosts(
+  categoryName?: string | null | undefined
+): Promise<SimplifiedBlogPost[] | undefined> {
   const blogs = await getBlogCollection();
   const allBlogs = await blogs.find({
     locale: "en",
     sort: "date:desc",
     populate: "*",
+    filters: categoryName
+      ? {
+          category: {
+            name: {
+              $eqi: categoryName,
+            },
+          },
+        }
+      : undefined,
   });
 
   if (!allBlogs?.data) return undefined;

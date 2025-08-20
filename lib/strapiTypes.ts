@@ -97,3 +97,9 @@ export interface SimplifiedBlogPost {
   };
   tags: string[];
 }
+
+export interface BlogCategory extends StrapiBaseFields {
+  name: string;
+  slug: string | null;
+  description: string;
+}
