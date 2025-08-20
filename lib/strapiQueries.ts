@@ -20,8 +20,6 @@ export async function getAllBlogPosts(): Promise<
     populate: "*",
   });
 
-  console.log("all raw blogs:", allBlogs.data);
-
   if (!allBlogs?.data) return undefined;
 
   // Transform the data to add slug and flatten structure
