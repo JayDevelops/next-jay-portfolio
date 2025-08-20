@@ -132,9 +132,25 @@ function transformStrapiBlogPost(post: StrapiBlogPost): SimplifiedBlogPost {
       description: post.category.description,
     },
     thumbnail: {
-      url: post.thumbnail.url,
+      url: getFullImageUrl(post.thumbnail.url),
       alternativeText: post.thumbnail.alternativeText,
     },
     tags: post.tags.tags,
   };
+}
+
+// Helper function to get full image URL
+function getFullImageUrl(imageUrl: string): string {
+  // If URL is already absolute, return as is
+  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+    return imageUrl;
+  }
+
+  // If URL starts with /, it's relative to domain
+  if (imageUrl.startsWith("/")) {
+    return `${process.env.STRAPI_BASE_URL}${imageUrl}`;
+  }
+
+  // Otherwise, assume it needs full path
+  return `${process.env.STRAPI_BASE_URL}/${imageUrl}`;
 }

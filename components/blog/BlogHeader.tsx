@@ -39,16 +39,18 @@ export function BlogHeader({ post, readingTime }: BlogHeaderProps) {
 
         <p className="text-lg text-muted-foreground">{post.description}</p>
 
-        {post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {post.tags.map((tag) => (
-              <Badge key={`tag-${tag}`} variant="outline">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        )}
-        <KofiButton className="" />
+        <div className="space-y-4">
+          {post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {post.tags.map((tag) => (
+                <Badge key={`tag-${tag}`} variant="outline">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          )}
+          <KofiButton className="inline-block md:hidden" />
+        </div>
       </div>
     </header>
   );

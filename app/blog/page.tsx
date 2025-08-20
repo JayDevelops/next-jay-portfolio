@@ -15,19 +15,18 @@ export default async function Blog() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <header className="mb-12 text-center">
+      <header className="mb-8 text-center">
         <h2 className="text-4xl font-bold mb-4">My Thoughts</h2>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Exploring ideas, sharing insights, and documenting my journey in
-          software development and beyond.
+          Exploring ideas, sharing insights, personal stories, and documenting
+          my journey in all aspects of software development.
         </p>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {allBlogs.map((post: SimplifiedBlogPost) => (
-            <BlogCard key={`post-${post.id}`} post={post} />
-          ))}
-        </div>
       </header>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {allBlogs.map((post: SimplifiedBlogPost) => (
+          <BlogCard key={`post-${post.id}`} post={post} />
+        ))}
+      </div>
     </div>
   );
 }
