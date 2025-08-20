@@ -1,6 +1,3 @@
-import { getAllContent } from "@/utils/renderMdxUtils";
-import type { Post } from "@/utils/renderMdxUtils";
-import AllBlogPosts from "@/app/blog/AllBlogPosts";
 import { getRecentBlogPosts } from "@/lib/strapiQueries";
 import { SimplifiedBlogPost } from "@/lib/strapiTypes";
 import { Input } from "@/components/ui/input";

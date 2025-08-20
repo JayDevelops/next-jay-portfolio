@@ -48,7 +48,7 @@ export function BlogHeader({ post, readingTime }: BlogHeaderProps) {
             ))}
           </div>
         )}
-        <KofiButton />
+        <KofiButton className="" />
       </div>
     </header>
   );
