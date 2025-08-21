@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { BlogCard } from "@/components/blog/BlogCard";
 import CategoriesFilter from "./CategoriesFilter";
+import { redirect } from "next/navigation";
 
 export default async function Blog({
   searchParams,
