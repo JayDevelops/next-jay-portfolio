@@ -109,6 +109,15 @@ export async function getBlogPostsByCategory(
   );
 }
 
+export async function getBlogPostBySlug(
+  slug: string
+): Promise<SimplifiedBlogPost | undefined> {
+  const allPosts = await getAllBlogPosts();
+  if (!allPosts) return undefined;
+
+  return allPosts.find((post) => post.slug === slug);
+}
+
 function transformStrapiBlogPost(post: StrapiBlogPost): SimplifiedBlogPost {
   return {
     id: post.id,
