@@ -3,8 +3,8 @@ import { processMDXContent } from "@/lib/mdx-strapi";
 import { getAllBlogPosts, getBlogPostBySlug } from "@/lib/strapiQueries";
 import { BlogHeader } from "@/components/blog/BlogHeader";
 import { TableOfContents } from "@/components/blog/TableOfContents";
-import GiscusComments from "../../../components/blog/GiscusComments";
-import ShareBlogPost from "../../../components/blog/ShareBlogPost";
+import GiscusComments from "@/components/blog/GiscusComments";
+import ShareBlogPost from "@/components/blog/ShareBlogPost";
 
 interface BlogPostPageProps {
   params: {
