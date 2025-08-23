@@ -16,7 +16,7 @@ export default function BlogSearchGroup({
       {blogs?.map((blog) => (
         <CommandItem
           className="hover:cursor-pointer"
-          onSelect={() => handleSelect(`${blog.slug}`)}
+          onSelect={() => handleSelect(`/blog/${blog.slug}`)}
           key={blog.slug}
           asChild
         >
