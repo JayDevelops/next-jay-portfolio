@@ -158,3 +158,20 @@ function getFullImageUrl(imageUrl: string): string {
   // Otherwise, assume it needs full path
   return `${process.env.STRAPI_BASE_URL}/${imageUrl}`;
 }
+
+//  getBlogsForSearchModal will be used to grab blog posts for search modal
+export async function getBlogsForSearchModal() {
+  const blogs = await getBlogCollection();
+
+  const allBlogs = await blogs.find({
+    locale: "en",
+    sort: "date:desc",
+    populate: "*",
+  });
+
+  if (!allBlogs?.data) return undefined;
+
+  return allBlogs.data.map((post) =>
+    transformStrapiBlogPost(post as StrapiBlogPost)
+  );
+}

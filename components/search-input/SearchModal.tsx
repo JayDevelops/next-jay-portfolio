@@ -16,8 +16,14 @@ import { usePathname } from "next/navigation";
 import { menuLinks } from "@/components/Navigation/MenuLinks";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import BlogSearchGroup from "./BlogSearchGroup";
+import { SimplifiedBlogPost } from "@/lib/strapiTypes";
 
-export default function SearchModal() {
+export default function SearchModal({
+  blogs,
+}: {
+  blogs: SimplifiedBlogPost[] | undefined;
+}) {
   const [open, setOpen] = useState<boolean>(false);
   const pathName = usePathname();
 
@@ -61,22 +67,7 @@ export default function SearchModal() {
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          {/*<CommandGroup heading="Blog Posts">*/}
-          {/*    {allPosts.filter(post => `${post.url}` !== pathName).map((post) => (*/}
-          {/*        <CommandItem*/}
-          {/*            asChild*/}
-          {/*            key={post.url}*/}
-          {/*            value={post.title}*/}
-          {/*            onSelect={() => handleSelect(`${post.url}`)}*/}
-          {/*            className="hover:cursor-pointer"*/}
-          {/*        >*/}
-          {/*            <Link href={`${post.url}`}>*/}
-          {/*                <NewspaperIcon className="mr-2 h-4 w-4" />*/}
-          {/*                {post.title}*/}
-          {/*            </Link>*/}
-          {/*        </CommandItem>*/}
-          {/*    ))}*/}
-          {/*</CommandGroup>*/}
+          <BlogSearchGroup handleSelect={handleSelect} blogs={blogs} />
           <CommandSeparator />
           <CommandGroup heading="Main Pages">
             {menuLinks
