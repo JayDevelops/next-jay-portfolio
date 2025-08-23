@@ -5,6 +5,8 @@ import { BlogHeader } from "@/components/blog/BlogHeader";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import GiscusComments from "@/components/blog/GiscusComments";
 import ShareBlogPost from "@/components/blog/ShareBlogPost";
+import { draftMode } from "next/headers";
+import { SimplifiedBlogPost } from "@/lib/strapiTypes";
 
 interface BlogPostPageProps {
   params: {
@@ -23,7 +25,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps) {
-  const post = await getBlogPostBySlug(params.slug);
+  const post = await getBlogPostBySlug(params.slug, undefined);
 
   if (!post) {
     return {
@@ -59,9 +61,15 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getBlogPostBySlug(params.slug);
   // change scroll offset to add right scroll to height in table of contents
   const scrollOffSet: number = 80;
+
+  const { isEnabled: isDraftMode } = draftMode();
+  const status = isDraftMode ? "draft" : "published";
+  const post: SimplifiedBlogPost | undefined = await getBlogPostBySlug(
+    params.slug,
+    status
+  );
 
   if (!post) {
     notFound();

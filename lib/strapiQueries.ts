@@ -110,12 +110,25 @@ export async function getBlogPostsByCategory(
 }
 
 export async function getBlogPostBySlug(
-  slug: string
+  slug: string,
+  status: "draft" | "published" | undefined
 ): Promise<SimplifiedBlogPost | undefined> {
-  const allPosts = await getAllBlogPosts();
-  if (!allPosts) return undefined;
+  const blogs = await getBlogCollection();
 
-  return allPosts.find((post) => post.slug === slug);
+  const allBlogs = await blogs.find({
+    locale: "en",
+    sort: "date:desc",
+    populate: "*",
+    status: status,
+  });
+
+  if (!allBlogs?.data) return undefined;
+
+  const transformedBlogs = allBlogs.data.map((post) =>
+    transformStrapiBlogPost(post as StrapiBlogPost)
+  );
+
+  return transformedBlogs.find((blog) => blog.slug === slug);
 }
 
 function transformStrapiBlogPost(post: StrapiBlogPost): SimplifiedBlogPost {
