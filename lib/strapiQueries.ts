@@ -152,6 +152,7 @@ function transformStrapiBlogPost(post: StrapiBlogPost): SimplifiedBlogPost {
       url: getFullImageUrl(post.thumbnail.url),
       alternativeText: post.thumbnail.alternativeText,
     },
+    rawSource: post.rawSource,
     tags: post.tags.tags,
   };
 }

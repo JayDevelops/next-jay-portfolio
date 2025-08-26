@@ -1,15 +1,16 @@
 import { SimplifiedBlogPost } from "@/lib/strapiTypes";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock } from "lucide-react";
-import Image from "next/image";
 import KofiButton from "./KofiButton";
+import { CopyPageSource } from "../CopyPageSource";
 
 interface BlogHeaderProps {
   post: SimplifiedBlogPost;
   readingTime: number;
+  pageSource?: string;
 }
 
-export function BlogHeader({ post, readingTime }: BlogHeaderProps) {
+export function BlogHeader({ post, readingTime, pageSource }: BlogHeaderProps) {
   const publishedDate = new Date(post.date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -49,7 +50,10 @@ export function BlogHeader({ post, readingTime }: BlogHeaderProps) {
               ))}
             </div>
           )}
-          <KofiButton className="inline-block md:hidden" />
+          <div className="md:hidden flex flex-row items-center gap-4">
+            <KofiButton />
+            {pageSource && <CopyPageSource rawSource={pageSource} />}
+          </div>
         </div>
       </div>
     </header>

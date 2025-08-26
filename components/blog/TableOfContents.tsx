@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import KofiButton from "./KofiButton";
+import { CopyPageSource } from "../CopyPageSource";
 
 interface Heading {
   depth: number;
@@ -11,12 +12,14 @@ interface Heading {
 
 interface TableOfContentsProps {
   headings: Heading[];
-  scrollOffset?: number; // Add this prop to customize offset
+  scrollOffset?: number;
+  rawSource?: string;
 }
 
 export function TableOfContents({
   headings,
   scrollOffset = 100,
+  rawSource,
 }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>("");
 
@@ -73,7 +76,7 @@ export function TableOfContents({
   return (
     <nav className="sticky top-16">
       <h3 className="font-semibold mb-4">Table of Contents</h3>
-      <div className="space-y-6">
+      <div className="space-y-4">
         <ul className="space-y-2 text-sm">
           {headings.map((heading) => (
             <li key={heading.slug}>
@@ -97,6 +100,7 @@ export function TableOfContents({
           ))}
         </ul>
         <KofiButton />
+        {rawSource && <CopyPageSource rawSource={rawSource} />}
       </div>
     </nav>
   );

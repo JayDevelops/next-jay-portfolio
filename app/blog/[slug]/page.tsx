@@ -7,6 +7,7 @@ import GiscusComments from "@/components/blog/GiscusComments";
 import ShareBlogPost from "@/components/blog/ShareBlogPost";
 import { draftMode } from "next/headers";
 import { SimplifiedBlogPost } from "@/lib/strapiTypes";
+import { CopyPageSource } from "@/components/CopyPageSource";
 
 interface BlogPostPageProps {
   params: {
@@ -70,6 +71,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     params.slug,
     status
   );
+  const rawSource = post?.rawSource;
 
   if (!post) {
     notFound();
@@ -80,7 +82,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <div className="container mx-auto py-8">
       <div className="max-w-4xl mx-auto">
-        <BlogHeader post={post} readingTime={processedPost.readingTime} />
+        <BlogHeader
+          post={post}
+          readingTime={processedPost.readingTime}
+          pageSource={rawSource}
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <article className="lg:col-span-3 prose prose-lg dark:prose-invert max-w-none">
@@ -91,6 +97,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <TableOfContents
               headings={processedPost.headings}
               scrollOffset={scrollOffSet}
+              rawSource={rawSource}
             />
           </aside>
         </div>

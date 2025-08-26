@@ -14,7 +14,7 @@ export interface StrapiImage extends StrapiBaseFields {
   caption: string | null;
   width: number;
   height: number;
-  formats: Record<string, any>; // Strapi generates different image formats
+  formats: Record<string, any>;
   hash: string;
   ext: string;
   mime: string;
@@ -48,8 +48,8 @@ export interface StrapiBlogPost extends StrapiBaseFields {
   title: string;
   content: string;
   description: string;
-  date: string; // ISO date string
-  rawSource: string; // The raw MDX content
+  date: string;
+  rawSource: string;
   tags: BlogTags;
   category: BlogCategory;
   thumbnail: StrapiImage;
@@ -91,6 +91,7 @@ export interface SimplifiedBlogPost {
     name: string;
     description: string;
   };
+  rawSource: string;
   thumbnail: {
     url: string;
     alternativeText: string | null;
