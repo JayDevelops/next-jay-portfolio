@@ -1,23 +1,51 @@
-import { getAllContent } from "@/utils/renderMdxUtils";
-import type { Post } from "@/utils/renderMdxUtils";
-import AllBlogPosts from "@/app/blog/AllBlogPosts";
+import {
+  getAllBlogPosts,
+  getAllCategories,
+  getRecentBlogPosts,
+} from "@/lib/strapiQueries";
+import { SimplifiedBlogPost } from "@/lib/strapiTypes";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import { BlogCard } from "@/components/blog/BlogCard";
+import CategoriesFilter from "./CategoriesFilter";
+import { redirect } from "next/navigation";
 
-export default async function Blog() {
-  const blogDirectory = "/posts";
-  const allBlogs: Post[] = await getAllContent(blogDirectory);
+export default async function Blog({
+  searchParams,
+}: {
+  searchParams: { category?: string };
+}) {
+  // const blogDirectory = "/posts";
+  const category = searchParams.category;
+  const allBlogs: SimplifiedBlogPost[] | undefined = await getAllBlogPosts(
+    category
+  );
+  const categories = await getAllCategories();
 
   if (!allBlogs) {
     return <p>No blog posts found</p>;
   }
 
-  // Sort blogs by date (newest first)
-  const sortedBlogs: Post[] = allBlogs.sort((a, b) => {
-    return (
-      new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime()
-    );
-  });
+  return (
+    <div className="container mx-auto px-4 py-6">
+      <header className="mb-4 text-center">
+        <h2 className="text-3xl font-bold mb-2">My Thoughts</h2>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Exploring ideas, sharing insights, personal stories, and documenting
+          my journey in all aspects of software development.
+        </p>
+      </header>
 
-  return <AllBlogPosts sortedBlogs={sortedBlogs} />;
+      <CategoriesFilter categories={categories} category={category} />
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {allBlogs.map((post: SimplifiedBlogPost) => (
+          <BlogCard key={`post-${post.id}`} post={post} />
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export const dynamic = "force-static";
+// export const dynamic = "force-static";
+export const revalidate = 3600;

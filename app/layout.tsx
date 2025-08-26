@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import "@code-hike/mdx/dist/index.css";
 import { cn } from "@/lib/utils";
 import PlausibleWrapper from "@/components/PlausibleWrapper";
+import NavigationWrapper from "@/components/Navigation/NavigationWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -84,7 +85,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <div className="flex flex-col bg-background max-w-6xl mx-auto">
-              <Navigation />
+              <NavigationWrapper />
               <main className="flex-auto min-w-0 flex flex-col px-2 md:px-0">
                 {children}
               </main>

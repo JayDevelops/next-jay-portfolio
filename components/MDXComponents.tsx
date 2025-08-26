@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { highlight } from "sugar-high";
 import Link from "next/link";
 import Image from "next/image";
+import { slugify } from "@/lib/slugify";
 
 export function MDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -94,14 +95,3 @@ const Heading = ({
     )
   );
 };
-
-function slugify(str: React.ReactNode) {
-  return str!
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/&/g, "-and-")
-    .replace(/[^\w-]+/g, "")
-    .replace(/--+/g, "-");
-}

@@ -13,7 +13,7 @@ import {
   EmailShareButton,
 } from "react-share";
 
-export default function ShareButtons({
+export default function ShareBlogPost({
   url,
   title,
   className,
