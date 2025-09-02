@@ -59,7 +59,7 @@ export function DownloadResumeButton() {
   return (
     <Button asChild variant="outline">
       <Link
-        href="/static/JesusPerez_SoftwareEngineer_Resume2024.pdf"
+        href="/static/JesusPerez-FullStackSoftwareEngineer.pdf"
         target="_blank"
       >
         Download Resume&nbsp;
