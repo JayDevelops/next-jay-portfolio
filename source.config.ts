@@ -15,7 +15,7 @@ export const blogPosts = defineCollections({
   schema: frontmatterSchema.extend({
     author: z.string(),
     title: z.string(),
-    date: z.string().or(z.date()),
+    date: z.date(),
     description: z.string().optional(),
   }),
   postprocess: {

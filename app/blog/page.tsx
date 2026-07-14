@@ -25,6 +25,9 @@ export default function Blog() {
   // );
   // const categories = await getAllCategories();
   const allPosts = blog.getPages();
+  const filteredAllPosts = [...allPosts].sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  );
 
   if (!allPosts) {
     return <p>No blog posts found</p>;
@@ -43,7 +46,7 @@ export default function Blog() {
       {/* <CategoriesFilter categories={categories} category={category} /> */}
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-stretch">
-        {allPosts.map((post) => (
+        {filteredAllPosts.map((post) => (
           <BlogCard key={post.url} post={post} />
         ))}
       </div>
