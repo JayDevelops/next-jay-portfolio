@@ -2,6 +2,7 @@
   "name": "next-jay-portfolio",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -26,7 +27,6 @@
     "@react-three/drei": "^9.106.0",
     "@react-three/fiber": "^8.16.8",
     "@strapi/client": "^1.5.0",
-    "@types/mdx": "^2.0.13",
     "@types/nodemailer": "^6.4.15",
     "@uidotdev/usehooks": "^2.4.1",
     "axios": "^1.7.2",
@@ -34,12 +34,13 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "framer-motion": "^11.2.10",
-    "fumadocs-core": "^16.5.2",
+    "fumadocs-core": "^16.6.4",
     "fumadocs-mdx": "^14.2.7",
     "grapheme-splitter": "^1.0.4",
     "hamburger-react": "^2.5.1",
     "lucide-react": "^0.379.0",
     "mailgun-js": "^0.22.0",
+    "mdast-util-to-string": "^4.0.0",
     "next": "16.1.6",
     "next-mdx-remote": "^5.0.0",
     "next-plausible": "^3.12.4",
@@ -62,7 +63,7 @@
     "tailwindcss-animate": "^1.0.7",
     "unified": "^11.0.5",
     "yup": "^1.4.0",
-    "zod": "^3.23.8"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",

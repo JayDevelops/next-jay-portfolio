@@ -23,7 +23,7 @@ function calculateReadingTime(content: string): number {
 
 // Process MDX content from Strapi
 export async function processMDXContent(
-  post: SimplifiedBlogPost
+  post: SimplifiedBlogPost,
 ): Promise<ProcessedPost> {
   const components = MDXComponents({});
 

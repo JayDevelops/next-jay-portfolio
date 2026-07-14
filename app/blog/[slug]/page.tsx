@@ -8,11 +8,10 @@ import ShareBlogPost from "@/components/blog/ShareBlogPost";
 import { draftMode } from "next/headers";
 import { SimplifiedBlogPost } from "@/lib/strapiTypes";
 import { CopyPageSource } from "@/components/CopyPageSource";
+import { blog } from "@/lib/source";
 
 interface BlogPostPageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -63,52 +62,60 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   // change scroll offset to add right scroll to height in table of contents
-  const scrollOffSet: number = 80;
-
-  const { isEnabled: isDraftMode } = draftMode();
-  const status = isDraftMode ? "draft" : "published";
-  const post: SimplifiedBlogPost | undefined = await getBlogPostBySlug(
-    params.slug,
-    status
-  );
-  const rawSource = post?.rawSource;
-
-  if (!post) {
-    notFound();
+  //const scrollOffSet: number = 80;
+  const { slug } = await params;
+  if (!slug) {
+    return notFound();
   }
 
-  const processedPost = await processMDXContent(post);
+  console.log("params slug: ", slug);
+  const page = blog.getPage([slug]);
+  console.log("Page: ", page);
 
-  return (
-    <div className="container mx-auto py-8">
-      <div className="max-w-4xl mx-auto">
-        <BlogHeader
-          post={post}
-          readingTime={processedPost.readingTime}
-          pageSource={rawSource}
-        />
+  //const { isDraftMode } = draftMode();
+  //const status = isDraftMode ? "draft" : "published";
+  // const post: SimplifiedBlogPost | undefined = await getBlogPostBySlug(
+  //   params.slug,
+  //   status,
+  // );
+  // const rawSource = post?.rawSource;
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <article className="lg:col-span-3 prose prose-lg dark:prose-invert max-w-none">
-            {processedPost.compiledContent}
-          </article>
+  // if (!post) {
+  //   notFound();
+  // }
 
-          <aside className="hidden md:block md:col-span-1">
-            <TableOfContents
-              headings={processedPost.headings}
-              scrollOffset={scrollOffSet}
-              rawSource={rawSource}
-            />
-          </aside>
-        </div>
-        <div className="flex pt-4 flex-col space-y-8">
-          <ShareBlogPost
-            url={`https://jesusperez.dev/blog/${params.slug}`}
-            title={post.title}
-          />
-          <GiscusComments />
-        </div>
-      </div>
-    </div>
-  );
+  // const processedPost = await processMDXContent(post);
+
+  // return (
+  //   <div className="container mx-auto py-8">
+  //     <div className="max-w-4xl mx-auto">
+  //       <BlogHeader
+  //         post={post}
+  //         readingTime={processedPost.readingTime}
+  //         pageSource={rawSource}
+  //       />
+
+  //       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+  //         <article className="lg:col-span-3 prose prose-lg dark:prose-invert max-w-none">
+  //           {processedPost.compiledContent}
+  //         </article>
+
+  //         <aside className="hidden md:block md:col-span-1">
+  //           <TableOfContents
+  //             headings={processedPost.headings}
+  //             scrollOffset={scrollOffSet}
+  //             rawSource={rawSource}
+  //           />
+  //         </aside>
+  //       </div>
+  //       <div className="flex pt-4 flex-col space-y-8">
+  //         <ShareBlogPost
+  //           url={`https://jesusperez.dev/blog/${params.slug}`}
+  //           title={post.title}
+  //         />
+  //         <GiscusComments />
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 }

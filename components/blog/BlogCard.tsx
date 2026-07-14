@@ -1,23 +1,31 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, User } from "lucide-react";
-import { SimplifiedBlogPost } from "@/lib/strapiTypes";
+import type { BlogPage } from "@/lib/source";
+import type { BlogData } from "@/lib/source";
 
-export function BlogCard({ post }: { post: SimplifiedBlogPost }) {
-  const publishedDate = new Date(post.date).toLocaleDateString("en-US", {
+interface BlogCardProps {
+  post: BlogPage;
+}
+
+export function BlogCard({ post }: BlogCardProps) {
+  // cast data with specific blog data types
+  const data = post.data as BlogData;
+  const { title, description, date, author } = data;
+
+  // handle dates and read time
+  const publishedDate = new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-
-  // Calculate reading time
-  const readingTime = Math.ceil(post.content.split(/\s+/).length / 200);
+  const dateTime = new Date(date).toISOString();
+  const readingTime: string = data._exports?.readingTime ?? "no reading time";
 
   return (
-    <Link href={`/blog/${post.slug}`} className="group">
-      <article className="group bg-card border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
-        {post.thumbnail && (
+    <Link href={post.url} className="group block h-full">
+      <article className="group flex h-full flex-col overflow-hidden rounded-lg border bg-card transition-all duration-300 hover:shadow-lg">
+        {/* {post.thumbnail && (
           <div className="relative aspect-video overflow-hidden">
             <Image
               src={post.thumbnail.url || "/placeholder.svg"}
@@ -26,45 +34,34 @@ export function BlogCard({ post }: { post: SimplifiedBlogPost }) {
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
           </div>
-        )}
+        )} */}
 
-        <div className="p-6">
-          <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground mb-3">
-            <div className="flex items-center gap-1">
-              <Calendar className="w-4 h-4" />
-              <time dateTime={publishedDate}>{publishedDate}</time>
+        <div className="flex flex-1 flex-col p-6">
+          <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1.5">
+              <Calendar className="h-4 w-4 shrink-0" />
+              <time dateTime={dateTime}>{publishedDate}</time>
             </div>
-            <div className="flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              <span>{readingTime} min read</span>
-            </div>
+            {readingTime && (
+              <div className="flex items-center gap-1.5">
+                <Clock className="h-4 w-4 shrink-0" />
+                <span>{readingTime}</span>
+              </div>
+            )}
           </div>
 
-          <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-            {post.title}
+          <h2 className="mb-2 text-xl font-semibold leading-snug line-clamp-2 transition-colors group-hover:text-primary">
+            {title}
           </h2>
 
-          <p className="text-muted-foreground mb-4 line-clamp-3">
-            {post.description}
+          <p className="mb-4 text-muted-foreground line-clamp-3">
+            {description}
           </p>
 
-          {post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag: string) => (
-                <Badge
-                  key={`tag-${tag}`}
-                  variant="secondary"
-                  className="text-xs"
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          )}
-          {post.author && (
-            <div className="flex items-center gap-1 mt-4">
-              <User className="w-4 h-4" />
-              <p className="text-muted-foreground">By {post.author.name}</p>
+          {author && (
+            <div className="mt-auto flex items-center gap-1.5 pt-2 text-sm text-muted-foreground">
+              <User className="h-4 w-4 shrink-0" />
+              <span>By {author}</span>
             </div>
           )}
         </div>

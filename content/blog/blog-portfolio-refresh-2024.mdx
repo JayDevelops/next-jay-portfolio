@@ -1,11 +1,8 @@
 ---
+author: "Jay Perez"
 title: "Portfolio/Blog Refresh"
 description: "Updating my portfolio using Next.js 14, Static Site Generation (SSG), extended markdown (MDX) content, to optimize and increase performance on my portfolio as well as moving to self-hosting."
 date: "2024-12-14"
-tags:
-  - react.js
-  - next.js
-  - mdx
 ---
 
 ## Overview
@@ -77,7 +74,7 @@ allowing the MDX to render the JSX components correctly.
 A great example is rendering out a button that says <Button>I am a Button</Button>, which is a button that does not do anything.
 By default the button will not render unless it is passed and explicltiy specified, therefore I pass the Button from my UI components folder
 and return the button with the same props as the parent component to then render the `<Button>` component.
-```JSX
+```jsx
   import { Button } from "@/components/ui/button";
   /* rest of code*/
   Button: ({ ...props }) => (
@@ -90,7 +87,7 @@ This goes onto my next point, where I took high note from Lee Robinson so huge c
 plugins did exist for this such as <Link href="https://github.com/rehypejs/rehype-autolink-headings">rehype-autolink-headings</Link> but is no fun because this appears
 at the top of your content and has some drawbacks. I decided to take Lee Robinson's approach where he creates react components to autolink h1 through h6 headings 
 and place them within the slugified id which is exactly what I needed.
-```JSX
+```jsx
 const Heading = ({
   level,
   children,
