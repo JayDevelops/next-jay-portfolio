@@ -36,6 +36,7 @@
     "framer-motion": "^11.2.10",
     "fumadocs-core": "^16.6.4",
     "fumadocs-mdx": "^14.2.7",
+    "fumadocs-ui": "^16.11.4",
     "grapheme-splitter": "^1.0.4",
     "hamburger-react": "^2.5.1",
     "lucide-react": "^0.379.0",

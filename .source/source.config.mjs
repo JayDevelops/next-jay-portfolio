@@ -1,10 +1,10 @@
 // source.config.ts
+import { z } from "zod";
 import {
   defineCollections,
   defineConfig,
   frontmatterSchema
 } from "fumadocs-mdx/config";
-import { z } from "zod";
 
 // lib/fumadoc-remark-plugins/remark-reading-time.ts
 import { toString } from "mdast-util-to-string";
@@ -24,6 +24,7 @@ var remarkReadingTime = (options = {}) => {
 };
 
 // source.config.ts
+import lastModified from "fumadocs-mdx/plugins/last-modified";
 var blogPosts = defineCollections({
   type: "doc",
   dir: "content/blog",
@@ -34,10 +35,12 @@ var blogPosts = defineCollections({
     description: z.string().optional()
   }),
   postprocess: {
-    valueToExport: ["readingTime"]
+    valueToExport: ["readingTime"],
+    includeProcessedMarkdown: true
   }
 });
 var source_config_default = defineConfig({
+  plugins: [lastModified()],
   mdxOptions: {
     remarkPlugins: (v) => [
       [remarkReadingTime, { format: "text" /* Text */ }],

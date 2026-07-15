@@ -3,21 +3,22 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import KofiButton from "./KofiButton";
 import { CopyPageSource } from "../CopyPageSource";
-
-interface Heading {
-  depth: number;
-  text: string;
-  slug: string;
-}
+import { TOCItemType } from "fumadocs-core/toc";
 
 interface TableOfContentsProps {
-  headings: Heading[];
+  toc: TOCItemType[];
   scrollOffset?: number;
   rawSource?: string;
 }
 
+function toId(url: string) {
+  // "#my-heading" -> "my-heading"
+  const cleaned = url.replace(/^#/, "");
+  return cleaned;
+}
+
 export function TableOfContents({
-  headings,
+  toc,
   scrollOffset = 100,
   rawSource,
 }: TableOfContentsProps) {
@@ -32,72 +33,60 @@ export function TableOfContents({
           }
         });
       },
-      { rootMargin: "0% 0% -40% 0%" }
+      { rootMargin: "0% 0% -40% 0%" },
     );
 
-    const headingElements = headings
-      .map((heading) => document.getElementById(heading.slug))
-      .filter(Boolean);
+    const headingElements = toc
+      .map((item) => document.getElementById(toId(item.url)))
+      .filter((el): el is HTMLElement => Boolean(el));
 
-    headingElements.forEach((el) => {
-      if (el) observer.observe(el);
-    });
+    headingElements.forEach((el) => observer.observe(el));
 
     return () => {
-      headingElements.forEach((el) => {
-        if (el) observer.unobserve(el);
-      });
+      headingElements.forEach((el) => observer.unobserve(el));
     };
-  }, [headings]);
+  }, [toc]);
 
-  const handleClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    slug: string
-  ) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
-
-    const element = document.getElementById(slug);
+    const element = document.getElementById(id);
     if (element) {
-      const elementPosition = element.offsetTop;
-      const offsetPosition = elementPosition - scrollOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-
-      // Update URL without triggering default scroll
-      window.history.pushState(null, "", `#${slug}`);
+      const offsetPosition = element.offsetTop - scrollOffset;
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+      window.history.pushState(null, "", `#${id}`);
     }
   };
 
-  if (headings.length === 0) return null;
+  if (toc.length === 0) return null;
 
   return (
     <nav className="sticky top-16">
       <h3 className="font-semibold mb-4">Table of Contents</h3>
       <div className="space-y-4">
         <ul className="space-y-2 text-sm">
-          {headings.map((heading) => (
-            <li key={heading.slug}>
-              <a
-                href={`#${heading.slug}`}
-                onClick={(e) => handleClick(e, heading.slug)}
-                className={cn(
-                  "block py-1 transition-colors hover:text-primary cursor-pointer",
-                  heading.depth === 2 && "pl-0",
-                  heading.depth === 3 && "pl-4",
-                  heading.depth === 4 && "pl-8",
-                  heading.depth === 5 && "pl-12",
-                  activeId === heading.slug
-                    ? "text-primary font-medium"
-                    : "text-muted-foreground"
-                )}
-              >
-                {heading.text}
-              </a>
-            </li>
-          ))}
+          {toc.map((item) => {
+            const id = toId(item.url);
+            return (
+              <li key={item.url}>
+                <a
+                  href={item.url}
+                  onClick={(e) => handleClick(e, id)}
+                  className={cn(
+                    "block py-1 transition-colors hover:text-primary cursor-pointer",
+                    item.depth === 2 && "pl-0",
+                    item.depth === 3 && "pl-4",
+                    item.depth === 4 && "pl-8",
+                    item.depth === 5 && "pl-12",
+                    activeId === id
+                      ? "text-primary font-medium"
+                      : "text-muted-foreground",
+                  )}
+                >
+                  {item.title}
+                </a>
+              </li>
+            );
+          })}
         </ul>
         <KofiButton />
         {rawSource && <CopyPageSource rawSource={rawSource} />}

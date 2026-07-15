@@ -13,6 +13,16 @@ import type * as Config from '../source.config';
 const create = server<typeof Config, import("fumadocs-mdx/runtime/types").InternalTypeConfig & {
   DocData: {
   }
-}>({"doc":{"passthroughs":["extractedReferences"]}});
+} & {
+  DocData: {
+    blogPosts: {
+      /**
+       * Last modified date of document file, obtained from version control.
+       *
+       */
+      lastModified?: Date;
+    },
+  }
+}>({"doc":{"passthroughs":["extractedReferences","lastModified"]}});
 
 export const blogPosts = await create.doc("blogPosts", "content/blog", {"adding-copy-markdown-button-in-mdx-content.mdx": __fd_glob_0, "blog-portfolio-refresh-2024.mdx": __fd_glob_1, "implement-auth-js-in-next-js-app.mdx": __fd_glob_2, "july-update-2025.mdx": __fd_glob_3, "pokemon-api-mcp-server.mdx": __fd_glob_4, "prefix-sum.mdx": __fd_glob_5, "shopify-ui-extension.mdx": __fd_glob_6, "socket-programming.mdx": __fd_glob_7, });

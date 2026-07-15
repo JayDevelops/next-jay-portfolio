@@ -18,12 +18,6 @@ interface BlogIndexPageProps {
 }
 
 export default function Blog() {
-  // // const blogDirectory = "/posts";
-  // const category = searchParams.category;
-  // const allBlogs: SimplifiedBlogPost[] | undefined = await getAllBlogPosts(
-  //   category
-  // );
-  // const categories = await getAllCategories();
   const allPosts = blog.getPages();
   const filteredAllPosts = [...allPosts].sort(
     (a, b) => b.data.date.getTime() - a.data.date.getTime(),
