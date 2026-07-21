@@ -68,14 +68,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head></head>
       <body
         className={cn(
           "flex flex-col md:flex-row lg:mx-auto min-h-screen",
-          inter.className
+          inter.className,
         )}
-        suppressHydrationWarning
       >
         <PlausibleWrapper>
           <ThemeProvider
