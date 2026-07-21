@@ -6,13 +6,8 @@ import { useState } from "react";
 import { MobileNavigation } from "@/components/Navigation/MobileNavigation";
 import { Twirl as Hamburger } from "hamburger-react";
 import SearchModal from "@/components/search-input/SearchModal";
-import { SimplifiedBlogPost } from "@/lib/strapiTypes";
 
-export default function Navigation({
-  blogs,
-}: {
-  blogs?: SimplifiedBlogPost[] | undefined;
-}) {
+export default function Navigation({ blogs }: { blogs?: any }) {
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   return (

@@ -20,7 +20,8 @@ export function BlogCard({ post }: BlogCardProps) {
     day: "numeric",
   });
   const dateTime = new Date(date).toISOString();
-  const readingTime = data._exports?.readingTime ?? "no reading time";
+  const readingTime =
+    (data._exports?.readingTime as string) ?? "no reading time";
 
   return (
     <Link href={post.url} className="group block h-full">

@@ -1,4 +1,3 @@
-import { SimplifiedBlogPost } from "@/lib/strapiTypes";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock } from "lucide-react";
 import KofiButton from "./KofiButton";

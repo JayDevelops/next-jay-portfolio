@@ -1,4 +1,3 @@
-import { BlogCategory } from "@/lib/strapiTypes";
 import Link from "next/link";
 
 type CustomCategory = {
@@ -9,14 +8,14 @@ type CustomCategory = {
   isVirtual?: boolean;
 };
 
-type Category = BlogCategory | CustomCategory;
+type Category = CustomCategory;
 
 export default function CategoriesFilter({
   category,
   categories,
 }: {
   category?: string;
-  categories: BlogCategory[] | undefined;
+  categories: undefined;
 }) {
   const customCategories: CustomCategory[] = [
     { id: "all", name: "All", slug: null, isVirtual: true },

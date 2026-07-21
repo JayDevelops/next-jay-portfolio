@@ -1,8 +1,3 @@
-import {
-  getAllBlogPosts,
-  getAllCategories,
-  getRecentBlogPosts,
-} from "@/lib/strapiQueries";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { BlogCard } from "@/components/blog/BlogCard";

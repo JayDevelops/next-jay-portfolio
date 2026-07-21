@@ -17,13 +17,8 @@ import { menuLinks } from "@/components/Navigation/MenuLinks";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import BlogSearchGroup from "./BlogSearchGroup";
-import { SimplifiedBlogPost } from "@/lib/strapiTypes";
 
-export default function SearchModal({
-  blogs,
-}: {
-  blogs: SimplifiedBlogPost[] | undefined;
-}) {
+export default function SearchModal({ blogs }: { blogs: any }) {
   const [open, setOpen] = useState<boolean>(false);
   const pathName = usePathname();
 
