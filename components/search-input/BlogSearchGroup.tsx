@@ -1,5 +1,4 @@
 "use client";
-import { SimplifiedBlogPost } from "@/lib/strapiTypes";
 import { CommandGroup, CommandItem } from "@/components/ui/command";
 import Link from "next/link";
 import { NewspaperIcon } from "lucide-react";
@@ -8,12 +7,12 @@ export default function BlogSearchGroup({
   blogs,
   handleSelect,
 }: {
-  blogs: SimplifiedBlogPost[] | undefined;
+  blogs: any;
   handleSelect: (href: string) => void;
 }) {
   return (
     <CommandGroup heading="Blog Posts">
-      {blogs?.map((blog) => (
+      {blogs?.map((blog: any) => (
         <CommandItem
           className="hover:cursor-pointer"
           onSelect={() => handleSelect(`/blog/${blog.slug}`)}

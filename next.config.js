@@ -1,4 +1,8 @@
-const { headers } = require("next/headers");
+import { createMDX } from "fumadocs-mdx/next";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const cspHeader = `
@@ -18,6 +22,7 @@ const cspHeader = `
 
 const nextConfig = {
   // your Next.js configuration options here
+  outputFileTracingRoot: __dirname,
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "newstrapi.jesusperez.dev", port: "" },
@@ -41,4 +46,8 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+const withMdx = createMDX({
+  configPath: "source.config.ts",
+});
+
+export default withMdx(nextConfig);

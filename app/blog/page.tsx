@@ -1,51 +1,44 @@
-import {
-  getAllBlogPosts,
-  getAllCategories,
-  getRecentBlogPosts,
-} from "@/lib/strapiQueries";
-import { SimplifiedBlogPost } from "@/lib/strapiTypes";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { BlogCard } from "@/components/blog/BlogCard";
 import CategoriesFilter from "./CategoriesFilter";
 import { redirect } from "next/navigation";
+import { blog } from "@/lib/source";
 
-export default async function Blog({
-  searchParams,
-}: {
-  searchParams: { category?: string };
-}) {
-  // const blogDirectory = "/posts";
-  const category = searchParams.category;
-  const allBlogs: SimplifiedBlogPost[] | undefined = await getAllBlogPosts(
-    category
+// TODO: Come back later to fix categories
+interface BlogIndexPageProps {
+  searchParams: {
+    category?: string;
+  };
+}
+
+export default function Blog() {
+  const allPosts = blog.getPages();
+  const filteredAllPosts = [...allPosts].sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
   );
-  const categories = await getAllCategories();
 
-  if (!allBlogs) {
+  if (!allPosts) {
     return <p>No blog posts found</p>;
   }
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <header className="mb-4 text-center">
-        <h2 className="text-3xl font-bold mb-2">My Thoughts</h2>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+      <header className="mb-12 text-center">
+        <h2 className="text-4xl font-bold mb-2">My Thoughts</h2>
+        <p className="text-lg text-muted-foreground max-w-xl mx-auto">
           Exploring ideas, sharing insights, personal stories, and documenting
           my journey in all aspects of software development.
         </p>
       </header>
 
-      <CategoriesFilter categories={categories} category={category} />
+      {/* <CategoriesFilter categories={categories} category={category} /> */}
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {allBlogs.map((post: SimplifiedBlogPost) => (
-          <BlogCard key={`post-${post.id}`} post={post} />
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-stretch">
+        {filteredAllPosts.map((post) => (
+          <BlogCard key={post.url} post={post} />
         ))}
       </div>
     </div>
   );
 }
-
-// export const dynamic = "force-static";
-export const revalidate = 3600;

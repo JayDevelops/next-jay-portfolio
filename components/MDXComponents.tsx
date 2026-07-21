@@ -3,14 +3,20 @@
  */
 import React from "react";
 import type { MDXComponents } from "mdx/types";
+import defaultMdxComponents from "fumadocs-ui/mdx";
 import { Button } from "@/components/ui/button";
 import { highlight } from "sugar-high";
 import Link from "next/link";
 import Image from "next/image";
 import { slugify } from "@/lib/slugify";
 
-export function MDXComponents(components: MDXComponents): MDXComponents {
+export function getMDXComponents(
+  components: MDXComponents = {},
+): MDXComponents {
   return {
+    // fumadocs default mdx components
+    ...(defaultMdxComponents as MDXComponents),
+    // custom mdx components
     h1: ({ ...props }) => <Heading level={1} {...props} />,
     h2: ({ ...props }) => <Heading level={2} {...props} />,
     h3: ({ ...props }) => <Heading level={3} {...props} />,
@@ -34,44 +40,10 @@ export function MDXComponents(components: MDXComponents): MDXComponents {
     ),
     div: ({ children, ...props }) => <div {...props}>{children}</div>,
     Button: ({ ...props }) => <Button {...props} />,
-    code: (props) => <Code {...props} />,
-    pre: ({ children, ...props }) => <Pre {...props}>{children}</Pre>,
     Image: ({ alt, ...props }) => <Image alt={alt} {...props} />,
     ...components,
-  };
+  } as MDXComponents;
 }
-
-const Pre: React.FC<React.HTMLAttributes<HTMLPreElement>> = ({
-  children,
-  ...props
-}) => {
-  return (
-    <pre
-      className="overflow-x-auto max-w-full text-sm bg-muted p-4 rounded-md border whitespace-pre-wrap break-words sm:whitespace-pre"
-      {...props}
-    >
-      {children}
-    </pre>
-  );
-};
-
-interface CodeProps {
-  children?: React.ReactNode;
-  [key: string]: any;
-}
-
-const Code: React.FC<CodeProps> = ({ children, ...props }) => {
-  const codeString = React.Children.toArray(children).join("").toString();
-  const codeHTML = highlight(codeString);
-
-  return (
-    <code
-      className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold max-w-full overflow-x-auto inline-block"
-      dangerouslySetInnerHTML={{ __html: codeHTML }}
-      {...props}
-    />
-  );
-};
 
 //  Inspired by leerob.io blog refresh where he slugged headings with the link attached
 const Heading = ({
@@ -91,7 +63,7 @@ const Heading = ({
         href: `#${slug}`,
         className: "no-underline hover:underline",
       },
-      children
-    )
+      children,
+    ),
   );
 };

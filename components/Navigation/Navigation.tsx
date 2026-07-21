@@ -6,13 +6,8 @@ import { useState } from "react";
 import { MobileNavigation } from "@/components/Navigation/MobileNavigation";
 import { Twirl as Hamburger } from "hamburger-react";
 import SearchModal from "@/components/search-input/SearchModal";
-import { SimplifiedBlogPost } from "@/lib/strapiTypes";
 
-export default function Navigation({
-  blogs,
-}: {
-  blogs: SimplifiedBlogPost[] | undefined;
-}) {
+export default function Navigation({ blogs }: { blogs?: any }) {
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   return (
@@ -29,7 +24,7 @@ export default function Navigation({
         {/* Right Side of the Navigation Menu */}
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none px-2 md:p-0">
-            <SearchModal blogs={blogs} />
+            {/* <SearchModal blogs={blogs} /> */}
           </div>
 
           <ModeToggle />
