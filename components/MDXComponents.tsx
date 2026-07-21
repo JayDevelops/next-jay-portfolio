@@ -2,7 +2,7 @@
  * MDXComponents pass custom react components to our .mdx files as they cannot render without these references.
  */
 import React from "react";
-import type { MDXComponents as MDXComponentsType } from "mdx/types";
+import type { MDXComponents } from "mdx/types";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import { Button } from "@/components/ui/button";
 import { highlight } from "sugar-high";
@@ -11,11 +11,11 @@ import Image from "next/image";
 import { slugify } from "@/lib/slugify";
 
 export function getMDXComponents(
-  components: MDXComponentsType = {},
-): MDXComponentsType {
+  components: MDXComponents = {},
+): MDXComponents {
   return {
     // fumadocs default mdx components
-    ...defaultMdxComponents,
+    ...(defaultMdxComponents as MDXComponents),
     // custom mdx components
     h1: ({ ...props }) => <Heading level={1} {...props} />,
     h2: ({ ...props }) => <Heading level={2} {...props} />,
@@ -42,7 +42,7 @@ export function getMDXComponents(
     Button: ({ ...props }) => <Button {...props} />,
     Image: ({ alt, ...props }) => <Image alt={alt} {...props} />,
     ...components,
-  };
+  } as MDXComponents;
 }
 
 //  Inspired by leerob.io blog refresh where he slugged headings with the link attached
