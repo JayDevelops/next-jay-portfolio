@@ -1,7 +1,7 @@
 import fs, { promises as fsPromises } from "node:fs";
 import path from "node:path";
 import { compileMDX } from "next-mdx-remote/rsc";
-import { MDXComponents } from "@/components/MDXComponents";
+import { getMDXComponents } from "@/components/MDXComponents";
 import { JSXElementConstructor, ReactElement } from "react";
 
 export interface Post {
@@ -34,7 +34,7 @@ export async function getPostFilePaths(contentSource: string) {
  * Parse the front matter and content from an .mdx file
  */
 export async function getMDXContentAndFrontMatter(source: Buffer) {
-  const components = MDXComponents({});
+  const components = getMDXComponents({});
   const rawSource = source.toString("utf8");
 
   // Parse content and frontmatter, with components for custom rendering
