@@ -23,6 +23,7 @@ const cspHeader = `
 const nextConfig = {
   // your Next.js configuration options here
   outputFileTracingRoot: __dirname,
+  output: "standalone",
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "newstrapi.jesusperez.dev", port: "" },
