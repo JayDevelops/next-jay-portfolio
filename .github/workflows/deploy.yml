@@ -1,21 +1,27 @@
-name: Deploy to Coolify
+name: CI/CD Deploy to Raspberry Pi
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    types: [closed]
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'push' ||
-      (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    name: Build and Deploy Container
+    runs-on: [self-hosted, raspberry-pi]
 
     steps:
-      - name: Trigger Coolify Deploy Webhook
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build New Docker Image
         run: |
-          curl -X POST "https://coolify.jesusperez.dev/api/v1/deploy?uuid=hko0gs8wg808k44g8s00oc4o&force=false" \
-            -H "Authorization: ${{ secrets.COOLIFY_API_KEY }}"
+          docker compose build --no-cache
+
+      - name: Deploy Containers with Docker Compose
+        run: |
+          docker compose up -d --force-recreate
+
+      - name: Clean Up Stale Docker Images
+        run: |
+          docker image prune -f

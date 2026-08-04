@@ -1,0 +1,37 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # Target the final runner stage (optional — it's the last stage by default)
+      target: runner
+      args:
+        # Keep in sync with the NODE_VERSION ARG in your Dockerfile
+        NODE_VERSION: 24.13.0-slim
+    image: nextjs-app:latest
+    container_name: nextjs-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: "0.0.0.0"
+      # Uncomment to disable Next.js telemetry at runtime
+      # NEXT_TELEMETRY_DISABLED: "1"
+    # Load build/runtime env vars from a file if you use one
+    env_file:
+      - .env
+    healthcheck:
+      # Uses Node directly since the slim image has no curl/wget
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
