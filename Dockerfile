@@ -37,10 +37,6 @@ FROM node:${NODE_VERSION} AS builder
 # Set working directory
 WORKDIR /app
 
-# git is needed at build time for MDX last-modified timestamps
-RUN apt-get update && apt-get install -y --no-install-recommends git \
-    && rm -rf /var/lib/apt/lists/*
-    
 # Copy project dependencies from dependencies stage
 COPY --from=dependencies /app/node_modules ./node_modules
 

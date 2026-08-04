@@ -3,7 +3,7 @@ import { z } from "zod";
 import {
   defineCollections,
   defineConfig,
-  frontmatterSchema
+  frontmatterSchema,
 } from "fumadocs-mdx/config";
 
 // lib/fumadoc-remark-plugins/remark-reading-time.ts
@@ -24,7 +24,6 @@ var remarkReadingTime = (options = {}) => {
 };
 
 // source.config.ts
-import lastModified from "fumadocs-mdx/plugins/last-modified";
 var blogPosts = defineCollections({
   type: "doc",
   dir: "content/blog",
@@ -32,23 +31,20 @@ var blogPosts = defineCollections({
     author: z.string(),
     title: z.string(),
     date: z.date(),
-    description: z.string().optional()
+    description: z.string().optional(),
   }),
   postprocess: {
     valueToExport: ["readingTime"],
-    includeProcessedMarkdown: true
-  }
+    includeProcessedMarkdown: true,
+  },
 });
 var source_config_default = defineConfig({
-  plugins: [lastModified()],
+  plugins: [],
   mdxOptions: {
     remarkPlugins: (v) => [
       [remarkReadingTime, { format: "text" /* Text */ }],
-      ...v
-    ]
-  }
+      ...v,
+    ],
+  },
 });
-export {
-  blogPosts,
-  source_config_default as default
-};
+export { blogPosts, source_config_default as default };

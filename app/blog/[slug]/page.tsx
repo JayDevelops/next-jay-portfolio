@@ -26,8 +26,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   // grab attributes from the selected blog page data
-  const { body: Mdx, toc, lastModified } = page.data;
-  const lastUpdate = lastModified ? new Date(lastModified) : undefined;
+  const { body: Mdx, toc } = page.data;
   const readingTime: string =
     (page.data._exports?.readingTime as string) ?? "no reading time";
   const rawText: string = await page.data.getText("processed");

@@ -9,7 +9,6 @@ import {
   ReadTimeFormat,
   remarkReadingTime,
 } from "./lib/fumadoc-remark-plugins/remark-reading-time";
-import lastModified from "fumadocs-mdx/plugins/last-modified";
 
 export const blogPosts = defineCollections({
   type: "doc",
@@ -27,7 +26,7 @@ export const blogPosts = defineCollections({
 });
 
 export default defineConfig({
-  plugins: [lastModified()],
+  plugins: [],
   mdxOptions: {
     remarkPlugins: (v) => [
       [remarkReadingTime, { format: ReadTimeFormat.Text }],
