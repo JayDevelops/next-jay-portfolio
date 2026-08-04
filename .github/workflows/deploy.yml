@@ -1,27 +1,38 @@
-name: CI/CD Deploy to Raspberry Pi
+name: CI/CD Build and Deploy via Coolify
 
 on:
   push:
     branches:
       - main
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   deploy:
-    name: Build and Deploy Container
+    name: Build, Push, and Trigger Deploy
     runs-on: [self-hosted, raspberry-pi]
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Build New Docker Image
-        run: |
-          docker compose build --no-cache
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Deploy Containers with Docker Compose
+      - name: Build and Push Docker Image
         run: |
-          docker compose up -d --force-recreate
+          IMAGE=ghcr.io/${{ github.repository_owner }}/next-jay-portfolio
+          docker build \
+            -t $IMAGE:latest \
+            -t $IMAGE:${{ github.sha }} \
+            .
+          docker push $IMAGE:latest
+          docker push $IMAGE:${{ github.sha }}
+
+      - name: Trigger Coolify Redeploy
+        run: curl -fsSL -X POST "${{ secrets.COOLIFY_WEBHOOK_URL }}"
 
       - name: Clean Up Stale Docker Images
-        run: |
-          docker image prune -f
+        run: docker image prune -f
