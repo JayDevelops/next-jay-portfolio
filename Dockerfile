@@ -44,6 +44,7 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
 ENV NODE_ENV=production
+ENV NODE_OPTIONS="--max-old-space-size=3072"
 
 
 # If you want to speed up Docker rebuilds, you can cache the build artifacts
