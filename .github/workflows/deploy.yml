@@ -33,7 +33,13 @@ jobs:
           docker push $IMAGE:${{ github.sha }}
 
       - name: Trigger Coolify Redeploy
-        run: curl -fsSL -X POST "${{ secrets.COOLIFY_WEBHOOK_URL }}"
+        run: |
+          if [ -z "${{ secrets.COOLIFY_DEPLOY_WEBHOOK }}" ]; then
+            echo "::error::COOLIFY_DEPLOY_WEBHOOK secret is not set"
+            exit 1
+          fi
+          curl -fsSL -X GET "${{ secrets.COOLIFY_DEPLOY_WEBHOOK }}" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}"
 
       - name: Clean Up Stale Docker Images
         run: docker image prune -f
