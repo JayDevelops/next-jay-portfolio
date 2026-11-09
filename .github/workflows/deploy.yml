@@ -45,13 +45,20 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Trigger Coolify Redeploy
+        env:
+          COOLIFY_WEBHOOK: ${{ secrets.COOLIFY_DEPLOY_WEBHOOK }}
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_API_KEY }}
         run: |
-          if [ -z "${{ secrets.COOLIFY_DEPLOY_WEBHOOK }}" ]; then
-            echo "::error::COOLIFY_DEPLOY_WEBHOOK secret is not set"
+          if [ -z "$COOLIFY_WEBHOOK" ] || [ -z "$COOLIFY_TOKEN" ]; then
+            echo "::error::Missing Coolify deployment credentials"
             exit 1
           fi
-          curl -fsSL -X GET "${{ secrets.COOLIFY_DEPLOY_WEBHOOK }}" \
-            -H "Authorization: Bearer ${{ secrets.COOLIFY_API_KEY }}"
+
+          curl --fail-with-body --silent --show-error \
+            --request POST \
+            "$COOLIFY_WEBHOOK" \
+            --header "Authorization: Bearer $COOLIFY_TOKEN" \
+            --header "Accept: application/json"
 
       - name: Clean Up Stale Docker Images
         run: docker image prune -f
