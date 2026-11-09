@@ -12,7 +12,7 @@ permissions:
 jobs:
   deploy:
     name: Build, Push, and Trigger Deploy
-    runs-on: [self-hosted, raspberry-pi]
+    runs-on: [self-hosted, Linux, X64]
 
     steps:
       - name: Checkout Repository
