@@ -1,0 +1,32 @@
+name: Self Hosted Runner Test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: self-hosted
+
+    steps:
+      - name: Verify runner environment
+        run: |
+          echo "Hostname:"
+          hostname
+
+          echo "Architecture:"
+          uname -m
+
+          echo "Running as:"
+          whoami
+
+          echo "Available disk space:"
+          df -h /
+
+          echo "Node.js:"
+          node --version || true
+
+          echo "NPM:"
+          npm --version || true
