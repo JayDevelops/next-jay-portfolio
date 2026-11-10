@@ -27,4 +27,8 @@ export const projectLinks: ProjectLink[] = [
     title: "New Life Medical Site",
     liveLink: "https://newlifeadhc.org/",
   },
+  {
+    title: "Master PC Builds",
+    liveLink: "https://masterpcbuilds.com/",
+  },
 ];
