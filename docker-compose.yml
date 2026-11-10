@@ -7,7 +7,7 @@ services:
       target: runner
       args:
         # Keep in sync with the NODE_VERSION ARG in your Dockerfile
-        NODE_VERSION: 24.13.0-slim
+        NODE_VERSION: 26.13.0-slim
     image: nextjs-app:latest
     container_name: nextjs-app
     restart: unless-stopped
